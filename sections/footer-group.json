@@ -109,7 +109,7 @@
           "type": "text",
           "settings": {
             "title": "About",
-            "content": "<p>Use this text area to tell your customers about your brand and vision. You can change it in the theme editor.</p>",
+            "content": "<p><strong>\"আঙ্গনালয়\"</strong> অর্থে <strong>আপনার ঘর ও জীবনযাত্রার জন্য একটি সম্পূর্ণ সমাধান </strong>। আপনার আঙ্গন থেকে রান্নাঘর – সবকিছুর জন্য আঙ্গনালয়!</p>",
             "enable_follow_on_shop": true
           }
         }
