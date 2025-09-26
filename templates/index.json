@@ -223,6 +223,7 @@
           "type": "collection",
           "settings": {
             "collection": "all-product",
+            "image": "shopify://shop_images/71uV0kz-adL._AC_SX679.jpg",
             "subheading": "",
             "title": "",
             "url": "",
@@ -237,6 +238,7 @@
           "type": "collection",
           "settings": {
             "collection": "pre-booking",
+            "image": "shopify://shop_images/813j9smA7FL._AC_SL1500.jpg",
             "subheading": "",
             "title": "",
             "url": "",
@@ -259,7 +261,7 @@
         "collections_per_row": 3,
         "show_progress_bar": false,
         "subheading": "",
-        "title": "Collection list",
+        "title": "Collections",
         "content": "",
         "link_url": "",
         "link_text": "View all",
