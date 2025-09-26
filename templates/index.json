@@ -104,9 +104,10 @@
         "1664424046b00c932c-2": {
           "type": "item",
           "settings": {
+            "image": "shopify://shop_images/813j9smA7FL._AC_SL1500.jpg",
             "stretch_image": true,
             "link_text": "",
-            "link_url": "",
+            "link_url": "shopify://products/stainless-steel-kitchen-sink-holder",
             "background": "",
             "text_color": "#ffffff",
             "overlay_color": "#000000",
