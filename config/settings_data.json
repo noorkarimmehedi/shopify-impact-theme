@@ -32,6 +32,7 @@
     "heading_letter_spacing": -2,
     "text_font": "din_next_n4",
     "show_page_transition": true,
+    "reduce_drawer_animation": true,
     "heading_apparition": "split_fade",
     "product_color_display": "swatch",
     "product_info_alignment": "start",
