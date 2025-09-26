@@ -851,22 +851,22 @@
         "166442457738b23caf-0": {
           "type": "item",
           "settings": {
-            "title": "Do you ship overseas?",
-            "content": "<p>Yes, we ship all over the world. Shipping costs will apply, and will be added at checkout. We run discounts and promotions all year, so stay tuned for exclusive deals.</p>"
+            "title": "Do you ship all over Bangladesh?",
+            "content": "<p>Yes, we ship all over Bangladesh. Shipping costs will apply, and will be added at checkout. We run discounts and promotions all year, so stay tuned for exclusive deals.</p>"
           }
         },
         "166442457738b23caf-1": {
           "type": "item",
           "settings": {
             "title": "How long will it take to get my orders?",
-            "content": "<p>It depends on where you are. Orders processed here will take 5-7 business days to arrive. Overseas deliveries can take anywhere from 7-16 days. Delivery details will be provided in your confirmation email.</p>"
+            "content": "<p>It depends on where you are. Orders processed here will take 2-5 business days to arrive. Delivery details will be provided in your confirmation email.</p>"
           }
         },
         "166442457738b23caf-2": {
           "type": "item",
           "settings": {
             "title": "Any question?",
-            "content": "<p>You can contact us through our contact page! We will be happy to assist you.</p>"
+            "content": "<p>You can call us at +8801819502705. We will be happy to assist you.</p>"
           }
         }
       },
