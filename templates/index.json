@@ -482,30 +482,30 @@
     "press": {
       "type": "press",
       "blocks": {
-        "16644243327ba53d2a-0": {
-          "type": "quote",
-          "settings": {
-            "logo_width": 100,
-            "author": "",
-            "content": "Share info about what your customers say about your products.",
-            "show_rating": false,
-            "rating": 4
-          }
-        },
         "16644243327ba53d2a-1": {
           "type": "quote",
           "settings": {
             "logo_width": 100,
-            "author": "",
-            "content": "Or share content about your promotion, offers...",
+            "author": "তানজিলা | Rajshahi",
+            "content": "প্রথমে নিজের জন্য নিয়েছিলাম, এখন আম্মু-আপু দুজনেই আমারটা দখল করে নেয়! মনে হচ্ছে আরও কয়েকটা অর্ডার দিতে হবে। পারিবারিক মালিকানার বিষয় হয়ে গেছে এটা!",
+            "show_rating": false,
+            "rating": 4
+          }
+        },
+        "16644243327ba53d2a-0": {
+          "type": "quote",
+          "settings": {
+            "logo_width": 100,
+            "author": "রিদিতা | Dhaka",
+            "content": "আমি ক্যাফে-স্টাইল কোল্ড কফি আর ডিটক্স ড্রিঙ্ক বানাতে পছন্দ করি, আর এই গ্লাস সেট আমার ইনস্টাগ্রামের ছবির জন্য পারফেক্ট! দেখতে এত প্রিমিয়াম!",
             "show_rating": false,
             "rating": 4
           }
         }
       },
       "block_order": [
-        "16644243327ba53d2a-0",
-        "16644243327ba53d2a-1"
+        "16644243327ba53d2a-1",
+        "16644243327ba53d2a-0"
       ],
       "settings": {
         "full_width": true,
