@@ -117,9 +117,9 @@
           "type": "ai_gen_block_606562f",
           "settings": {
             "whatsapp_number": "+8801819502705",
-            "whatsapp_text": "WhatsApp us to place an order",
+            "whatsapp_text": "WhatsApp করে অর্ডার করুন।",
             "phone_number": "+8801819502705",
-            "phone_text": "Call us to place an order",
+            "phone_text": "কল করে অর্ডার করুন।",
             "alignment": "center",
             "mobile_layout": "column",
             "gap_between_items": 20,
