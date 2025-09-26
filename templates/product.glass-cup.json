@@ -144,7 +144,7 @@
             "icon_hover_color": "#218838",
             "section_border_width": 0,
             "section_border_color": "#dee2e6",
-            "item_border_width": 1,
+            "item_border_width": 0,
             "item_border_color": "#dee2e6",
             "item_hover_border_color": "#adb5bd",
             "section_shadow_opacity": 0,
