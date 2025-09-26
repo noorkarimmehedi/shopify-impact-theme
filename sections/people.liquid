@@ -1,0 +1,345 @@
+{% comment %}
+  Daily Purchase Counter Section
+  Shows how many customers purchased the product today
+{% endcomment %}
+
+{%- liquid
+  assign today = 'now' | date: '%Y-%m-%d'
+  assign purchase_count = 0
+  
+  # Get today's orders for this product
+  for order in shop.orders
+    assign order_date = order.created_at | date: '%Y-%m-%d'
+    if order_date == today and order.financial_status == 'paid'
+      for line_item in order.line_items
+        if line_item.product_id == product.id
+          assign purchase_count = purchase_count | plus: 1
+          break
+        endif
+      endfor
+    endif
+  endfor
+  
+  # Fallback to simulated data if no real orders (for demo purposes)
+  if purchase_count == 0 and section.settings.enable_demo_mode
+    assign purchase_count = section.settings.demo_count
+  endif
+-%}
+
+{% if section.settings.show_counter and purchase_count > 0 %}
+  <div class="daily-purchase-counter" 
+       style="
+         background: {{ section.settings.background_color }};
+         color: {{ section.settings.text_color }};
+         padding: {{ section.settings.padding }}px;
+         margin: {{ section.settings.margin }}px 0;
+         border-radius: {{ section.settings.border_radius }}px;
+         border: {{ section.settings.border_width }}px solid {{ section.settings.border_color }};
+         text-align: {{ section.settings.text_alignment }};
+         font-size: {{ section.settings.font_size }}px;
+         {% if section.settings.show_shadow %}
+           box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+         {% endif %}
+       ">
+    
+    {% if section.settings.show_icon %}
+      <span class="counter-icon" style="margin-right: 8px;">
+        {% case section.settings.icon_type %}
+          {% when 'fire' %}
+            🔥
+          {% when 'star' %}
+            ⭐
+          {% when 'heart' %}
+            ❤️
+          {% when 'shopping' %}
+            🛍️
+          {% when 'check' %}
+            ✅
+          {% else %}
+            👥
+        {% endcase %}
+      </span>
+    {% endif %}
+    
+    <span class="counter-text">
+      {% if section.settings.custom_text != blank %}
+        {{ section.settings.custom_text | replace: '[COUNT]', purchase_count }}
+      {% else %}
+        {% if purchase_count == 1 %}
+          {{ purchase_count }} customer purchased this today
+        {% else %}
+          {{ purchase_count }} customers purchased this today
+        {% endif %}
+      {% endif %}
+    </span>
+    
+    {% if section.settings.show_urgency_text and purchase_count >= section.settings.urgency_threshold %}
+      <div class="urgency-text" 
+           style="
+             font-size: {{ section.settings.font_size | minus: 2 }}px;
+             color: {{ section.settings.urgency_color }};
+             font-weight: bold;
+             margin-top: 4px;
+           ">
+        {{ section.settings.urgency_message }}
+      </div>
+    {% endif %}
+  </div>
+
+  {% if section.settings.enable_animation %}
+    <style>
+      .daily-purchase-counter {
+        animation: fadeInUp 0.6s ease-out;
+      }
+      
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      
+      .daily-purchase-counter:hover {
+        transform: translateY(-2px);
+        transition: transform 0.2s ease;
+      }
+    </style>
+  {% endif %}
+{% endif %}
+
+{% schema %}
+{
+  "name": "Daily Purchase Counter",
+  "tag": "section",
+  "class": "daily-purchase-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Display Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_counter",
+      "label": "Show purchase counter",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "custom_text",
+      "label": "Custom text",
+      "info": "Use [COUNT] as placeholder for the number. Leave empty for default text.",
+      "placeholder": "[COUNT] people bought this today!"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "label": "Font size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Icon Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_icon",
+      "label": "Show icon",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "icon_type",
+      "label": "Icon type",
+      "options": [
+        {
+          "value": "people",
+          "label": "People 👥"
+        },
+        {
+          "value": "fire",
+          "label": "Fire 🔥"
+        },
+        {
+          "value": "star",
+          "label": "Star ⭐"
+        },
+        {
+          "value": "heart",
+          "label": "Heart ❤️"
+        },
+        {
+          "value": "shopping",
+          "label": "Shopping 🛍️"
+        },
+        {
+          "value": "check",
+          "label": "Check ✅"
+        }
+      ],
+      "default": "people"
+    },
+    {
+      "type": "header",
+      "content": "Style Settings"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#f8f9fa"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border color",
+      "default": "#e0e0e0"
+    },
+    {
+      "type": "range",
+      "id": "border_width",
+      "label": "Border width",
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "default": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Border radius",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "default": 8,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding",
+      "label": "Padding",
+      "min": 8,
+      "max": 32,
+      "step": 2,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "margin",
+      "label": "Margin",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_shadow",
+      "label": "Show shadow",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_animation",
+      "label": "Enable animation",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Urgency Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_urgency_text",
+      "label": "Show urgency message",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "urgency_threshold",
+      "label": "Urgency threshold",
+      "info": "Show urgency message when purchases reach this number",
+      "min": 1,
+      "max": 20,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "text",
+      "id": "urgency_message",
+      "label": "Urgency message",
+      "default": "🔥 Popular item - selling fast!"
+    },
+    {
+      "type": "color",
+      "id": "urgency_color",
+      "label": "Urgency text color",
+      "default": "#ff4444"
+    },
+    {
+      "type": "header",
+      "content": "Demo Settings"
+    },
+    {
+      "type": "paragraph",
+      "content": "Enable demo mode to show a sample count when no real purchases exist (useful for testing)"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_demo_mode",
+      "label": "Enable demo mode",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "demo_count",
+      "label": "Demo purchase count",
+      "min": 1,
+      "max": 50,
+      "step": 1,
+      "default": 7
+    }
+  ],
+  "presets": [
+    {
+      "name": "Daily Purchase Counter"
+    }
+  ]
+}
+{% endschema %}
