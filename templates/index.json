@@ -146,6 +146,7 @@
         "1664424046b00c932c-3",
         "e4a0ef18-1856-4ddd-83d8-871a60d7acac"
       ],
+      "disabled": true,
       "settings": {
         "full_width": false,
         "block_size": "medium",
@@ -165,9 +166,9 @@
       "type": "scrolling-text",
       "settings": {
         "full_width": true,
-        "text": "Promotion text",
-        "text_size": "large",
-        "text_style": "fill",
+        "text": "আমাদের যে কোন পণ্য অর্ডার করতে কল বা WhatsApp করুন:  +8801819502705",
+        "text_size": "medium",
+        "text_style": "outline",
         "scrolling_mode": "auto",
         "scrolling_speed": 5,
         "background": "",
@@ -176,13 +177,38 @@
         "text_gradient": ""
       }
     },
+    "featured-collection": {
+      "type": "featured-collection",
+      "settings": {
+        "collection": "best-sellers",
+        "products": [],
+        "full_width": true,
+        "stack_products": false,
+        "show_progress_bar": false,
+        "products_count": 6,
+        "products_per_row_mobile": "2",
+        "products_per_row_desktop": 4,
+        "subheading": "",
+        "title": "BEST SELLERS",
+        "content": "",
+        "link_url": "",
+        "link_text": "View all",
+        "background": "",
+        "background_gradient": "",
+        "text_color": "",
+        "heading_color": "",
+        "heading_gradient": "",
+        "product_card_background": "",
+        "product_card_text_color": ""
+      }
+    },
     "collection-list": {
       "type": "collection-list",
       "blocks": {
         "collection-1": {
           "type": "collection",
           "settings": {
-            "collection": "",
+            "collection": "best-sellers",
             "subheading": "",
             "title": "",
             "url": "",
@@ -196,7 +222,7 @@
         "collection-2": {
           "type": "collection",
           "settings": {
-            "collection": "",
+            "collection": "all-product",
             "subheading": "",
             "title": "",
             "url": "",
@@ -210,7 +236,7 @@
         "collection-3": {
           "type": "collection",
           "settings": {
-            "collection": "",
+            "collection": "pre-booking",
             "subheading": "",
             "title": "",
             "url": "",
@@ -244,31 +270,6 @@
         "heading_gradient": ""
       }
     },
-    "featured-collection": {
-      "type": "featured-collection",
-      "settings": {
-        "collection": "best-sellers",
-        "products": [],
-        "full_width": true,
-        "stack_products": false,
-        "show_progress_bar": false,
-        "products_count": 6,
-        "products_per_row_mobile": "2",
-        "products_per_row_desktop": 4,
-        "subheading": "",
-        "title": "Featured collection",
-        "content": "",
-        "link_url": "",
-        "link_text": "View all",
-        "background": "",
-        "background_gradient": "",
-        "text_color": "",
-        "heading_color": "",
-        "heading_gradient": "",
-        "product_card_background": "",
-        "product_card_text_color": ""
-      }
-    },
     "impact-text": {
       "type": "impact-text",
       "blocks": {
@@ -276,7 +277,7 @@
           "type": "item",
           "settings": {
             "title": "100%",
-            "subheading": "Showcase a benefit of your product",
+            "subheading": "AUTHENTIC HOME & KITCHEN PRODUCT",
             "content": "",
             "button_text": "",
             "button_url": "",
@@ -309,12 +310,14 @@
       "blocks": {
         "1664424230c4756b0e-0": {
           "type": "subheading",
+          "disabled": true,
           "settings": {
             "text": "Subheading"
           }
         },
         "1664424230c4756b0e-1": {
           "type": "heading",
+          "disabled": true,
           "settings": {
             "text": "Image with text overlay",
             "heading_tag": "h1"
@@ -322,6 +325,7 @@
         },
         "1664424230c4756b0e-2": {
           "type": "richtext",
+          "disabled": true,
           "settings": {
             "content": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>"
           }
@@ -337,6 +341,7 @@
         "allow_transparent_header": false,
         "enable_parallax": false,
         "image_size": "auto",
+        "image": "shopify://shop_images/jason-leung-jWU9FpLW7fI-unsplash.jpg",
         "mobile_text_position": "place-self-center text-center",
         "desktop_text_position": "sm:place-self-center sm:text-center",
         "text_color": "#ffffff",
@@ -350,7 +355,8 @@
         "item-1": {
           "type": "image",
           "settings": {
-            "title": "Promote your products",
+            "image": "shopify://shop_images/71sG4hiNrkL._AC_SL1500.jpg",
+            "title": "",
             "heading_tag": "h4",
             "link_url": "",
             "link_text": "",
@@ -371,7 +377,8 @@
         "item-2": {
           "type": "image",
           "settings": {
-            "title": "Promote your products",
+            "image": "shopify://shop_images/813j9smA7FL._AC_SL1500.jpg",
+            "title": "",
             "heading_tag": "h4",
             "link_url": "",
             "link_text": "",
@@ -392,7 +399,8 @@
         "item-3": {
           "type": "image",
           "settings": {
-            "title": "Promote your products",
+            "image": "shopify://shop_images/bamboojar4.jpg",
+            "title": "",
             "heading_tag": "h4",
             "link_url": "",
             "link_text": "",
@@ -413,7 +421,8 @@
         "29246d34-c6e0-4373-84f6-b15e57736a00": {
           "type": "image",
           "settings": {
-            "title": "Promote your products",
+            "image": "shopify://shop_images/71uV0kz-adL._AC_SX679.jpg",
+            "title": "",
             "heading_tag": "h4",
             "link_url": "",
             "link_text": "",
@@ -442,13 +451,14 @@
         "full_width": true,
         "reduce_width": false,
         "desktop_row_height": 290,
-        "mobile_row_height": 150,
+        "mobile_row_height": 190,
         "background": "",
         "background_gradient": ""
       }
     },
     "before-after-image": {
       "type": "before-after-image",
+      "disabled": true,
       "settings": {
         "full_width": true,
         "subheading": "",
@@ -556,6 +566,7 @@
       ],
       "settings": {
         "full_width": true,
+        "image": "shopify://shop_images/71cJM04DgmL._AC_SL1500.jpg",
         "title": "",
         "content": "",
         "button_text": "",
@@ -582,6 +593,7 @@
         "1664424486a2b084ab-0": {
           "type": "item",
           "settings": {
+            "image": "shopify://shop_images/1615CC7D-B81B-466C-A426-3FFD22B5A2B8.png",
             "image_rotation_degrees": -2,
             "subheading": "",
             "title": "Heading 1",
@@ -606,6 +618,7 @@
         "1664424486a2b084ab-0",
         "1664424486a2b084ab-1"
       ],
+      "disabled": true,
       "settings": {
         "full_width": true,
         "images_layout": "scattered",
@@ -694,6 +707,7 @@
         "quantity-selector",
         "buy-buttons"
       ],
+      "disabled": true,
       "settings": {
         "full_width": false,
         "product": "",
@@ -802,6 +816,7 @@
         "16644246508f6fa13a-1",
         "16644246508f6fa13a-2"
       ],
+      "disabled": true,
       "settings": {
         "full_width": true,
         "subheading": "Compare",
@@ -885,8 +900,8 @@
     "slideshow",
     "image-link-blocks",
     "scrolling-text",
-    "collection-list",
     "featured-collection",
+    "collection-list",
     "impact-text",
     "image-with-text-overlay",
     "media-grid",
