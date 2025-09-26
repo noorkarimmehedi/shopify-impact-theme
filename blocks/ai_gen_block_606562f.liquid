@@ -1,6 +1,6 @@
 {% doc %}
   @prompt
-    generate a block of two items where one is Whatsapp us to place an order and another one is call us to place an order. both should have icon and also customizable . the section should fit both desktop and mobile, the both section should be customizable in design like border color and shadow etc etc
+    generate a block of three items where one is Whatsapp us to place an order, another one is call us to place an order, and third one is Messenger এ অর্ডার করুন. All should have icons and also be customizable. The section should fit both desktop and mobile, and all sections should be customizable in design like border color and shadow etc.
 
 {% enddoc %}
 {% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
@@ -116,6 +116,23 @@
     </a>
   {% endif %}
 
+  {% if block.settings.messenger_page_id != blank %}
+    <a 
+      href="https://m.me/{{ block.settings.messenger_page_id }}"
+      class="ai-contact-item-{{ ai_gen_id }}"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Message us on Facebook Messenger"
+    >
+      <div class="ai-contact-icon-{{ ai_gen_id }}">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 0C5.373 0 0 4.975 0 11.111c0 3.497 1.745 6.616 4.472 8.652V24l4.086-2.242c1.09.301 2.246.464 3.442.464 6.627 0 12-4.974 12-11.111C24 4.975 18.627 0 12 0zm1.193 14.963l-3.056-3.259-5.963 3.259L10.732 8.1l3.13 3.259L19.752 8.1l-6.559 6.863z"/>
+        </svg>
+      </div>
+      <span class="ai-contact-text-{{ ai_gen_id }}">{{ block.settings.messenger_text }}</span>
+    </a>
+  {% endif %}
+
   {% if block.settings.phone_number != blank %}
     <a 
       href="tel:{{ block.settings.phone_number }}"
@@ -152,6 +169,23 @@
       "id": "whatsapp_text",
       "label": "WhatsApp button text",
       "default": "WhatsApp us to place an order"
+    },
+    {
+      "type": "header",
+      "content": "Messenger"
+    },
+    {
+      "type": "text",
+      "id": "messenger_page_id",
+      "label": "Facebook Page ID or Username",
+      "info": "Enter your Facebook page username or page ID (e.g., yourpagename or 123456789)",
+      "default": "yourpagename"
+    },
+    {
+      "type": "text",
+      "id": "messenger_text",
+      "label": "Messenger button text",
+      "default": "Messenger এ অর্ডার করুন"
     },
     {
       "type": "header",
