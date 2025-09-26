@@ -1,6 +1,785 @@
+{% doc %}
+  @prompt
+    genertate a video section for me where i can uplload videos and showcase the product video, it should be in rees format with auto play without any text and also shadow and UI should be like shadcn UI. should be option for one one by or by in  videos in one with a indicator, video should be in loop also the video size should be have the option for original, i selected the video but video isn't playing
+
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-video-reel-{{ ai_gen_id }} {
+    padding: {{ block.settings.section_padding }}px 0;
+    background-color: {{ block.settings.background_color }};
+  }
+
+  .ai-video-reel-container-{{ ai_gen_id }} {
+    {% if block.settings.video_size == 'original' %}
+      width: 100%;
+    {% else %}
+      max-width: {{ block.settings.max_width }}px;
+    {% endif %}
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .ai-video-reel-wrapper-{{ ai_gen_id }} {
+    position: relative;
+    border-radius: {{ block.settings.border_radius }}px;
+    overflow: hidden;
+    box-shadow: 
+      0 1px 3px 0 rgba(0, 0, 0, 0.1),
+      0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+  }
+
+  .ai-video-reel-track-{{ ai_gen_id }} {
+    display: flex;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    {% assign video_count = 0 %}
+    {% for i in (1..6) %}
+      {% assign video_enabled_key = 'video_' | append: i | append: '_enabled' %}
+      {% if block.settings[video_enabled_key] %}
+        {% assign video_count = video_count | plus: 1 %}
+      {% endif %}
+    {% endfor %}
+    width: {{ video_count | times: 100 }}%;
+  }
+
+  .ai-video-reel-slide-{{ ai_gen_id }} {
+    flex: 0 0 {% if block.settings.display_mode == 'single' %}100%{% else %}50%{% endif %};
+    position: relative;
+    {% if block.settings.video_size == 'original' %}
+      aspect-ratio: auto;
+    {% else %}
+      aspect-ratio: {{ block.settings.video_aspect_ratio }};
+    {% endif %}
+  }
+
+  .ai-video-reel-video-{{ ai_gen_id }} {
+    width: 100%;
+    height:100%;
+    {% if block.settings.video_size == 'original' %}
+      object-fit: contain;
+    {% else %}
+      object-fit: cover;
+    {% endif %}
+    border: none;
+    display: block;
+  }
+
+  .ai-video-reel-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8fafc;
+    color: #64748b;
+    position: relative;
+    {% unless block.settings.video_size == 'original' %}
+      min-height: 300px;
+    {% endunless %}
+  }
+
+  .ai-video-reel-placeholder-{{ ai_gen_id }} svg {
+    width: 80px;
+    height: 80px;
+    opacity: 0.4;
+  }
+
+  .ai-video-reel-empty-state-{{ ai_gen_id }} {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 8px 16px;
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 6px;
+    font-size: 12px;
+    color: #64748b;
+    text-align: center;
+    white-space: nowrap;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+  }
+
+  .ai-video-reel-controls-{{ ai_gen_id }} {
+    position: absolute;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 10;
+  }
+
+  .ai-video-reel-nav-button-{{ ai_gen_id }} {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    background-color: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(8px);
+  }
+
+  .ai-video-reel-nav-button-{{ ai_gen_id }}:hover {
+    background-color: rgba(255, 255, 255, 1);
+    border-color: rgba(0, 0, 0, 0.1);
+    transform: scale(1.05);
+  }
+
+  .ai-video-reel-nav-button-{{ ai_gen_id }}:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .ai-video-reel-nav-button-{{ ai_gen_id }} svg {
+    width: 16px;
+    height: 16px;
+    fill: #374151;
+  }
+
+  .ai-video-reel-indicators-{{ ai_gen_id }} {
+    display: flex;
+    gap: 6px;
+  }
+
+  .ai-video-reel-indicator-{{ ai_gen_id }} {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .ai-video-reel-indicator-{{ ai_gen_id }}.active {
+    background-color: #ffffff;
+    border-color: rgba(0, 0, 0, 0.2);
+    transform: scale(1.2);
+  }
+
+  .ai-video-reel-play-pause-{{ ai_gen_id }} {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 10;
+    backdrop-filter: blur(8px);
+  }
+
+  .ai-video-reel-play-pause-{{ ai_gen_id }}:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+    transform: scale(1.05);
+  }
+
+  .ai-video-reel-play-pause-{{ ai_gen_id }} svg {
+    width: 18px;
+    height: 18px;
+    fill: #ffffff;
+  }
+
+  @media screen and (max-width: 768px) {
+    .ai-video-reel-slide-{{ ai_gen_id }} {
+      flex: 0 0 100%;
+    }
+
+    .ai-video-reel-nav-button-{{ ai_gen_id }} {
+      width: 28px;
+      height: 28px;
+    }
+
+    .ai-video-reel-nav-button-{{ ai_gen_id }} svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .ai-video-reel-play-pause-{{ ai_gen_id }} {
+      width: 32px;
+      height: 32px;
+      top: 12px;
+      right: 12px;
+    }
+
+    .ai-video-reel-play-pause-{{ ai_gen_id }} svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+{% endstyle %}
+
+<video-reel-{{ ai_gen_id }} class="ai-video-reel-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-video-reel-container-{{ ai_gen_id }}">
+    <div class="ai-video-reel-wrapper-{{ ai_gen_id }}">
+      <div class="ai-video-reel-track-{{ ai_gen_id }}" data-track>
+        {% assign has_videos = false %}
+        {% assign video_index = 0 %}
+        {% for i in (1..6) %}
+          {% liquid
+            assign video_key = 'video_' | append: i
+            assign video_enabled_key = 'video_' | append: i | append: '_enabled'
+            assign video = block.settings[video_key]
+            assign video_enabled = block.settings[video_enabled_key]
+          %}
+
+          {% if video_enabled %}
+            {% assign has_videos = true %}
+            <div class="ai-video-reel-slide-{{ ai_gen_id }}" data-slide="{{ video_index }}">
+              {% if video != blank %}
+                <video
+                  class="ai-video-reel-video-{{ ai_gen_id }}"
+                  muted
+                  loop
+                  playsinline
+                  preload="metadata"
+                  data-video="{{ video_index }}"
+                  {% if video_index == 0 and block.settings.autoplay %}autoplay{% endif %}
+                >
+                  {% for source in video.sources %}
+                    <source src="{{ source.url }}" type="{{ source.mime_type }}">
+                  {% endfor %}
+                </video>
+              {% else %}
+                <div class="ai-video-reel-placeholder-{{ ai_gen_id }}">
+                  {{ 'image' | placeholder_svg_tag }}<div class="ai-video-reel-empty-state-{{ ai_gen_id }}">
+                    Add video {{ i }}
+                  </div>
+                </div>
+              {% endif %}</div>
+            {% assign video_index = video_index | plus: 1 %}
+          {% endif %}
+        {% endfor %}
+
+        {% unless has_videos %}
+          <div class="ai-video-reel-slide-{{ ai_gen_id }}">
+            <div class="ai-video-reel-placeholder-{{ ai_gen_id }}">
+              {{ 'image' | placeholder_svg_tag }}
+              <div class="ai-video-reel-empty-state-{{ ai_gen_id }}">
+                Enable and add your first video
+              </div>
+            </div>
+          </div>
+        {% endunless %}
+      </div>
+
+      {% if has_videos %}
+        <button
+          class="ai-video-reel-play-pause-{{ ai_gen_id }}"
+          aria-label="Play/Pause videos"
+          data-play-pause
+        >
+          <svg data-play-icon viewBox="0 0 24 24">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+          <svg data-pause-icon viewBox="0 0 24 24" style="display: none;">
+            <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+          </svg>
+        </button>
+
+        <div class="ai-video-reel-controls-{{ ai_gen_id }}">
+          <button
+            class="ai-video-reel-nav-button-{{ ai_gen_id }}"
+            aria-label="Previous video"
+            data-prev
+          >
+            <svg viewBox="0 0 24 24">
+              <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+            </svg>
+          </button>
+
+          <div class="ai-video-reel-indicators-{{ ai_gen_id }}" data-indicators>
+            {% assign video_index = 0 %}
+            {% for i in (1..6) %}
+              {% liquid
+                assign video_enabled_key = 'video_' | append: i | append: '_enabled'
+                assign video_enabled = block.settings[video_enabled_key]
+              %}
+              {% if video_enabled %}
+                <button
+                  class="ai-video-reel-indicator-{{ ai_gen_id }} {% if video_index == 0 %}active{% endif %}"
+                  aria-label="Go to video {{ video_index | plus: 1 }}"
+                  data-indicator="{{ video_index }}"
+                ></button>
+                {% assign video_index = video_index | plus: 1 %}
+              {% endif %}
+            {% endfor %}
+          </div>
+
+          <button
+            class="ai-video-reel-nav-button-{{ ai_gen_id }}"
+            aria-label="Next video"
+            data-next
+          >
+            <svg viewBox="0 0 24 24">
+              <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+            </svg>
+          </button>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</video-reel-{{ ai_gen_id }}><script>
+(function() {
+  class VideoReel{{ ai_gen_id }} extends HTMLElement {
+    constructor() {
+      super();
+      this.currentIndex = 0;
+      this.isPlaying = {{ block.settings.autoplay }};
+      this.autoplayInterval = null;
+    }
+
+    connectedCallback() {
+      this.track = this.querySelector('[data-track]');
+      this.videos = this.querySelectorAll('[data-video]');
+      this.indicators = this.querySelectorAll('[data-indicator]');
+      this.prevButton = this.querySelector('[data-prev]');
+      this.nextButton = this.querySelector('[data-next]');
+      this.playPauseButton = this.querySelector('[data-play-pause]');
+      this.playIcon = this.querySelector('[data-play-icon]');
+      this.pauseIcon = this.querySelector('[data-pause-icon]');
+
+      this.totalSlides = this.videos.length;
+      this.displayMode = '{{ block.settings.display_mode }}';
+      this.slidesToShow = this.displayMode === 'single' ? 1 : 2;
+
+      if (this.totalSlides === 0) return;
+
+      this.setupEventListeners();
+      this.updateSlidePosition();
+      this.updatePlayPauseIcon();
+
+      setTimeout(() => {
+        if (this.isPlaying) {
+          this.playCurrentVideo();
+          this.startAutoplay();
+        }
+      }, 100);
+    }
+
+    setupEventListeners() {
+      this.prevButton?.addEventListener('click', () => this.goToPrevious());
+      this.nextButton?.addEventListener('click', () => this.goToNext());
+      this.playPauseButton?.addEventListener('click', () => this.togglePlayPause());
+
+      this.indicators.forEach((indicator, index) => {
+        indicator.addEventListener('click', () => this.goToSlide(index));
+      });
+
+      this.videos.forEach((video, index) => {
+        video.addEventListener('loadeddata', () => {
+          console.log(`Video ${index} loaded and ready to play`);
+          if (index === this.currentIndex && this.isPlaying) {
+            this.playCurrentVideo();
+          }
+        });
+
+        video.addEventListener('canplay', () => {
+          console.log(`Video ${index} can start playing`);
+          if (index === this.currentIndex && this.isPlaying) {
+            this.playCurrentVideo();
+          }
+        });
+
+        video.addEventListener('ended', () => {
+          if (this.isPlaying && {{ block.settings.auto_advance }}) {
+            this.goToNext();
+          }
+        });
+
+        video.addEventListener('error', (e) => {
+          console.error(`Video ${index} error:`, e);
+        });
+      });document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+          this.pauseAllVideos();
+          this.stopAutoplay();
+        } else if (this.isPlaying) {
+          this.playCurrentVideo();
+          this.startAutoplay();
+        }
+      });
+    }
+
+    goToPrevious() {
+      this.currentIndex = this.currentIndex > 0 ? this.currentIndex - 1 : this.totalSlides - 1;
+      this.updateSlide();
+    }
+
+    goToNext() {
+      this.currentIndex = this.currentIndex < this.totalSlides - 1 ? this.currentIndex + 1 : 0;
+      this.updateSlide();
+    }
+
+    goToSlide(index) {
+      this.currentIndex = index;
+      this.updateSlide();
+    }
+
+    updateSlide() {
+      this.updateSlidePosition();
+      this.updateIndicators();
+      this.updateNavigationButtons();
+      
+      if (this.isPlaying) {
+        this.pauseAllVideos();
+        setTimeout(() => {
+          this.playCurrentVideo();
+        }, 50);
+        this.restartAutoplay();
+      }
+    }
+
+    updateSlidePosition() {
+      const translateX = -(this.currentIndex * (100 / this.slidesToShow));
+      this.track.style.transform = `translateX(${translateX}%)`;
+    }
+
+    updateIndicators() {
+      this.indicators.forEach((indicator, index) => {
+        indicator.classList.toggle('active', index === this.currentIndex);
+      });
+    }
+
+    updateNavigationButtons() {
+      if (this.prevButton) {
+        this.prevButton.disabled = this.currentIndex === 0;
+      }
+      if (this.nextButton) {
+        this.nextButton.disabled = this.currentIndex === this.totalSlides - 1;
+      }
+    }
+
+    togglePlayPause() {
+      this.isPlaying = !this.isPlaying;
+      this.updatePlayPauseIcon();
+
+      if (this.isPlaying) {
+        this.playCurrentVideo();
+        this.startAutoplay();
+      } else {
+        this.pauseAllVideos();
+        this.stopAutoplay();
+      }
+    }
+
+    updatePlayPauseIcon() {
+      if (this.playIcon && this.pauseIcon) {
+        this.playIcon.style.display = this.isPlaying ? 'none' : 'block';
+        this.pauseIcon.style.display = this.isPlaying ? 'block' : 'none';
+      }
+    }
+
+    async playCurrentVideo() {
+      const currentVideo = this.videos[this.currentIndex];
+      if (currentVideo) {
+        try {
+          currentVideo.muted = true;
+          currentVideo.loop = true;
+          currentVideo.currentTime = 0;
+          
+          const playPromise = currentVideo.play();
+          if (playPromise !== undefined) {
+            await playPromise;console.log(`Video ${this.currentIndex} started playing`);
+          }
+        } catch (error) {
+          console.error(`Error playing video ${this.currentIndex}:`, error);
+          
+          const userInteraction = () => {
+            currentVideo.play().then(() => {
+              console.log(`Video ${this.currentIndex} started playing after user interaction`);
+            }).catch(e => console.error('Still failed to play:', e));
+            document.removeEventListener('click', userInteraction);
+            document.removeEventListener('touchstart', userInteraction);
+          };
+          
+          document.addEventListener('click', userInteraction);
+          document.addEventListener('touchstart', userInteraction);
+        }
+      }
+    }
+
+    pauseAllVideos() {
+      this.videos.forEach((video, index) => {
+        if (!video.paused) {
+          video.pause();
+          console.log(`Video ${index} paused`);
+        }
+      });
+    }
+
+    startAutoplay() {
+      if (!{{ block.settings.autoplay }} || this.totalSlides <= 1) return;
+      
+      this.stopAutoplay();
+      this.autoplayInterval = setInterval(() => {
+        if (this.isPlaying) {
+          this.goToNext();
+        }
+      }, {{ block.settings.autoplay_delay }} * 1000);
+    }
+
+    stopAutoplay() {
+      if (this.autoplayInterval) {
+        clearInterval(this.autoplayInterval);
+        this.autoplayInterval = null;
+      }
+    }
+
+    restartAutoplay() {
+      if (this.isPlaying) {
+        this.stopAutoplay();
+        this.startAutoplay();
+      }
+    }
+
+    disconnectedCallback() {
+      this.stopAutoplay();
+    }
+  }
+
+  customElements.define('video-reel-{{ ai_gen_id }}', VideoReel{{ ai_gen_id }});
+})();
+</script>
+
 {% schema %}
- {
-   "name": "AI_Block",
-   "tag": "shopify-ai-generated-block"
- }
+{
+  "name": "Video reel",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "display_mode",
+      "label": "Display mode",
+      "options": [
+        {
+          "value": "single",
+          "label": "One video at a time"
+        },
+        {
+          "value": "double",
+          "label": "Two videos at a time"
+        }
+      ],
+      "default": "single"
+    },
+    {
+      "type": "select",
+      "id": "video_size",
+      "label": "Video size",
+      "options": [
+        {
+          "value": "original",
+          "label": "Original size"
+        },
+        {
+          "value": "custom",
+          "label": "Custom aspect ratio"
+        }
+      ],
+      "default": "custom"
+    },
+    {
+      "type": "select",
+      "id": "video_aspect_ratio",
+      "label": "Video aspect ratio",
+      "options": [
+        {
+          "value": "16/9",
+          "label": "16:9 (Landscape)"
+        },
+        {
+          "value": "4/3",
+          "label": "4:3 (Standard)"
+        },
+        {
+          "value": "1/1",
+          "label": "1:1 (Square)"
+        },
+        {
+          "value": "9/16",
+          "label": "9:16 (Portrait)"
+        }
+      ],
+      "default": "16/9"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "min": 400,
+      "max": 1200,
+      "step": 50,
+      "unit": "px",
+      "label": "Maximum width",
+      "default": 800
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Section padding",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Autoplay"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Enable autoplay",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "auto_advance",
+      "label": "Auto advance to next video",
+      "info": "Automatically go to the next video when current video ends",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_delay",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "label": "Autoplay delay",
+      "default": 5
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Section background",
+      "default": "#f8fafc"
+    },
+    {
+      "type": "header",
+      "content": "Video 1"
+    },
+    {
+      "type": "checkbox",
+      "id": "video_1_enabled",
+      "label": "Enable video 1",
+      "default": true
+    },
+    {
+      "type": "video",
+      "id": "video_1",
+      "label": "Video file"
+    },
+    {
+      "type": "header",
+      "content": "Video 2"
+    },
+    {
+      "type": "checkbox",
+      "id": "video_2_enabled",
+      "label": "Enable video 2",
+      "default": true
+    },
+    {
+      "type": "video",
+      "id": "video_2",
+      "label": "Video file"
+    },
+    {
+      "type": "header",
+      "content": "Video 3"
+    },
+    {
+      "type": "checkbox",
+      "id": "video_3_enabled",
+      "label": "Enable video 3"
+    },
+    {
+      "type": "video",
+      "id": "video_3",
+      "label": "Video file"
+    },
+    {
+      "type": "header",
+      "content": "Video 4"
+    },
+    {
+      "type": "checkbox",
+      "id": "video_4_enabled",
+      "label": "Enable video 4"
+    },
+    {
+      "type": "video",
+      "id": "video_4",
+      "label": "Video file"
+    },
+    {
+      "type": "header",
+      "content": "Video 5"
+    },
+    {
+      "type": "checkbox",
+      "id": "video_5_enabled",
+      "label": "Enable video 5"
+    },
+    {
+      "type": "video",
+      "id": "video_5",
+      "label": "Video file"
+    },
+    {
+      "type": "header",
+      "content": "Video 6"
+    },
+    {
+      "type": "checkbox",
+      "id": "video_6_enabled",
+      "label": "Enable video 6"
+    },
+    {
+      "type": "video",
+      "id": "video_6",
+      "label": "Video file"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Video reel"
+    }
+  ]
+}
 {% endschema %}
