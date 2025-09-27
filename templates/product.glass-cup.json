@@ -123,6 +123,7 @@
       "blocks": {
         "ai_gen_block_606562f_78CEbK": {
           "type": "ai_gen_block_606562f",
+          "disabled": true,
           "settings": {
             "whatsapp_number": "+8801819502705",
             "whatsapp_text": "WhatsApp করে অর্ডার করুন।",
@@ -143,7 +144,7 @@
             "icon_color": "#000000",
             "icon_hover_color": "#218838",
             "section_border_width": 0,
-            "section_border_color": "#dee2e6",
+            "section_border_color": "#000000",
             "item_border_width": 0,
             "item_border_color": "#dee2e6",
             "item_hover_border_color": "#adb5bd",
@@ -159,8 +160,8 @@
             "item_hover_shadow_horizontal": 0,
             "item_hover_shadow_vertical": 4,
             "item_hover_shadow_blur": 8,
-            "text_size": 16,
-            "mobile_text_size": 14,
+            "text_size": 14,
+            "mobile_text_size": 12,
             "text_weight": "500",
             "icon_size": 24,
             "mobile_icon_size": 20,
@@ -172,6 +173,49 @@
       },
       "block_order": [
         "ai_gen_block_606562f_78CEbK"
+      ],
+      "settings": {}
+    },
+    "1758958347bd3951e6": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_6163296_qFjkEJ": {
+          "type": "ai_gen_block_6163296",
+          "settings": {
+            "whatsapp_number": "+8801819502705",
+            "phone_number": "+8801819502705",
+            "whatsapp_text": "WhatsApp করে অর্ডার করুন।",
+            "call_text": "কল করে অর্ডার করুন।",
+            "container_width": 100,
+            "gap_between_buttons": 15,
+            "mobile_layout": "column",
+            "mobile_container_width": 90,
+            "button_background_color": "#ffffff",
+            "button_hover_background_color": "#f5f5f5",
+            "button_text_color": "#000000",
+            "button_hover_text_color": "#000000",
+            "button_padding": 20,
+            "mobile_button_padding": 16,
+            "border_width": 1,
+            "border_color": "#e0e0e0",
+            "border_hover_color": "#cccccc",
+            "border_radius": 8,
+            "shadow_horizontal": -7,
+            "shadow_vertical": 1,
+            "shadow_blur": 4,
+            "shadow_opacity": 0,
+            "font_size": 16,
+            "mobile_font_size": 14,
+            "font_weight": "500",
+            "icon_size": 24,
+            "mobile_icon_size": 20,
+            "icon_text_gap": 10
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_6163296_qFjkEJ"
       ],
       "settings": {}
     },
@@ -201,6 +245,7 @@
   "order": [
     "main",
     "1758906325660f2750",
+    "1758958347bd3951e6",
     "related-products"
   ]
 }
