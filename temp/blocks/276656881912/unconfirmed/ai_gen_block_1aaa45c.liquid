@@ -1,6 +1,433 @@
+{% doc %}
+  @prompt
+    import React from "react"
+    
+    const Preview: React.FC = () => {
+      return (
+        <div className="w-full bg-[#efefef] items-center justify-center h-full overflow-auto">
+          {/* add relative positioning to the main conent */}
+          <div className="relative w-dvw h-dvh z-10 text-2xl md:text-7xl font-bold uppercase flex justify-center items-center bg-[#ff5941] text-white whitespace-pre">
+            Scroll down ↓
+          </div>
+    
+          {/* Sticky footer. The only important thing here is the z-index, the sticky position and the bottom value */}
+          <div className="sticky z-0 bottom-0 left-0 w-full h-80 bg-white flex justify-center items-center">
+            <div className="relative overflow-hidden w-full h-full flex justify-end px-12 text-right items-start py-12 text-[#ff5941]">
+              <div className="flex flex-row space-x-12 sm:pace-x-16  md:space-x-24 text-sm sm:text-lg md:text-xl">
+                <ul>
+                  <li className="hover:underline cursor-pointer">Home</li>
+                  <li className="hover:underline cursor-pointer">Docs</li>
+                  <li className="hover:underline cursor-pointer">Comps</li>
+                </ul>
+                <ul>
+                  <li className="hover:underline cursor-pointer">Github</li>
+                  <li className="hover:underline cursor-pointer">Instagram</li>
+                  <li className="hover:underline cursor-pointer">X (Twitter)</li>
+                </ul>
+              </div>
+              <h2 className="absolute bottom-0 left-0  translate-y-1/3 sm:text-[192px]  text-[80px] text-[#ff5941] font-calendas">
+                fancy
+              </h2>
+            </div>
+          </div>
+        </div>
+      )
+    }
+    
+    export default Preview
+    build a big logo footer section like this for me should be customizable
+
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-big-logo-footer-{{ ai_gen_id }} {
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: {{ block.settings.footer_height }}px;
+    background-color: {{ block.settings.background_color }};
+    z-index: {{ block.settings.z_index }};
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .ai-big-logo-footer-content-{{ ai_gen_id }} {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+    padding: {{ block.settings.content_padding }}px;
+    text-align: right;
+    color: {{ block.settings.text_color }};
+  }
+
+  .ai-big-logo-footer-nav-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: row;
+    gap: {{ block.settings.nav_spacing }}px;
+    font-size: {{ block.settings.nav_font_size }}px;
+    z-index: 2;
+    position: relative;
+  }
+
+  .ai-big-logo-footer-nav-column-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .ai-big-logo-footer-nav-link-{{ ai_gen_id }} {
+    color: {{ block.settings.text_color }};
+    text-decoration: none;
+    transition: all 0.3s ease;}
+
+  .ai-big-logo-footer-nav-link-{{ ai_gen_id }}:hover {
+    text-decoration: underline;
+    color: {{ block.settings.link_hover_color }};
+  }
+
+  .ai-big-logo-footer-logo-{{ ai_gen_id }} {
+    position: absolute;
+    bottom: {{ block.settings.logo_offset }}px;
+    left: 0;
+    font-size: {{ block.settings.logo_font_size }}px;
+    color: {{ block.settings.logo_color }};
+    font-weight: {{ block.settings.logo_font_weight }};
+    line-height: 0.8;
+    transform: translateY(33%);
+    z-index: 1;
+    font-family: {{ block.settings.logo_font.family }}, {{ block.settings.logo_font.fallback_families }};
+    font-style: {{ block.settings.logo_font.style }};
+    font-weight: {{ block.settings.logo_font.weight }};
+  }
+
+  @media screen and (max-width: 768px) {
+    .ai-big-logo-footer-{{ ai_gen_id }} {
+      height: {{ block.settings.footer_height | times: 0.6 }}px;
+    }
+
+    .ai-big-logo-footer-nav-{{ ai_gen_id }} {
+      font-size: {{ block.settings.nav_font_size | times: 0.8 }}px;
+      gap: {{ block.settings.nav_spacing | times: 0.6 }}px;
+    }
+
+    .ai-big-logo-footer-logo-{{ ai_gen_id }} {
+      font-size: {{ block.settings.logo_font_size | times: 0.4 }}px;
+    }
+  }
+
+  @media screen and (max-width: 640px) {
+    .ai-big-logo-footer-nav-{{ ai_gen_id }} {
+      flex-direction: column;
+      gap: {{ block.settings.nav_spacing | times: 0.8 }}px;
+    }
+  }
+{% endstyle %}<div class="ai-big-logo-footer-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-big-logo-footer-content-{{ ai_gen_id }}">
+    <nav class="ai-big-logo-footer-nav-{{ ai_gen_id }}">
+      {% if block.settings.show_column_1 %}
+        <div class="ai-big-logo-footer-nav-column-{{ ai_gen_id }}">
+          {% if block.settings.link_1_text != blank %}
+            <a href="{{ block.settings.link_1_url }}" class="ai-big-logo-footer-nav-link-{{ ai_gen_id }}">
+              {{ block.settings.link_1_text }}
+            </a>
+          {% endif %}
+          {% if block.settings.link_2_text != blank %}
+            <a href="{{ block.settings.link_2_url }}" class="ai-big-logo-footer-nav-link-{{ ai_gen_id }}">
+              {{ block.settings.link_2_text }}
+            </a>
+          {% endif %}
+          {% if block.settings.link_3_text != blank %}
+            <a href="{{ block.settings.link_3_url }}" class="ai-big-logo-footer-nav-link-{{ ai_gen_id }}">
+              {{ block.settings.link_3_text }}
+            </a>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if block.settings.show_column_2 %}
+        <div class="ai-big-logo-footer-nav-column-{{ ai_gen_id }}">
+          {% if block.settings.link_4_text != blank %}
+            <a href="{{ block.settings.link_4_url }}" class="ai-big-logo-footer-nav-link-{{ ai_gen_id }}">
+              {{ block.settings.link_4_text }}
+            </a>
+          {% endif %}
+          {% if block.settings.link_5_text != blank %}
+            <a href="{{ block.settings.link_5_url }}" class="ai-big-logo-footer-nav-link-{{ ai_gen_id }}">
+              {{ block.settings.link_5_text }}
+            </a>
+          {% endif %}
+          {% if block.settings.link_6_text != blank %}
+            <a href="{{ block.settings.link_6_url }}" class="ai-big-logo-footer-nav-link-{{ ai_gen_id }}">
+              {{ block.settings.link_6_text }}
+            </a>
+          {% endif %}
+        </div>
+      {% endif %}
+    </nav>
+
+    {% if block.settings.logo_text != blank %}
+      <div class="ai-big-logo-footer-logo-{{ ai_gen_id }}">
+        {{ block.settings.logo_text }}
+      </div>
+    {% endif %}
+  </div>
+</div>
+
 {% schema %}
- {
-   "name": "AI_Block",
-   "tag": "shopify-ai-generated-block"
- }
+{
+  "name": "Big logo footer",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "footer_height",
+      "min": 200,
+      "max": 500,
+      "step": 20,
+      "unit": "px",
+      "label": "Footer height",
+      "default": 320
+    },
+    {
+      "type": "range",
+      "id": "content_padding",
+      "min": 20,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Content padding",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "z_index",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "label": "Z-index",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#ff5941"
+    },
+    {
+      "type": "color",
+      "id": "link_hover_color",
+      "label": "Link hover color",
+      "default": "#ff3020"
+    },
+    {
+      "type": "color",
+      "id": "logo_color",
+      "label": "Logo color",
+      "default": "#ff5941"
+    },
+    {
+      "type": "header",
+      "content": "Logo"
+    },
+    {
+      "type": "text",
+      "id": "logo_text",
+      "label": "Logo text",
+      "default": "fancy"
+    },
+    {
+      "type": "font_picker",
+      "id": "logo_font",
+      "label": "Logo font",
+      "default": "helvetica_n4"
+    },
+    {
+      "type": "range",
+      "id": "logo_font_size",
+      "min": 80,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Logo font size",
+      "default": 120
+    },
+    {
+      "type": "select",
+      "id": "logo_font_weight",
+      "label": "Logo font weight",
+      "options": [
+        {
+          "value": "300",
+          "label": "Light"
+        },
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi-bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        },
+        {
+          "value": "800",
+          "label": "Extra bold"
+        }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "range",
+      "id": "logo_offset",
+      "min": 0,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "label": "Logo bottom offset",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Navigation"
+    },
+    {
+      "type": "range",
+      "id": "nav_font_size",
+      "min": 12,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Navigation font size",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "nav_spacing",
+      "min": 20,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Navigation column spacing",
+      "default": 48
+    },
+    {
+      "type": "header",
+      "content": "Column 1"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_column_1",
+      "label": "Show column 1",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "link_1_text",
+      "label": "Link 1 text",
+      "default": "Home"
+    },
+    {
+      "type": "url",
+      "id": "link_1_url",
+      "label": "Link 1 URL"
+    },
+    {
+      "type": "text",
+      "id": "link_2_text",
+      "label": "Link 2 text",
+      "default": "Docs"
+    },
+    {
+      "type": "url",
+      "id": "link_2_url",
+      "label": "Link 2 URL"
+    },
+    {
+      "type": "text",
+      "id": "link_3_text",
+      "label": "Link 3 text",
+      "default": "Comps"
+    },
+    {
+      "type": "url",
+      "id": "link_3_url",
+      "label": "Link 3 URL"
+    },
+    {
+      "type": "header",
+      "content": "Column 2"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_column_2",
+      "label": "Show column 2",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "link_4_text",
+      "label": "Link 4 text",
+      "default": "Github"
+    },
+    {
+      "type": "url",
+      "id": "link_4_url",
+      "label": "Link 4 URL"
+    },
+    {
+      "type": "text",
+      "id": "link_5_text",
+      "label": "Link 5 text",
+      "default": "Instagram"
+    },
+    {
+      "type": "url",
+      "id": "link_5_url",
+      "label": "Link 5 URL"
+    },
+    {
+      "type": "text",
+      "id": "link_6_text",
+      "label": "Link 6 text",
+      "default": "X (Twitter)"
+    },
+    {
+      "type": "url",
+      "id": "link_6_url",
+      "label": "Link 6 URL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Big logo footer"
+    }
+  ]
+}
 {% endschema %}
