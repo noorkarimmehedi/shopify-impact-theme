@@ -18,7 +18,7 @@
             "image": "shopify://shop_images/le-quan-2vTKEbcd43M-unsplash.jpg",
             "mobile_image": "shopify://shop_images/le-quan-2vTKEbcd43M-unsplash_41772934-fa34-497c-90d1-159eb86cc38a.jpg",
             "content_max_width": 860,
-            "mobile_text_position": "place-self-center text-center",
+            "mobile_text_position": "place-self-start text-start",
             "desktop_text_position": "sm:place-self-center sm:text-center",
             "subheading": "আপনার আঙ্গন থেকে রান্নাঘর",
             "title": "আঙ্গনালয়",
