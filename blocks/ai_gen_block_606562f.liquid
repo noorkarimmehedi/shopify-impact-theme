@@ -1,144 +1,112 @@
 {% doc %}
   @prompt
-    generate a block of two items where one is Whatsapp us to place an order and another one is call us to place an order. both should have icon and also customizable . the section should fit both desktop and mobile, the both section should be customizable in design like border color and shadow etc etc
+    generate a block of two items where one is Whatsapp us to place an order and another one is call us to place an order. both should have icon and also customizable . the section should fit both desktop and mobile, the both section should be customizable in design like border color and shadow etc etc. the width should be adjustable
 
 {% enddoc %}
 {% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
 
 {% style %}
-  .ai-contact-order-{{ ai_gen_id }} {
+  .ai-contact-buttons-{{ ai_gen_id }} {
     display: flex;
-    gap: {{ block.settings.gap_between_items }}px;
-    padding: {{ block.settings.section_padding }}px;
-    background-color: {{ block.settings.background_color }};
-    border-radius: {{ block.settings.border_radius }}px;
-    justify-content: {{ block.settings.alignment }};
-    flex-wrap: wrap;
-    {% if block.settings.section_border_width > 0 %}
-      border: {{ block.settings.section_border_width }}px solid {{ block.settings.section_border_color }};
-    {% endif %}
-    {% if block.settings.section_shadow_opacity > 0 %}
-      box-shadow: {{ block.settings.section_shadow_horizontal }}px {{ block.settings.section_shadow_vertical }}px {{ block.settings.section_shadow_blur }}px rgba(0, 0, 0, {{ block.settings.section_shadow_opacity | divided_by: 100.0 }});
-    {% endif %}
+    gap: {{ block.settings.gap_between_buttons }}px;
+    width: {{ block.settings.container_width }}%;
+    max-width: 100%;
+    margin: 0 auto;
   }
 
-  .ai-contact-item-{{ ai_gen_id }} {
+  .ai-contact-button-{{ ai_gen_id }} {
+    flex: 1;
     display: flex;
     align-items: center;
-    gap: {{ block.settings.icon_text_gap }}px;
-    padding: {{ block.settings.item_padding }}px;
-    background-color: {{ block.settings.item_background_color }};
-    border-radius: {{ block.settings.item_border_radius }}px;
-    text-decoration: none;
-    color: {{ block.settings.text_color }};
-    transition: all 0.3s ease;
-    flex: 1;
-    min-width: 200px;
     justify-content: center;
-    {% if block.settings.item_border_width > 0 %}
-      border: {{ block.settings.item_border_width }}px solid {{ block.settings.item_border_color }};
-    {% endif %}
-    {% if block.settings.item_shadow_opacity > 0 %}
-      box-shadow: {{ block.settings.item_shadow_horizontal }}px {{ block.settings.item_shadow_vertical }}px {{ block.settings.item_shadow_blur }}px rgba(0, 0, 0, {{ block.settings.item_shadow_opacity | divided_by: 100.0 }});
-    {% endif %}
+    gap: {{ block.settings.icon_text_gap }}px;
+    padding: {{ block.settings.button_padding }}px;
+    background-color: {{ block.settings.button_background_color }};
+    color: {{ block.settings.button_text_color }};
+    border: {{ block.settings.border_width }}px solid {{ block.settings.border_color }};
+    border-radius: {{ block.settings.border_radius }}px;
+    text-decoration: none;
+    font-size: {{ block.settings.font_size }}px;
+    font-weight: {{ block.settings.font_weight }};
+    transition: all 0.3s ease;
+    box-shadow: {{ block.settings.shadow_horizontal }}px {{ block.settings.shadow_vertical }}px {{ block.settings.shadow_blur }}px rgba(0, 0, 0, {{ block.settings.shadow_opacity | divided_by: 100.0 }});
+    min-height: 60px;
   }
 
-  .ai-contact-item-{{ ai_gen_id }}:hover {
-    background-color: {{ block.settings.item_hover_background_color }};
-    color: {{ block.settings.text_hover_color }};
-    transform: translateY(-2px);
-    {% if block.settings.item_border_width > 0 %}
-      border-color: {{ block.settings.item_hover_border_color }};
-    {% endif %}
-    {% if block.settings.item_hover_shadow_opacity > 0 %}
-      box-shadow: {{ block.settings.item_hover_shadow_horizontal }}px {{ block.settings.item_hover_shadow_vertical }}px {{ block.settings.item_hover_shadow_blur }}px rgba(0, 0, 0, {{ block.settings.item_hover_shadow_opacity | divided_by: 100.0 }});
-    {% endif %}
+  .ai-contact-button-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.button_hover_background_color }};
+    color: {{ block.settings.button_hover_text_color }};
+    border-color: {{ block.settings.border_hover_color }};
+    transform: translateY(-2px);box-shadow: {{ block.settings.shadow_horizontal }}px {{ block.settings.shadow_vertical | plus: 4 }}px {{ block.settings.shadow_blur | plus: 8 }}px rgba(0, 0, 0, {{ block.settings.shadow_opacity | divided_by: 100.0 | times: 1.2 }});
   }
 
-  .ai-contact-icon-{{ ai_gen_id }} {
+  .ai-contact-button-icon-{{ ai_gen_id }} {
     width: {{ block.settings.icon_size }}px;
-    height: {{ block.settings.icon_size }}px;
-    flex-shrink: 0;
-    color: {{ block.settings.icon_color }};
-    transition: color 0.3s ease;
+    height: {{ block.settings.icon_size }}px;flex-shrink: 0;
   }
 
-  .ai-contact-item-{{ ai_gen_id }}:hover .ai-contact-icon-{{ ai_gen_id }} {
-    color: {{ block.settings.icon_hover_color }};
-  }
-
-  .ai-contact-text-{{ ai_gen_id }} {
-    font-size: {{ block.settings.text_size }}px;
-    font-weight: {{ block.settings.text_weight }};
+  .ai-contact-button-text-{{ ai_gen_id }} {
     text-align: center;
+    line-height: 1.4;
   }
 
   @media screen and (max-width: 749px) {
-    .ai-contact-order-{{ ai_gen_id }} {
+    .ai-contact-buttons-{{ ai_gen_id }} {
       flex-direction: {{ block.settings.mobile_layout }};
-      gap: {{ block.settings.mobile_gap }}px;
+      width: {{ block.settings.mobile_container_width }}%;
     }
 
-    .ai-contact-item-{{ ai_gen_id }} {
-      min-width: unset;
+    .ai-contact-button-{{ ai_gen_id }} {
       {% if block.settings.mobile_layout == 'column' %}
-        flex: none;
-        width: 100%;
+        justify-content: center;
       {% endif %}
+      font-size: {{ block.settings.mobile_font_size }}px;padding: {{ block.settings.mobile_button_padding }}px;
     }
 
-    .ai-contact-icon-{{ ai_gen_id }} {
+    .ai-contact-button-icon-{{ ai_gen_id }} {
       width: {{ block.settings.mobile_icon_size }}px;
       height: {{ block.settings.mobile_icon_size }}px;
     }
-
-    .ai-contact-text-{{ ai_gen_id }} {
-      font-size: {{ block.settings.mobile_text_size }}px;
-    }
   }
-{% endstyle %}
+{% endstyle %}<div class="ai-contact-buttons-{{ ai_gen_id }}" {{ block.shopify_attributes }}><a
+    href="https://wa.me/{{ block.settings.whatsapp_number | replace: '+', '' | replace: ' ', '' | replace: '-', '' }}"
+    class="ai-contact-button-{{ ai_gen_id }} ai-whatsapp-button-{{ ai_gen_id }}"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Contact us on WhatsApp"
+  >
+    <div class="ai-contact-button-icon-{{ ai_gen_id }}">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.465 3.516"/></svg>
+    </div>
+    <div class="ai-contact-button-text-{{ ai_gen_id }}">
+      {{ block.settings.whatsapp_text }}
+    </div>
+  </a>
 
-<div class="ai-contact-order-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
-  {% if block.settings.whatsapp_number != blank %}
-    <a 
-      href="https://wa.me/{{ block.settings.whatsapp_number | replace: '+', '' | replace: ' ', '' | replace: '-', '' }}"
-      class="ai-contact-item-{{ ai_gen_id }}"
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label="WhatsApp us to place an order"
-    >
-      <div class="ai-contact-icon-{{ ai_gen_id }}">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.465 3.516"/>
-        </svg>
-      </div>
-      <span class="ai-contact-text-{{ ai_gen_id }}">{{ block.settings.whatsapp_text }}</span>
-    </a>
-  {% endif %}
-
-  {% if block.settings.phone_number != blank %}
-    <a 
-      href="tel:{{ block.settings.phone_number }}"
-      class="ai-contact-item-{{ ai_gen_id }}"
-      aria-label="Call us to place an order"
-    >
-      <div class="ai-contact-icon-{{ ai_gen_id }}">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
-        </svg>
-      </div>
-      <span class="ai-contact-text-{{ ai_gen_id }}">{{ block.settings.phone_text }}</span>
-    </a>
-  {% endif %}
+  <a
+    href="tel:{{ block.settings.phone_number | replace: ' ', '' | replace: '-', '' | replace: '(', '' | replace: ')', '' }}"
+    class="ai-contact-button-{{ ai_gen_id }} ai-call-button-{{ ai_gen_id }}"
+    aria-label="Call us to place an order"
+  >
+    <div class="ai-contact-button-icon-{{ ai_gen_id }}">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+      </svg>
+    </div>
+    <div class="ai-contact-button-text-{{ ai_gen_id }}">
+      {{ block.settings.call_text }}
+    </div>
+  </a>
 </div>
 
 {% schema %}
 {
-  "name": "Contact to order",
+  "name": "Contact order buttons",
   "settings": [
     {
       "type": "header",
-      "content": "WhatsApp"
+      "content": "Contact information"
     },
     {
       "type": "text",
@@ -149,24 +117,20 @@
     },
     {
       "type": "text",
-      "id": "whatsapp_text",
-      "label": "WhatsApp button text",
-      "default": "WhatsApp us to place an order"
-    },
-    {
-      "type": "header",
-      "content": "Phone"
-    },
-    {
-      "type": "text",
       "id": "phone_number",
       "label": "Phone number",
       "default": "+1234567890"
     },
     {
       "type": "text",
-      "id": "phone_text",
-      "label": "Phone button text",
+      "id": "whatsapp_text",
+      "label": "WhatsApp button text",
+      "default": "WhatsApp us to place an order"
+    },
+    {
+      "type": "text",
+      "id": "call_text",
+      "label": "Call button text",
       "default": "Call us to place an order"
     },
     {
@@ -174,28 +138,24 @@
       "content": "Layout"
     },
     {
-      "type": "select",
-      "id": "alignment",
-      "label": "Desktop alignment",
-      "options": [
-        {
-          "value": "flex-start",
-          "label": "Left"
-        },
-        {
-          "value": "center",
-          "label": "Center"
-        },
-        {
-          "value": "flex-end",
-          "label": "Right"
-        },
-        {
-          "value": "space-between",
-          "label": "Space between"
-        }
-      ],
-      "default": "center"
+      "type": "range",
+      "id": "container_width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Container width",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "gap_between_buttons",
+      "min": 5,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Gap between buttons",
+      "default": 15
     },
     {
       "type": "select",
@@ -215,135 +175,69 @@
     },
     {
       "type": "range",
-      "id": "gap_between_items",
-      "min": 5,
-      "max": 50,
+      "id": "mobile_container_width",
+      "min": 80,
+      "max": 100,
       "step": 5,
-      "unit": "px",
-      "label": "Gap between items",
-      "default": 20
-    },
-    {
-      "type": "range",
-      "id": "mobile_gap",
-      "min": 5,
-      "max": 30,
-      "step": 5,
-      "unit": "px",
-      "label": "Mobile gap",
-      "default": 15
+      "unit": "%",
+      "label": "Mobile container width",
+      "default": 100
     },
     {
       "type": "header",
-      "content": "Spacing"
+      "content": "Button style"
+    },
+    {
+      "type": "color",
+      "id": "button_background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_background_color",
+      "label": "Hover background color",
+      "default": "#f5f5f5"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Text color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_text_color",
+      "label": "Hover text color",
+      "default": "#000000"
     },
     {
       "type": "range",
-      "id": "section_padding",
-      "min": 0,
-      "max": 50,
-      "step": 5,
-      "unit": "px",
-      "label": "Section padding",
-      "default": 20
-    },
-    {
-      "type": "range",
-      "id": "item_padding",
+      "id": "button_padding",
       "min": 10,
       "max": 40,
-      "step": 5,
+      "step": 2,
       "unit": "px",
       "label": "Button padding",
       "default": 20
     },
     {
       "type": "range",
-      "id": "icon_text_gap",
-      "min": 5,
-      "max": 25,
-      "step": 5,
+      "id": "mobile_button_padding",
+      "min": 10,
+      "max": 40,
+      "step": 2,
       "unit": "px",
-      "label": "Icon to text gap",
-      "default": 10
+      "label": "Mobile button padding",
+      "default": 16
     },
     {
       "type": "header",
-      "content": "Section colors"
-    },
-    {
-      "type": "color",
-      "id": "background_color",
-      "label": "Background",
-      "default": "#ffffff"
-    },
-    {
-      "type": "header",
-      "content": "Button colors"
-    },
-    {
-      "type": "color",
-      "id": "item_background_color",
-      "label": "Background",
-      "default": "#f8f9fa"
-    },
-    {
-      "type": "color",
-      "id": "item_hover_background_color",
-      "label": "Hover background",
-      "default": "#e9ecef"
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Text",
-      "default": "#212529"
-    },
-    {
-      "type": "color",
-      "id": "text_hover_color",
-      "label": "Text hover",
-      "default": "#495057"
-    },
-    {
-      "type": "color",
-      "id": "icon_color",
-      "label": "Icon",
-      "default": "#28a745"
-    },
-    {
-      "type": "color",
-      "id": "icon_hover_color",
-      "label": "Icon hover",
-      "default": "#218838"
-    },
-    {
-      "type": "header",
-      "content": "Section border"
+      "content": "Border"
     },
     {
       "type": "range",
-      "id": "section_border_width",
-      "min": 0,
-      "max": 5,
-      "step": 1,
-      "unit": "px",
-      "label": "Border width",
-      "default": 0
-    },
-    {
-      "type": "color",
-      "id": "section_border_color",
-      "label": "Border color",
-      "default": "#dee2e6"
-    },
-    {
-      "type": "header",
-      "content": "Button border"
-    },
-    {
-      "type": "range",
-      "id": "item_border_width",
+      "id": "border_width",
       "min": 0,
       "max": 5,
       "step": 1,
@@ -353,147 +247,69 @@
     },
     {
       "type": "color",
-      "id": "item_border_color",
+      "id": "border_color",
       "label": "Border color",
-      "default": "#dee2e6"
+      "default": "#e0e0e0"
     },
     {
       "type": "color",
-      "id": "item_hover_border_color",
+      "id": "border_hover_color",
       "label": "Hover border color",
-      "default": "#adb5bd"
+      "default": "#cccccc"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 8
     },
     {
       "type": "header",
-      "content": "Section shadow"
+      "content": "Shadow"
     },
     {
       "type": "range",
-      "id": "section_shadow_opacity",
-      "min": 0,
-      "max": 100,
-      "step": 5,
-      "unit": "%",
-      "label": "Shadow opacity",
-      "default": 0
-    },
-    {
-      "type": "range",
-      "id": "section_shadow_horizontal",
-      "min": -20,
-      "max": 20,
-      "step": 2,
+      "id": "shadow_horizontal",
+      "min": -10,
+      "max": 10,
+      "step": 1,
       "unit": "px",
       "label": "Horizontal offset",
       "default": 0
     },
     {
       "type": "range",
-      "id": "section_shadow_vertical",
-      "min": -20,
+      "id": "shadow_vertical",
+      "min": 0,
       "max": 20,
-      "step": 2,
+      "step": 1,
       "unit": "px",
       "label": "Vertical offset",
       "default": 4
     },
     {
       "type": "range",
-      "id": "section_shadow_blur",
+      "id": "shadow_blur",
       "min": 0,
-      "max": 40,
+      "max": 30,
       "step": 2,
       "unit": "px",
       "label": "Blur radius",
       "default": 8
     },
     {
-      "type": "header",
-      "content": "Button shadow"
-    },
-    {
       "type": "range",
-      "id": "item_shadow_opacity",
+      "id": "shadow_opacity",
       "min": 0,
-      "max": 100,
+      "max": 50,
       "step": 5,
       "unit": "%",
       "label": "Shadow opacity",
       "default": 10
-    },
-    {
-      "type": "range",
-      "id": "item_shadow_horizontal",
-      "min": -20,
-      "max": 20,
-      "step": 2,
-      "unit": "px",
-      "label": "Horizontal offset",
-      "default": 0
-    },
-    {
-      "type": "range",
-      "id": "item_shadow_vertical",
-      "min": -20,
-      "max": 20,
-      "step": 2,
-      "unit": "px",
-      "label": "Vertical offset",
-      "default": 2
-    },
-    {
-      "type": "range",
-      "id": "item_shadow_blur",
-      "min": 0,
-      "max": 40,
-      "step": 2,
-      "unit": "px",
-      "label": "Blur radius",
-      "default": 4
-    },
-    {
-      "type": "header",
-      "content": "Button hover shadow"
-    },
-    {
-      "type": "range",
-      "id": "item_hover_shadow_opacity",
-      "min": 0,
-      "max": 100,
-      "step": 5,
-      "unit": "%",
-      "label": "Hover shadow opacity",
-      "default": 20
-    },
-    {
-      "type": "range",
-      "id": "item_hover_shadow_horizontal",
-      "min": -20,
-      "max": 20,
-      "step": 2,
-      "unit": "px",
-      "label": "Hover horizontal offset",
-      "default": 0
-    },
-    {
-      "type": "range",
-      "id": "item_hover_shadow_vertical",
-      "min": -20,
-      "max": 20,
-      "step": 2,
-      "unit": "px",
-      "label": "Hover vertical offset",
-      "default": 4
-    },
-    {
-      "type": "range",
-      "id": "item_hover_shadow_blur",
-      "min": 0,
-      "max": 40,
-      "step": 2,
-      "unit": "px",
-      "label": "Hover blur radius",
-      "default": 8
     },
     {
       "type": "header",
@@ -501,28 +317,28 @@
     },
     {
       "type": "range",
-      "id": "text_size",
+      "id": "font_size",
       "min": 12,
       "max": 24,
       "step": 1,
       "unit": "px",
-      "label": "Text size",
+      "label": "Font size",
       "default": 16
     },
     {
       "type": "range",
-      "id": "mobile_text_size",
+      "id": "mobile_font_size",
       "min": 12,
       "max": 20,
       "step": 1,
       "unit": "px",
-      "label": "Mobile text size",
+      "label": "Mobile font size",
       "default": 14
     },
     {
       "type": "select",
-      "id": "text_weight",
-      "label": "Text weight",
+      "id": "font_weight",
+      "label": "Font weight",
       "options": [
         {
           "value": "400",
@@ -568,33 +384,19 @@
       "default": 20
     },
     {
-      "type": "header",
-      "content": "Border radius"
-    },
-    {
       "type": "range",
-      "id": "border_radius",
-      "min": 0,
-      "max": 30,
-      "step": 2,
+      "id": "icon_text_gap",
+      "min": 5,
+      "max": 20,
+      "step": 1,
       "unit": "px",
-      "label": "Section border radius",
-      "default": 8
-    },
-    {
-      "type": "range",
-      "id": "item_border_radius",
-      "min": 0,
-      "max": 30,
-      "step": 2,
-      "unit": "px",
-      "label": "Button border radius",
-      "default": 6
+      "label": "Gap between icon and text",
+      "default": 10
     }
   ],
   "presets": [
     {
-      "name": "Contact to order"
+      "name": "Contact order buttons"
     }
   ]
 }
