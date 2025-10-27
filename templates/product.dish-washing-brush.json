@@ -59,7 +59,7 @@
             "hide_sold_out_variants": false,
             "stack_blocks": true,
             "selector_mode": "block",
-            "color_mode": "color",
+            "color_mode": "variant",
             "size_chart_page": ""
           }
         },
@@ -120,7 +120,7 @@
             "phone_number": "+8801819502705",
             "whatsapp_text": "WhatsApp করে অর্ডার করুন।",
             "call_text": "Call us to place an order",
-            "container_width": 100,
+            "container_width": 85,
             "gap_between_buttons": 15,
             "mobile_layout": "column",
             "mobile_container_width": 100,
@@ -137,7 +137,7 @@
             "shadow_horizontal": 0,
             "shadow_vertical": 4,
             "shadow_blur": 8,
-            "shadow_opacity": 10,
+            "shadow_opacity": 0,
             "font_size": 16,
             "mobile_font_size": 14,
             "font_weight": "500",
