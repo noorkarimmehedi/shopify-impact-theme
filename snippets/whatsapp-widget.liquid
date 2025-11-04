@@ -7,7 +7,7 @@
   /* WhatsApp Chat Widget Styles */
   .whatsapp-chat-widget {
     position: fixed;
-    bottom: 30px;
+    bottom: 15px;
     right: 20px;
     z-index: 9999;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
@@ -344,9 +344,9 @@
   // Adjust position on window resize for mobile
   function adjustPosition() {
     if (window.innerWidth <= 768) {
-      widget.style.bottom = '110px'; // Offset for mobile bottom nav
+      widget.style.bottom = '85px'; // Offset for mobile bottom nav
     } else {
-      widget.style.bottom = '30px';
+      widget.style.bottom = '15px';
     }
   }
 
