@@ -7,7 +7,7 @@
   /* WhatsApp Chat Widget Styles */
   .whatsapp-chat-widget {
     position: fixed;
-    bottom: 20px;
+    bottom: 30px;
     right: 20px;
     z-index: 9999;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
@@ -290,8 +290,8 @@
 <script>
   // Configuration
   const whatsappConfig = {
-    phoneNumber: '+8801819502705', // Change to your WhatsApp number with country code
-    message: 'Hello there! Is someone available to chat?', // Pre-filled message (optional)
+    phoneNumber: '+1234567890', // Change to your WhatsApp number with country code
+    message: 'Hi! I need help with...', // Pre-filled message (optional)
   };
 
   // Elements
@@ -344,9 +344,9 @@
   // Adjust position on window resize for mobile
   function adjustPosition() {
     if (window.innerWidth <= 768) {
-      widget.style.bottom = '90px'; // Offset for mobile bottom nav
+      widget.style.bottom = '110px'; // Offset for mobile bottom nav
     } else {
-      widget.style.bottom = '20px';
+      widget.style.bottom = '30px';
     }
   }
 
