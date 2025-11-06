@@ -25,233 +25,387 @@
     8
     Shadow opacity
     
-    0. , i didn't want like this. the tabs should be in the header of the section
+    0. , i didn't want like this. the tabs should be in the header of the section, the tabs should be in the header of the section, in Content section spacing between line like it's not showing as my pasted text. thus header should be like this: /* From Uiverse.io by cssbuttons-io */ 
+    button {
+     position: relative;
+     border: none;
+     background: transparent;
+     padding: 0;
+     cursor: pointer;
+     outline-offset: 4px;
+     transition: filter 250ms;
+     user-select: none;
+     touch-action: manipulation;
+    }
+    
+    .shadow {
+     position: absolute;
+     top: 0;
+     left: 0;
+     width: 100%;
+     height: 100%;
+     border-radius: 12px;
+     background: hsl(0deg 0% 0% / 0.25);
+     will-change: transform;
+     transform: translateY(2px);
+     transition: transform
+        600ms
+        cubic-bezier(.3, .7, .4, 1);
+    }
+    
+    .edge {
+     position: absolute;
+     top: 0;
+     left: 0;
+     width: 100%;
+     height: 100%;
+     border-radius: 12px;
+     background: linear-gradient(
+        to left,
+        hsl(340deg 100% 16%) 0%,
+        hsl(340deg 100% 32%) 8%,
+        hsl(340deg 100% 32%) 92%,
+        hsl(340deg 100% 16%) 100%
+      );
+    }
+    
+    .front {
+     display: block;
+     position: relative;
+     padding: 12px 27px;
+     border-radius: 12px;
+     font-size: 1.1rem;
+     color: white;
+     background: hsl(345deg 100% 47%);
+     will-change: transform;
+     transform: translateY(-4px);
+     transition: transform
+        600ms
+        cubic-bezier(.3, .7, .4, 1);
+    }
+    
+    button:hover {
+     filter: brightness(110%);
+    }
+    
+    button:hover .front {
+     transform: translateY(-6px);
+     transition: transform
+        250ms
+        cubic-bezier(.3, .7, .4, 1.5);
+    }
+    
+    button:active .front {
+     transform: translateY(-2px);
+     transition: transform 34ms;
+    }
+    
+    button:hover .shadow {
+     transform: translateY(4px);
+     transition: transform
+        ,  the tabs should be in the header of the section,  the tabs should be in the header of the section . three tabs in same row in the header, the tab text should be in the center 
 {% enddoc %}
 {% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
 
 {% style %}
-  .ai-accordion-{{ ai_gen_id }} {
+  .ai-tab-accordion-{{ ai_gen_id }} {
     width: 100%;
     max-width: 100%;
   }
 
-  .ai-accordion-tabs-{{ ai_gen_id }} {
+  .ai-tab-accordion__header-wrapper-{{ ai_gen_id }} {
+    background-color: {{ block.settings.header_background }};
+    padding: {{ block.settings.header_padding }}px;
+    border-radius: {{ block.settings.header_border_radius }}px {{ block.settings.header_border_radius }}px 0 0;
+    border: {{ block.settings.header_border_width }}px solid {{ block.settings.header_border_color }};
+    border-bottom: none;
+  }
+
+  .ai-tab-accordion__header-{{ ai_gen_id }} {
     display: flex;
-    gap: 0;
-    border-bottom: 2px solid {{ block.settings.border_color }};
-    margin-bottom: 24px;
+    gap: {{ block.settings.tab_spacing }}px;
+    flex-wrap: nowrap;
+    justify-content: space-between;
   }
 
-  .ai-accordion-tab-{{ ai_gen_id }} {
-    flex: 1;
-    padding: 16px 20px;
-    background: transparent;
-    border: none;
-    border-bottom: 3px solid transparent;
-    cursor: pointer;
-    font-size: {{ block.settings.tab_font_size }}px;
-    font-weight: 600;
-    color: {{ block.settings.tab_text_color }};
-    transition: all 0.3s ease;
+  .ai-tab-accordion__tab-button-{{ ai_gen_id }} {
     position: relative;
+    border: none;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+    outline-offset: 4px;
+    transition: filter 250ms;
+    user-select: none;
+    touch-action: manipulation;
+    flex: 1;
+  }
+
+  .ai-tab-accordion__tab-button-{{ ai_gen_id }}:hover {
+    filter: brightness(110%);
+  }
+
+  .ai-tab-accordion__tab-shadow-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: {{ block.settings.tab_border_radius }}px;
+    background: {{ block.settings.tab_shadow_color }};
+    will-change: transform;
+    transform: translateY(2px);
+    transition: transform 600ms cubic-bezier(.3, .7, .4, 1);
+  }
+
+  .ai-tab-accordion__tab-edge-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: {{ block.settings.tab_border_radius }}px;
+    background: {{ block.settings.tab_edge_color }};
+  }
+
+  .ai-tab-accordion__tab-front-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
+    position: relative;
+    padding: {{ block.settings.tab_padding_vertical }}px {{ block.settings.tab_padding_horizontal }}px;
+    border-radius: {{ block.settings.tab_border_radius }}px;
+    font-size: {{ block.settings.tab_font_size }}px;
+    color: {{ block.settings.tab_text_color }};
+    background: {{ block.settings.tab_background }};
+    will-change: transform;
+    transform: translateY(-4px);
+    transition: transform 600ms cubic-bezier(.3, .7, .4, 1);
+    font-weight: {{ block.settings.tab_font_weight }};
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
-  .ai-accordion-tab-{{ ai_gen_id }}:hover {
-    color: {{ block.settings.tab_hover_color }};
-    background-color: {{ block.settings.tab_hover_bg }};
+  .ai-tab-accordion__tab-button-{{ ai_gen_id }}:hover .ai-tab-accordion__tab-front-{{ ai_gen_id }} {
+    transform: translateY(-6px);
+    transition: transform 250ms cubic-bezier(.3, .7, .4, 1.5);
   }
 
-  .ai-accordion-tab-{{ ai_gen_id }}.active {
-    color: {{ block.settings.tab_active_color }};
-    border-bottom-color: {{ block.settings.tab_active_border }};
+  .ai-tab-accordion__tab-button-{{ ai_gen_id }}:active .ai-tab-accordion__tab-front-{{ ai_gen_id }} {
+    transform: translateY(-2px);
+    transition: transform 34ms;
   }
 
-  .ai-accordion-content-{{ ai_gen_id }} {
+  .ai-tab-accordion__tab-button-{{ ai_gen_id }}:hover .ai-tab-accordion__tab-shadow-{{ ai_gen_id }} {
+    transform: translateY(4px);
+    transition: transform 250ms cubic-bezier(.3, .7, .4, 1.5);
+  }
+
+  .ai-tab-accordion__tab-button-{{ ai_gen_id }}:active .ai-tab-accordion__tab-shadow-{{ ai_gen_id }} {
+    transform: translateY(1px);
+    transition: transform 34ms;
+  }
+
+  .ai-tab-accordion__tab-button-{{ ai_gen_id }}.active .ai-tab-accordion__tab-front-{{ ai_gen_id }} {
+    background: {{ block.settings.tab_active_background }};
+    color: {{ block.settings.tab_active_text_color }};
+  }
+
+  .ai-tab-accordion__content-{{ ai_gen_id }} {
     display: none;
     padding: {{ block.settings.content_padding }}px;
-    background-color: {{ block.settings.content_bg }};
-    border-radius: {{ block.settings.border_radius }}px;
+    background-color: {{ block.settings.content_background }};
+    border: {{ block.settings.border_width }}px solid {{ block.settings.border_color }};
+    border-radius: 0 0 {{ block.settings.border_radius }}px {{ block.settings.border_radius }}px;
     color: {{ block.settings.content_text_color }};
-    line-height: 1.6;
+    line-height: {{ block.settings.line_height }};
+    box-shadow: {{ block.settings.shadow_horizontal }}px {{ block.settings.shadow_vertical }}px {{ block.settings.shadow_blur }}px rgba(0, 0, 0, {{ block.settings.shadow_opacity }});
+    transition: border-color 0.3s ease;
   }
 
-  .ai-accordion-content-{{ ai_gen_id }}.active {
+  .ai-tab-accordion__content-{{ ai_gen_id }}:hover {
+    border-color: {{ block.settings.hover_border_color }};
+  }
+
+  .ai-tab-accordion__content-{{ ai_gen_id }}.active {
     display: block;
-    animation: ai-accordion-fade-{{ ai_gen_id }} 0.3s ease-in;
   }
 
-  @keyframes ai-accordion-fade-{{ ai_gen_id }} {
-    from {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  .ai-tab-accordion__content-{{ ai_gen_id }} p {
+    margin: 0 0 {{ block.settings.paragraph_spacing }}px 0;
   }
 
-  .ai-accordion-content-{{ ai_gen_id }} h3 {
+  .ai-tab-accordion__content-{{ ai_gen_id }} p:last-child {
+    margin-bottom: 0;
+  }
+
+  .ai-tab-accordion__content-{{ ai_gen_id }} h1,
+  .ai-tab-accordion__content-{{ ai_gen_id }} h2,
+  .ai-tab-accordion__content-{{ ai_gen_id }} h3,
+  .ai-tab-accordion__content-{{ ai_gen_id }} h4,
+  .ai-tab-accordion__content-{{ ai_gen_id }} h5,
+  .ai-tab-accordion__content-{{ ai_gen_id }} h6 {
+    margin: {{ block.settings.heading_spacing }}px 0 {{ block.settings.paragraph_spacing }}px 0;
+  }
+
+  .ai-tab-accordion__content-{{ ai_gen_id }} h1:first-child,
+  .ai-tab-accordion__content-{{ ai_gen_id }} h2:first-child,
+  .ai-tab-accordion__content-{{ ai_gen_id }} h3:first-child,
+  .ai-tab-accordion__content-{{ ai_gen_id }} h4:first-child,
+  .ai-tab-accordion__content-{{ ai_gen_id }} h5:first-child,
+  .ai-tab-accordion__content-{{ ai_gen_id }} h6:first-child {
     margin-top: 0;
-    margin-bottom: 12px;
-    font-size: {{ block.settings.content_heading_size }}px;
-    color: {{ block.settings.content_heading_color }};
   }
 
-  .ai-accordion-content-{{ ai_gen_id }} p {
-    margin: 0 0 12px;
-  }
-
-  .ai-accordion-content-{{ ai_gen_id }} ul,
-  .ai-accordion-content-{{ ai_gen_id }} ol {
-    margin: 0 0 12px;
+  .ai-tab-accordion__content-{{ ai_gen_id }} ul,
+  .ai-tab-accordion__content-{{ ai_gen_id }} ol {
+    margin: 0 0 {{ block.settings.paragraph_spacing }}px 0;
     padding-left: 20px;
   }
 
+  .ai-tab-accordion__content-{{ ai_gen_id }} li {
+    margin-bottom: {{ block.settings.list_item_spacing }}px;
+  }
+
   @media screen and (max-width: 749px) {
-    .ai-accordion-tabs-{{ ai_gen_id }} {
-      flex-direction: column;
-      gap: 0;
-      border-bottom: none;
+    .ai-tab-accordion__tab-front-{{ ai_gen_id }} {
+      font-size: {{ block.settings.tab_font_size | times: 0.85 }}px;
+      padding: {{ block.settings.tab_padding_vertical | times: 0.8 }}px {{ block.settings.tab_padding_horizontal | times: 0.7 }}px;
     }
 
-    .ai-accordion-tab-{{ ai_gen_id }} {
-      border-bottom: 1px solid {{ block.settings.border_color }};
-      text-align: left;
-    }
-
-    .ai-accordion-tab-{{ ai_gen_id }}.active {
-      border-left: 3px solid {{ block.settings.tab_active_border }};
-      border-bottom-color: {{ block.settings.border_color }};
-    }
-
-    .ai-accordion-content-{{ ai_gen_id }} {
-      padding: {{ block.settings.content_padding | times: 0.75 }}px;
+    .ai-tab-accordion__header-{{ ai_gen_id }} {
+      gap: {{ block.settings.tab_spacing | times: 0.7 }}px;
     }
   }
 {% endstyle %}
 
-<accordion-tabs-{{ ai_gen_id }} class="ai-accordion-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
-  <div class="ai-accordion-tabs-{{ ai_gen_id }}">
-    {% if block.settings.tab_1_title != blank %}
+<tab-accordion-{{ ai_gen_id }} class="ai-tab-accordion-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-tab-accordion__header-wrapper-{{ ai_gen_id }}">
+    <div class="ai-tab-accordion__header-{{ ai_gen_id }}">
       <button
-        class="ai-accordion-tab-{{ ai_gen_id }} active"
-        data-tab="1"
+        class="ai-tab-accordion__tab-button-{{ ai_gen_id }} active"
+        data-tab="tab1"
         aria-expanded="true"
-        aria-controls="ai-accordion-content-1-{{ ai_gen_id }}"
+        aria-controls="content-tab1-{{ ai_gen_id }}"
       >
-        {{ block.settings.tab_1_title }}
+        <span class="ai-tab-accordion__tab-shadow-{{ ai_gen_id }}"></span>
+        <span class="ai-tab-accordion__tab-edge-{{ ai_gen_id }}"></span>
+        <span class="ai-tab-accordion__tab-front-{{ ai_gen_id }}">
+          {{ block.settings.tab_1_title }}
+        </span>
       </button>
-    {% endif %}
 
-    {% if block.settings.tab_2_title != blank %}
       <button
-        class="ai-accordion-tab-{{ ai_gen_id }}"
-        data-tab="2"
+        class="ai-tab-accordion__tab-button-{{ ai_gen_id }}"
+        data-tab="tab2"
         aria-expanded="false"
-        aria-controls="ai-accordion-content-2-{{ ai_gen_id }}"
+        aria-controls="content-tab2-{{ ai_gen_id }}"
       >
-        {{ block.settings.tab_2_title }}
+        <span class="ai-tab-accordion__tab-shadow-{{ ai_gen_id }}"></span>
+        <span class="ai-tab-accordion__tab-edge-{{ ai_gen_id }}"></span>
+        <span class="ai-tab-accordion__tab-front-{{ ai_gen_id }}">
+          {{ block.settings.tab_2_title }}
+        </span>
       </button>
-    {% endif %}
 
-    {% if block.settings.tab_3_title != blank %}
       <button
-        class="ai-accordion-tab-{{ ai_gen_id }}"
-        data-tab="3"
+        class="ai-tab-accordion__tab-button-{{ ai_gen_id }}"
+        data-tab="tab3"
         aria-expanded="false"
-        aria-controls="ai-accordion-content-3-{{ ai_gen_id }}"
+        aria-controls="content-tab3-{{ ai_gen_id }}"
       >
-        {{ block.settings.tab_3_title }}
+        <span class="ai-tab-accordion__tab-shadow-{{ ai_gen_id }}"></span>
+        <span class="ai-tab-accordion__tab-edge-{{ ai_gen_id }}"></span>
+        <span class="ai-tab-accordion__tab-front-{{ ai_gen_id }}">
+          {{ block.settings.tab_3_title }}
+        </span>
       </button>
-    {% endif %}
+    </div>
   </div>
 
-  {% if block.settings.tab_1_title != blank %}
-    <div
-      id="ai-accordion-content-1-{{ ai_gen_id }}"
-      class="ai-accordion-content-{{ ai_gen_id }} active"
-      role="region"
-      aria-labelledby="tab-1"
-    >
-      {{ block.settings.tab_1_content }}
-    </div>
-  {% endif %}
+  <div
+    id="content-tab1-{{ ai_gen_id }}"
+    class="ai-tab-accordion__content-{{ ai_gen_id }} active"
+    data-content="tab1"
+    role="region"
+    aria-labelledby="tab1"
+  >
+    {{ block.settings.tab_1_content }}
+  </div>
 
-  {% if block.settings.tab_2_title != blank %}
-    <div
-      id="ai-accordion-content-2-{{ ai_gen_id }}"
-      class="ai-accordion-content-{{ ai_gen_id }}"
-      role="region"
-      aria-labelledby="tab-2"
-    >
-      {{ block.settings.tab_2_content }}
-    </div>
-  {% endif %}
+  <div
+    id="content-tab2-{{ ai_gen_id }}"
+    class="ai-tab-accordion__content-{{ ai_gen_id }}"
+    data-content="tab2"
+    role="region"
+    aria-labelledby="tab2"
+  >
+    {{ block.settings.tab_2_content }}
+  </div>
 
-  {% if block.settings.tab_3_title != blank %}
-    <div
-      id="ai-accordion-content-3-{{ ai_gen_id }}"
-      class="ai-accordion-content-{{ ai_gen_id }}"
-      role="region"
-      aria-labelledby="tab-3"
-    >
-      {{ block.settings.tab_3_content }}
-    </div>
-  {% endif %}
-</accordion-tabs-{{ ai_gen_id }}>
+  <div
+    id="content-tab3-{{ ai_gen_id }}"
+    class="ai-tab-accordion__content-{{ ai_gen_id }}"
+    data-content="tab3"
+    role="region"
+    aria-labelledby="tab3"
+  >
+    {{ block.settings.tab_3_content }}
+  </div>
+</tab-accordion-{{ ai_gen_id }}>
 
 <script>
   (function() {
-    class AccordionTabs{{ ai_gen_id }} extends HTMLElement {
+    class TabAccordion{{ ai_gen_id }} extends HTMLElement {
       constructor() {
         super();
       }
 
       connectedCallback() {
-        this.tabs = this.querySelectorAll('.ai-accordion-tab-{{ ai_gen_id }}');
-        this.contents = this.querySelectorAll('.ai-accordion-content-{{ ai_gen_id }}');
+        this.tabButtons = this.querySelectorAll('.ai-tab-accordion__tab-button-{{ ai_gen_id }}');
+        this.tabContents = this.querySelectorAll('.ai-tab-accordion__content-{{ ai_gen_id }}');
         this.setupEventListeners();
       }
 
       setupEventListeners() {
-        this.tabs.forEach((tab) => {
-          tab.addEventListener('click', () => {
-            const tabNumber = tab.getAttribute('data-tab');
-            this.switchTab(tabNumber);
+        this.tabButtons.forEach((button) => {
+          button.addEventListener('click', () => {
+            const tabId = button.getAttribute('data-tab');
+            this.switchTab(tabId);
           });
         });
       }
 
-      switchTab(tabNumber) {
-        this.tabs.forEach((tab) => {
-          tab.classList.remove('active');
-          tab.setAttribute('aria-expanded', 'false');
+      switchTab(tabId) {
+        this.tabButtons.forEach((btn) => {
+          btn.classList.remove('active');
+          btn.setAttribute('aria-expanded', 'false');
         });
 
-        this.contents.forEach((content) => {
+        this.tabContents.forEach((content) => {
           content.classList.remove('active');
         });
 
-        const activeTab = this.querySelector(`[data-tab="${tabNumber}"]`);
-        const activeContent = this.querySelector(`#ai-accordion-content-${tabNumber}-{{ ai_gen_id }}`);
+        const activeButton = this.querySelector(`[data-tab="${tabId}"]`);
+        const activeContent = this.querySelector(`[data-content="${tabId}"]`);
 
-        if (activeTab && activeContent) {
-          activeTab.classList.add('active');
-          activeTab.setAttribute('aria-expanded', 'true');
+        if (activeButton && activeContent) {
+          activeButton.classList.add('active');
+          activeButton.setAttribute('aria-expanded', 'true');
           activeContent.classList.add('active');
         }
       }
     }
 
-    customElements.define('accordion-tabs-{{ ai_gen_id }}', AccordionTabs{{ ai_gen_id }});
+    customElements.define('tab-accordion-{{ ai_gen_id }}', TabAccordion{{ ai_gen_id }});
   })();
 </script>
 
 {% schema %}
 {
-  "name": "Product info tabs",
+  "name": "Tab accordion",
   "tag": null,
   "settings": [
     {
@@ -268,7 +422,7 @@
       "type": "richtext",
       "id": "tab_1_content",
       "label": "Content",
-      "default": "<p>Add your product description here. Include key features, materials, dimensions, and care instructions.</p>"
+      "default": "<p>Add your product description here. Include key features, benefits, and specifications.</p>"
     },
     {
       "type": "header",
@@ -278,13 +432,13 @@
       "type": "text",
       "id": "tab_2_title",
       "label": "Title",
-      "default": "Shipping & Returns"
+      "default": "Shipping"
     },
     {
       "type": "richtext",
       "id": "tab_2_content",
       "label": "Content",
-      "default": "<p>Add your shipping and returns policy here. Include delivery times, shipping costs, and return conditions.</p>"
+      "default": "<p>Add your shipping information here. Include delivery times, costs, and policies.</p>"
     },
     {
       "type": "header",
@@ -294,17 +448,73 @@
       "type": "text",
       "id": "tab_3_title",
       "label": "Title",
-      "default": "Care Instructions"
+      "default": "Returns"
     },
     {
       "type": "richtext",
       "id": "tab_3_content",
       "label": "Content",
-      "default": "<p>Add care instructions here. Include washing, cleaning, and maintenance guidelines.</p>"
+      "default": "<p>Add your return policy here. Include timeframes, conditions, and process details.</p>"
     },
     {
       "type": "header",
-      "content": "Tab style"
+      "content": "Header section"
+    },
+    {
+      "type": "color",
+      "id": "header_background",
+      "label": "Background",
+      "default": "#f5f5f5"
+    },
+    {
+      "type": "range",
+      "id": "header_padding",
+      "min": 10,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "header_border_radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "header_border_width",
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "unit": "px",
+      "label": "Border width",
+      "default": 1
+    },
+    {
+      "type": "color",
+      "id": "header_border_color",
+      "label": "Border color",
+      "default": "#E0E0E0"
+    },
+    {
+      "type": "header",
+      "content": "Tab button style"
+    },
+    {
+      "type": "range",
+      "id": "tab_spacing",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Space between tabs",
+      "default": 12
     },
     {
       "type": "range",
@@ -317,48 +527,112 @@
       "default": 16
     },
     {
+      "type": "select",
+      "id": "tab_font_weight",
+      "label": "Font weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi-bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "range",
+      "id": "tab_padding_vertical",
+      "min": 8,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Vertical padding",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "tab_padding_horizontal",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Horizontal padding",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "tab_border_radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 12
+    },
+    {
+      "type": "color",
+      "id": "tab_background",
+      "label": "Background",
+      "default": "#FF1744"
+    },
+    {
       "type": "color",
       "id": "tab_text_color",
       "label": "Text color",
-      "default": "#677279"
+      "default": "#ffffff"
     },
     {
       "type": "color",
-      "id": "tab_hover_color",
-      "label": "Hover text color",
-      "default": "#1a1a1a"
+      "id": "tab_active_background",
+      "label": "Active background",
+      "default": "#D50000"
     },
     {
       "type": "color",
-      "id": "tab_hover_bg",
-      "label": "Hover background",
-      "default": "#f5f5f5"
-    },
-    {
-      "type": "color",
-      "id": "tab_active_color",
+      "id": "tab_active_text_color",
       "label": "Active text color",
-      "default": "#1a1a1a"
+      "default": "#ffffff"
     },
     {
       "type": "color",
-      "id": "tab_active_border",
-      "label": "Active border color",
-      "default": "#1a1a1a"
+      "id": "tab_edge_color",
+      "label": "Edge color",
+      "default": "#8B0000"
     },
     {
       "type": "color",
-      "id": "border_color",
-      "label": "Border color",
-      "default": "#e0e0e0"
+      "id": "tab_shadow_color",
+      "label": "Shadow color",
+      "default": "rgba(0, 0, 0, 0.25)"
     },
     {
       "type": "header",
-      "content": "Content style"
+      "content": "Content area"
+    },
+    {
+      "type": "range",
+      "id": "content_padding",
+      "min": 10,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding",
+      "default": 24
     },
     {
       "type": "color",
-      "id": "content_bg",
+      "id": "content_background",
       "label": "Background",
       "default": "#ffffff"
     },
@@ -366,48 +640,130 @@
       "type": "color",
       "id": "content_text_color",
       "label": "Text color",
-      "default": "#677279"
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "line_height",
+      "min": 1,
+      "max": 2,
+      "step": 0.1,
+      "label": "Line height",
+      "default": 1.6
+    },
+    {
+      "type": "range",
+      "id": "paragraph_spacing",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Paragraph spacing",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "heading_spacing",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading top spacing",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "list_item_spacing",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "List item spacing",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Border"
+    },
+    {
+      "type": "range",
+      "id": "border_width",
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "unit": "px",
+      "label": "Border width",
+      "default": 1
     },
     {
       "type": "color",
-      "id": "content_heading_color",
-      "label": "Heading color",
-      "default": "#1a1a1a"
+      "id": "border_color",
+      "label": "Border color",
+      "default": "#E0E0E0"
     },
     {
-      "type": "range",
-      "id": "content_heading_size",
-      "min": 14,
-      "max": 28,
-      "step": 2,
-      "unit": "px",
-      "label": "Heading size",
-      "default": 18
-    },
-    {
-      "type": "range",
-      "id": "content_padding",
-      "min": 10,
-      "max": 50,
-      "step": 5,
-      "unit": "px",
-      "label": "Padding",
-      "default": 25
+      "type": "color",
+      "id": "hover_border_color",
+      "label": "Hover border color",
+      "default": "#CCCCCC"
     },
     {
       "type": "range",
       "id": "border_radius",
       "min": 0,
-      "max": 40,
-      "step": 4,
+      "max": 30,
+      "step": 2,
       "unit": "px",
       "label": "Border radius",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Shadow"
+    },
+    {
+      "type": "range",
+      "id": "shadow_horizontal",
+      "min": -20,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Horizontal offset",
+      "default": -5
+    },
+    {
+      "type": "range",
+      "id": "shadow_vertical",
+      "min": -20,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Vertical offset",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "shadow_blur",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Blur radius",
       "default": 8
+    },
+    {
+      "type": "range",
+      "id": "shadow_opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "label": "Shadow opacity",
+      "default": 0
     }
   ],
   "presets": [
     {
-      "name": "Product info tabs"
+      "name": "Tab accordion"
     }
   ]
 }
