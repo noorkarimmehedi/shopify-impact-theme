@@ -141,7 +141,7 @@
             "tab_padding_horizontal": 20,
             "tab_border_radius": 6,
             "tab_background": "#ff1744",
-            "tab_text_color": "#677279",
+            "tab_text_color": "#f0f0f0",
             "tab_active_background": "#d50000",
             "tab_active_text_color": "#ffffff",
             "tab_edge_color": "#8b0000",
