@@ -49,6 +49,7 @@
         },
         "description": {
           "type": "description",
+          "disabled": true,
           "settings": {
             "collapse_content": false
           }
@@ -124,7 +125,7 @@
           "type": "ai_gen_block_91d82e4",
           "settings": {
             "tab_1_title": "পণ্যের বিবরণ",
-            "tab_1_content": "<p>Add your product description here. Include key features, materials, dimensions, and care instructions.</p>",
+            "tab_1_content": "<p>কাচের এই তেল বোতল স্প্রে ও ঢালার মাধ্যমে তেল নিয়ন্ত্রণ সহজ করে। গন্ধহীন, নিরাপদ, রান্নাঘর পরিপাটি রাখে এবং প্রতি স্প্রেতে মাত্র ০.১৫ গ্রাম তেল ছড়ায়।</p>",
             "tab_2_title": "শিপিং",
             "tab_2_content": "<p>অর্ডার কনফার্ম হওয়ার পর আমরা যত দ্রুত সম্ভব পণ্য প্রেরণের ব্যবস্থা করি।</p><p><strong>১.</strong> ঢাকা সিটিতে ডেলিভারি সাধারণত <strong>১–২ কার্যদিবসের</strong> মধ্যে সম্পন্ন হয়।<br/><br/><strong>২.</strong> ঢাকার বাইরে ডেলিভারি সাধারণত <strong>২–৩ কার্যদিবসের</strong> মধ্যে হয়, লোকেশন ও কুরিয়ার সার্ভিসের উপর নির্ভর করে।</p><p>অর্ডার শিপ হলে আপনাকে একটি কনফার্মেশন মেসেজ পাঠানো হবে।</p>",
             "tab_3_title": "রিটার্নস",
