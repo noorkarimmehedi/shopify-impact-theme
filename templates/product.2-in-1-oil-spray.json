@@ -140,7 +140,7 @@
             "tab_font_weight": "600",
             "tab_padding_vertical": 12,
             "tab_padding_horizontal": 20,
-            "tab_border_radius": 6,
+            "tab_border_radius": 4,
             "tab_background": "#deb207",
             "tab_text_color": "#1a1a1a",
             "tab_active_background": "#d50000",
