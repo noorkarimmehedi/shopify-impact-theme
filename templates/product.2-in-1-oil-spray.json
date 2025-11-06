@@ -117,6 +117,40 @@
         "input_text_color": ""
       }
     },
+    "1762422151c2d27b21": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_91d82e4_QhzL8x": {
+          "type": "ai_gen_block_91d82e4",
+          "settings": {
+            "tab_1_title": "Description",
+            "tab_1_content": "<p>Add your product description here. Include key features, materials, dimensions, and care instructions.</p>",
+            "tab_2_title": "Shipping & Returns",
+            "tab_2_content": "<p>Add your shipping and returns policy here. Include delivery times, shipping costs, and return conditions.</p>",
+            "tab_3_title": "Care Instructions",
+            "tab_3_content": "<p>Add care instructions here. Include washing, cleaning, and maintenance guidelines.</p>",
+            "tab_font_size": 16,
+            "tab_text_color": "#677279",
+            "tab_hover_color": "#1a1a1a",
+            "tab_hover_bg": "#f5f5f5",
+            "tab_active_color": "#1a1a1a",
+            "tab_active_border": "#1a1a1a",
+            "border_color": "#e0e0e0",
+            "content_bg": "#ffffff",
+            "content_text_color": "#677279",
+            "content_heading_color": "#1a1a1a",
+            "content_heading_size": 18,
+            "content_padding": 25,
+            "border_radius": 8
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_91d82e4_QhzL8x"
+      ],
+      "settings": {}
+    },
     "1758906325660f2750": {
       "type": "_blocks",
       "blocks": {
@@ -215,6 +249,7 @@
   },
   "order": [
     "main",
+    "1762422151c2d27b21",
     "1758906325660f2750",
     "related-products",
     "1762155169b11f53e4"

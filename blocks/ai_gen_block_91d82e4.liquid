@@ -1,0 +1,414 @@
+{% doc %}
+  @prompt
+    generate me a accordion style for description there should be visible three tabs when every customer click that tab it should show the that particular information. i want card border detais like this: Border
+    Border width
+    
+    1
+    Border color
+    
+    #E0E0E0
+    Hover border color
+    
+    #CCCCCC
+    Border radius
+    
+    0
+    Shadow
+    Horizontal offset
+    
+    -5
+    Vertical offset
+    
+    4
+    Blur radius
+    
+    8
+    Shadow opacity
+    
+    0. , i didn't want like this. the tabs should be in the header of the section
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-accordion-{{ ai_gen_id }} {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .ai-accordion-tabs-{{ ai_gen_id }} {
+    display: flex;
+    gap: 0;
+    border-bottom: 2px solid {{ block.settings.border_color }};
+    margin-bottom: 24px;
+  }
+
+  .ai-accordion-tab-{{ ai_gen_id }} {
+    flex: 1;
+    padding: 16px 20px;
+    background: transparent;
+    border: none;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    font-size: {{ block.settings.tab_font_size }}px;
+    font-weight: 600;
+    color: {{ block.settings.tab_text_color }};
+    transition: all 0.3s ease;
+    position: relative;
+    text-align: center;
+  }
+
+  .ai-accordion-tab-{{ ai_gen_id }}:hover {
+    color: {{ block.settings.tab_hover_color }};
+    background-color: {{ block.settings.tab_hover_bg }};
+  }
+
+  .ai-accordion-tab-{{ ai_gen_id }}.active {
+    color: {{ block.settings.tab_active_color }};
+    border-bottom-color: {{ block.settings.tab_active_border }};
+  }
+
+  .ai-accordion-content-{{ ai_gen_id }} {
+    display: none;
+    padding: {{ block.settings.content_padding }}px;
+    background-color: {{ block.settings.content_bg }};
+    border-radius: {{ block.settings.border_radius }}px;
+    color: {{ block.settings.content_text_color }};
+    line-height: 1.6;
+  }
+
+  .ai-accordion-content-{{ ai_gen_id }}.active {
+    display: block;
+    animation: ai-accordion-fade-{{ ai_gen_id }} 0.3s ease-in;
+  }
+
+  @keyframes ai-accordion-fade-{{ ai_gen_id }} {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .ai-accordion-content-{{ ai_gen_id }} h3 {
+    margin-top: 0;
+    margin-bottom: 12px;
+    font-size: {{ block.settings.content_heading_size }}px;
+    color: {{ block.settings.content_heading_color }};
+  }
+
+  .ai-accordion-content-{{ ai_gen_id }} p {
+    margin: 0 0 12px;
+  }
+
+  .ai-accordion-content-{{ ai_gen_id }} ul,
+  .ai-accordion-content-{{ ai_gen_id }} ol {
+    margin: 0 0 12px;
+    padding-left: 20px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-accordion-tabs-{{ ai_gen_id }} {
+      flex-direction: column;
+      gap: 0;
+      border-bottom: none;
+    }
+
+    .ai-accordion-tab-{{ ai_gen_id }} {
+      border-bottom: 1px solid {{ block.settings.border_color }};
+      text-align: left;
+    }
+
+    .ai-accordion-tab-{{ ai_gen_id }}.active {
+      border-left: 3px solid {{ block.settings.tab_active_border }};
+      border-bottom-color: {{ block.settings.border_color }};
+    }
+
+    .ai-accordion-content-{{ ai_gen_id }} {
+      padding: {{ block.settings.content_padding | times: 0.75 }}px;
+    }
+  }
+{% endstyle %}
+
+<accordion-tabs-{{ ai_gen_id }} class="ai-accordion-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-accordion-tabs-{{ ai_gen_id }}">
+    {% if block.settings.tab_1_title != blank %}
+      <button
+        class="ai-accordion-tab-{{ ai_gen_id }} active"
+        data-tab="1"
+        aria-expanded="true"
+        aria-controls="ai-accordion-content-1-{{ ai_gen_id }}"
+      >
+        {{ block.settings.tab_1_title }}
+      </button>
+    {% endif %}
+
+    {% if block.settings.tab_2_title != blank %}
+      <button
+        class="ai-accordion-tab-{{ ai_gen_id }}"
+        data-tab="2"
+        aria-expanded="false"
+        aria-controls="ai-accordion-content-2-{{ ai_gen_id }}"
+      >
+        {{ block.settings.tab_2_title }}
+      </button>
+    {% endif %}
+
+    {% if block.settings.tab_3_title != blank %}
+      <button
+        class="ai-accordion-tab-{{ ai_gen_id }}"
+        data-tab="3"
+        aria-expanded="false"
+        aria-controls="ai-accordion-content-3-{{ ai_gen_id }}"
+      >
+        {{ block.settings.tab_3_title }}
+      </button>
+    {% endif %}
+  </div>
+
+  {% if block.settings.tab_1_title != blank %}
+    <div
+      id="ai-accordion-content-1-{{ ai_gen_id }}"
+      class="ai-accordion-content-{{ ai_gen_id }} active"
+      role="region"
+      aria-labelledby="tab-1"
+    >
+      {{ block.settings.tab_1_content }}
+    </div>
+  {% endif %}
+
+  {% if block.settings.tab_2_title != blank %}
+    <div
+      id="ai-accordion-content-2-{{ ai_gen_id }}"
+      class="ai-accordion-content-{{ ai_gen_id }}"
+      role="region"
+      aria-labelledby="tab-2"
+    >
+      {{ block.settings.tab_2_content }}
+    </div>
+  {% endif %}
+
+  {% if block.settings.tab_3_title != blank %}
+    <div
+      id="ai-accordion-content-3-{{ ai_gen_id }}"
+      class="ai-accordion-content-{{ ai_gen_id }}"
+      role="region"
+      aria-labelledby="tab-3"
+    >
+      {{ block.settings.tab_3_content }}
+    </div>
+  {% endif %}
+</accordion-tabs-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class AccordionTabs{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.tabs = this.querySelectorAll('.ai-accordion-tab-{{ ai_gen_id }}');
+        this.contents = this.querySelectorAll('.ai-accordion-content-{{ ai_gen_id }}');
+        this.setupEventListeners();
+      }
+
+      setupEventListeners() {
+        this.tabs.forEach((tab) => {
+          tab.addEventListener('click', () => {
+            const tabNumber = tab.getAttribute('data-tab');
+            this.switchTab(tabNumber);
+          });
+        });
+      }
+
+      switchTab(tabNumber) {
+        this.tabs.forEach((tab) => {
+          tab.classList.remove('active');
+          tab.setAttribute('aria-expanded', 'false');
+        });
+
+        this.contents.forEach((content) => {
+          content.classList.remove('active');
+        });
+
+        const activeTab = this.querySelector(`[data-tab="${tabNumber}"]`);
+        const activeContent = this.querySelector(`#ai-accordion-content-${tabNumber}-{{ ai_gen_id }}`);
+
+        if (activeTab && activeContent) {
+          activeTab.classList.add('active');
+          activeTab.setAttribute('aria-expanded', 'true');
+          activeContent.classList.add('active');
+        }
+      }
+    }
+
+    customElements.define('accordion-tabs-{{ ai_gen_id }}', AccordionTabs{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Product info tabs",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Tab 1"
+    },
+    {
+      "type": "text",
+      "id": "tab_1_title",
+      "label": "Title",
+      "default": "Description"
+    },
+    {
+      "type": "richtext",
+      "id": "tab_1_content",
+      "label": "Content",
+      "default": "<p>Add your product description here. Include key features, materials, dimensions, and care instructions.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Tab 2"
+    },
+    {
+      "type": "text",
+      "id": "tab_2_title",
+      "label": "Title",
+      "default": "Shipping & Returns"
+    },
+    {
+      "type": "richtext",
+      "id": "tab_2_content",
+      "label": "Content",
+      "default": "<p>Add your shipping and returns policy here. Include delivery times, shipping costs, and return conditions.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Tab 3"
+    },
+    {
+      "type": "text",
+      "id": "tab_3_title",
+      "label": "Title",
+      "default": "Care Instructions"
+    },
+    {
+      "type": "richtext",
+      "id": "tab_3_content",
+      "label": "Content",
+      "default": "<p>Add care instructions here. Include washing, cleaning, and maintenance guidelines.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Tab style"
+    },
+    {
+      "type": "range",
+      "id": "tab_font_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Font size",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "tab_text_color",
+      "label": "Text color",
+      "default": "#677279"
+    },
+    {
+      "type": "color",
+      "id": "tab_hover_color",
+      "label": "Hover text color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "tab_hover_bg",
+      "label": "Hover background",
+      "default": "#f5f5f5"
+    },
+    {
+      "type": "color",
+      "id": "tab_active_color",
+      "label": "Active text color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "tab_active_border",
+      "label": "Active border color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border color",
+      "default": "#e0e0e0"
+    },
+    {
+      "type": "header",
+      "content": "Content style"
+    },
+    {
+      "type": "color",
+      "id": "content_bg",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "content_text_color",
+      "label": "Text color",
+      "default": "#677279"
+    },
+    {
+      "type": "color",
+      "id": "content_heading_color",
+      "label": "Heading color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "range",
+      "id": "content_heading_size",
+      "min": 14,
+      "max": 28,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading size",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "content_padding",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding",
+      "default": 25
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "min": 0,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 8
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product info tabs"
+    }
+  ]
+}
+{% endschema %}
