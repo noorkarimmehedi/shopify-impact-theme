@@ -217,7 +217,20 @@
       "type": "related-products",
       "settings": {
         "recommendations_count": 10,
-        "products": [],
+        "products": [
+          "electric-self-stirring-coffee-mug",
+          "mosquito-coil",
+          "2-in-1-oil-dispenser-bottle",
+          "glass-cups-with-bamboo-lid-and-straw",
+          "glass-oil-dispenser-jar",
+          "multi-compartment-container",
+          "fruit-drain-and-storage-basket-with-lid",
+          "oil-storage-jar",
+          "stainless-steel-kitchen-sink-holder",
+          "glass-food-container-square-glass-jars-with-bamboo-lids",
+          "2-in-1-cooking-rechargeable-mixer",
+          "1000ml-glass-water-bottle-with-time-scale"
+        ],
         "full_width": true,
         "stack_products": true,
         "show_progress_bar": false,
