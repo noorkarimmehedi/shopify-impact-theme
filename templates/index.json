@@ -119,7 +119,7 @@
             "heading_size_mobile": 32,
             "subheading_size_mobile": 16,
             "padding_mobile": 30,
-            "text_alignment_mobile": "center"
+            "text_alignment_mobile": "left"
           },
           "blocks": {}
         }
