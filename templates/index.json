@@ -116,8 +116,8 @@
             "text_alignment_desktop": "left",
             "height_mobile": 600,
             "image_fit_mobile": "cover",
-            "heading_size_mobile": 32,
-            "subheading_size_mobile": 16,
+            "heading_size_mobile": 30,
+            "subheading_size_mobile": 20,
             "padding_mobile": 30,
             "text_alignment_mobile": "left"
           },
