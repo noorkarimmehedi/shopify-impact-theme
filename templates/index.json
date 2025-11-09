@@ -72,6 +72,55 @@
         "background_gradient": "linear-gradient(60deg, rgba(60, 65, 68, 1), rgba(23, 29, 33, 1) 98%)"
       }
     },
+    "1762676303578b860e": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_f031582_LFGh7x": {
+          "type": "ai_gen_block_f031582",
+          "settings": {
+            "hero_height_mobile": 500,
+            "hero_height_desktop": 700,
+            "show_overlay": true,
+            "overlay_color": "#000000",
+            "overlay_opacity": 30,
+            "heading": "Welcome to our store",
+            "subheading": "Discover our latest collection",
+            "content_max_width": 600,
+            "content_padding_mobile": 30,
+            "content_padding_desktop": 60,
+            "content_alignment_desktop": "flex-start",
+            "text_spacing": 20,
+            "heading_color": "#ffffff",
+            "heading_size_mobile": 32,
+            "heading_size_desktop": 56,
+            "subheading_color": "#ffffff",
+            "subheading_size_mobile": 16,
+            "subheading_size_desktop": 20,
+            "button_text": "Shop now",
+            "button_link": "",
+            "button_background": "#ffffff",
+            "button_text_color": "#000000",
+            "button_hover_background": "#f0f0f0",
+            "button_hover_text_color": "#000000",
+            "button_secondary_text": "",
+            "button_secondary_link": "",
+            "button_secondary_background": "rgba(0,0,0,0)",
+            "button_secondary_text_color": "#ffffff",
+            "button_secondary_hover_background": "rgba(255,255,255,0.1)",
+            "button_secondary_hover_text_color": "#ffffff",
+            "button_font_size": 16,
+            "button_padding_vertical": 14,
+            "button_padding_horizontal": 32,
+            "button_border_radius": 8
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_f031582_LFGh7x"
+      ],
+      "settings": {}
+    },
     "image-link-blocks": {
       "type": "image-link-blocks",
       "blocks": {
@@ -900,6 +949,7 @@
   },
   "order": [
     "slideshow",
+    "1762676303578b860e",
     "image-link-blocks",
     "scrolling-text",
     "featured-collection",
