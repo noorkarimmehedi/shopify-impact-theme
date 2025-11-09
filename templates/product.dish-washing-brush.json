@@ -82,6 +82,12 @@
         "payment_terms": {
           "type": "payment_terms",
           "settings": {}
+        },
+        "liquid_amqALk": {
+          "type": "liquid",
+          "settings": {
+            "liquid": "{% render 'video-showcase-dish-washing' %}"
+          }
         }
       },
       "block_order": [
@@ -95,7 +101,8 @@
         "variant_picker",
         "quantity_selector",
         "buy_buttons",
-        "payment_terms"
+        "payment_terms",
+        "liquid_amqALk"
       ],
       "settings": {
         "full_width": true,
