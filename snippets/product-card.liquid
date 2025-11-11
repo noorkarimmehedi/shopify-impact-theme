@@ -22,6 +22,33 @@ Supported variables
 * text_alignment: can be "center". If nothing is set, the theme uses the default product card setting
 {%- endcomment -%}
 
+<style>
+  /* Product Card Border & Shadow Styling */
+  .product-card {
+    border: 1px solid #E0E0E0 !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0) !important;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease !important;
+    overflow: hidden !important;
+  }
+  
+  .product-card:hover {
+    border-color: #CCCCCC !important;
+  }
+  
+  .product-card__figure {
+    border-radius: 8px 8px 0 0 !important;
+  }
+  
+  .product-card__figure img {
+    border-radius: 8px 8px 0 0 !important;
+  }
+  
+  .product-card__info {
+    padding: 12px !important;
+  }
+</style>
+
 {%- assign show_rating = show_rating | default: settings.show_product_rating, allow_false: true -%}
 {%- assign show_vendor = show_vendor | default: settings.show_vendor, allow_false: true -%}
 {%- assign show_quick_buy = show_quick_buy | default: settings.show_quick_buy, allow_false: true -%}
