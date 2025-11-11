@@ -47,6 +47,42 @@ Supported variables
   .product-card__info {
     padding: 12px !important;
   }
+  
+  /* Price alignment fix for consistent layout */
+  .product-card__info .price-list {
+    min-height: 24px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+  }
+  
+  .product-card__info--center .price-list {
+    justify-content: center !important;
+  }
+  
+  /* Ensure consistent spacing for product title */
+  .product-card__title {
+    min-height: 40px !important;
+    display: flex !important;
+    align-items: flex-start !important;
+  }
+  
+  .product-card__title a {
+    line-height: 1.4 !important;
+  }
+  
+  /* Mobile specific adjustments */
+  @media (max-width: 699px) {
+    .product-card__info .price-list {
+      flex-wrap: wrap !important;
+      gap: 4px !important;
+    }
+    
+    .product-card__title {
+      min-height: 44px !important;
+      font-size: 14px !important;
+    }
+  }
 </style>
 
 {%- assign show_rating = show_rating | default: settings.show_product_rating, allow_false: true -%}
