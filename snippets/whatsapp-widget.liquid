@@ -228,15 +228,36 @@
     min-height: 200px;
   }
 
+  .message-wrapper {
+    display: flex;
+    gap: 12px;
+    align-items: flex-end;
+    margin-bottom: 16px;
+  }
+
+  .message-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #DEB207 0%, #D50000 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+  }
+
   .chat-message {
     background: white;
     padding: 16px 18px;
-    border-radius: 8px;
+    border-radius: 4px;
     border: 1px solid #E0E0E0;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0);
-    margin-bottom: 16px;
     position: relative;
     transition: border-color 0.3s ease;
+    flex: 1;
   }
 
   .chat-message:hover {
@@ -287,7 +308,7 @@
   .messenger-button {
     width: 100%;
     padding: 16px 24px;
-    border-radius: 14px;
+    border-radius: 4px;
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
@@ -298,15 +319,21 @@
     transition: all 0.3s ease;
     text-decoration: none;
     box-sizing: border-box;
-    border: none;
+    border: 1px solid #E0E0E0;
     position: relative;
     overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0);
   }
 
   .whatsapp-start-button {
     background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
     color: white;
-    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+    border-color: #25D366;
+  }
+
+  .whatsapp-start-button:hover {
+    border-color: #CCCCCC;
+    transform: translateY(-2px);
   }
 
   .whatsapp-start-button::before {
@@ -424,9 +451,12 @@
 
     <!-- Body -->
     <div class="whatsapp-chat-body">
-      <div class="chat-message">
-        <p>Hello! Welcome to Angonaloy-আঙ্গনালয়. Feel free to ask us anything about our products, orders, or services. We're here to help! 😊</p>
-        <span class="message-time">Just now</span>
+      <div class="message-wrapper">
+        <div class="message-avatar">A</div>
+        <div class="chat-message">
+          <p>Hello! Welcome to Angonaloy-আঙ্গনালয়. Feel free to ask us anything about our products, orders, or services. We're here to help! 😊</p>
+          <span class="message-time">Just now</span>
+        </div>
       </div>
     </div>
 
