@@ -151,6 +151,61 @@
       "block_order": [
         "ai_gen_block_606562f_78CEbK"
       ],
+      "disabled": true,
+      "settings": {}
+    },
+    "blocks_pFEMDC": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_91d82e4_tCyV6t": {
+          "type": "ai_gen_block_91d82e4",
+          "settings": {
+            "tab_1_title": "পণ্যের বিবরণ",
+            "tab_1_content": "<p>সুপার সফট সানফ্লাওয়ার শাওয়ার স্পঞ্জ! দ্রুত ফেনা তৈরি, আরামদায়ক স্ক্রাবিং। সাকশন কাপ ও হুকসহ ঝুলিয়ে রাখুন বাথরুমে পরিচ্ছন্ন ও সুগঠিত।</p>",
+            "tab_2_title": "শিপিং",
+            "tab_2_content": "<p>অর্ডার কনফার্ম হওয়ার পর আমরা যত দ্রুত সম্ভব পণ্য প্রেরণের ব্যবস্থা করি।</p><p><strong>১.</strong> ঢাকা সিটিতে ডেলিভারি সাধারণত <strong>১–২ কার্যদিবসের</strong> মধ্যে সম্পন্ন হয়।<br/><br/><strong>২.</strong> ঢাকার বাইরে ডেলিভারি সাধারণত <strong>২–৩ কার্যদিবসের</strong> মধ্যে হয়, লোকেশন ও কুরিয়ার সার্ভিসের উপর নির্ভর করে।</p><p>অর্ডার শিপ হলে আপনাকে একটি কনফার্মেশন মেসেজ পাঠানো হবে।</p>",
+            "tab_3_title": "রিটার্নস",
+            "tab_3_content": "<p><strong>১.</strong> আপনি যদি আপনার কেনা পণ্য নিয়ে সন্তুষ্ট না হন, তবে কেবলমাত্র <strong>ডেলিভারি চার্জ প্রদান করে</strong> <strong>পণ্যটি ফেরত দিতে পারবেন।</strong><br/><br/><strong>২.</strong> যদি ভুল বা অমিল পণ্য প্রাপ্ত হয়, তবে রিটার্ন বা এক্সচেঞ্জের জন্য কোনো <strong>ডেলিভারি চার্জ প্রযোজ্য হবে না।</strong></p>",
+            "header_background": "#f5f5f5",
+            "header_padding": 20,
+            "header_border_radius": 8,
+            "header_border_width": 1,
+            "header_border_color": "#E0E0E0",
+            "tab_spacing": 12,
+            "tab_font_size": 16,
+            "tab_font_weight": "600",
+            "tab_padding_vertical": 12,
+            "tab_padding_horizontal": 20,
+            "tab_border_radius": 12,
+            "tab_background": "#FF1744",
+            "tab_text_color": "#ffffff",
+            "tab_active_background": "#D50000",
+            "tab_active_text_color": "#ffffff",
+            "tab_edge_color": "#8B0000",
+            "tab_shadow_color": "rgba(0, 0, 0, 0.25)",
+            "content_padding": 24,
+            "content_background": "#ffffff",
+            "content_text_color": "#000000",
+            "line_height": 1.6,
+            "paragraph_spacing": 16,
+            "heading_spacing": 20,
+            "list_item_spacing": 8,
+            "border_width": 1,
+            "border_color": "#E0E0E0",
+            "hover_border_color": "#CCCCCC",
+            "border_radius": 0,
+            "shadow_horizontal": -5,
+            "shadow_vertical": 4,
+            "shadow_blur": 8,
+            "shadow_opacity": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_91d82e4_tCyV6t"
+      ],
+      "name": "Tab accordion",
       "settings": {}
     },
     "related-products": {
@@ -179,6 +234,7 @@
   "order": [
     "main",
     "1758906325660f2750",
+    "blocks_pFEMDC",
     "related-products"
   ]
 }
