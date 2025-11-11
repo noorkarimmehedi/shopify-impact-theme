@@ -63,12 +63,17 @@ Supported variables
   /* Ensure consistent spacing for product title */
   .product-card__title {
     min-height: 40px !important;
-    display: flex !important;
-    align-items: flex-start !important;
+    display: block !important;
   }
   
   .product-card__title a {
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
     line-height: 1.4 !important;
+    max-height: calc(1.4em * 2) !important;
   }
   
   /* Mobile specific adjustments */
