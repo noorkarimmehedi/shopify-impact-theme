@@ -178,12 +178,12 @@
   
   .video-modal-close {
     position: absolute;
-    top: 40px;
-    right: 40px;
-    width: 40px;
-    height: 40px;
-    background: rgba(0, 0, 0, 0.7);
-    border: none;
+    top: 50px;
+    right: 50px;
+    width: 44px;
+    height: 44px;
+    background: rgba(0, 0, 0, 0.8);
+    border: 2px solid rgba(255, 255, 255, 0.3);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -194,8 +194,9 @@
   }
   
   .video-modal-close:hover {
-    transform: scale(1.1);
-    background: rgba(0, 0, 0, 0.9);
+    transform: scale(1.15);
+    background: rgba(0, 0, 0, 0.95);
+    border-color: rgba(255, 255, 255, 0.6);
   }
   
   .video-modal-close svg {
@@ -259,14 +260,15 @@
     }
     
     .video-modal-close {
-      top: -45px;
-      width: 35px;
-      height: 35px;
+      top: 35px;
+      right: 35px;
+      width: 40px;
+      height: 40px;
     }
     
     .video-modal-close svg {
-      width: 25px;
-      height: 25px;
+      width: 22px;
+      height: 22px;
     }
   }
   
@@ -290,6 +292,13 @@
     
     .video-showcase-overlay {
       padding: 15px;
+    }
+    
+    .video-modal-close {
+      top: 25px;
+      right: 25px;
+      width: 38px;
+      height: 38px;
     }
   }
 </style>
