@@ -252,9 +252,9 @@
   .chat-message {
     background: white;
     padding: 16px 18px;
-    border-radius: 4px;
+    border-radius: 0;
     border: 1px solid #E0E0E0;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0);
+    box-shadow: none;
     position: relative;
     transition: border-color 0.3s ease;
     flex: 1;
@@ -262,6 +262,11 @@
 
   .chat-message:hover {
     border-color: #CCCCCC;
+  }
+
+  .chat-message::before,
+  .chat-message::after {
+    display: none !important;
   }
 
   .chat-message::before {
@@ -326,13 +331,14 @@
   }
 
   .whatsapp-start-button {
-    background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+    background: #25D366;
     color: white;
     border-color: #25D366;
   }
 
   .whatsapp-start-button:hover {
-    border-color: #CCCCCC;
+    background: #20BA5A;
+    border-color: #20BA5A;
     transform: translateY(-2px);
   }
 
@@ -351,11 +357,6 @@
     left: 100%;
   }
 
-  .whatsapp-start-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
-  }
-
   .whatsapp-start-button:active {
     transform: translateY(0);
   }
@@ -369,15 +370,13 @@
   .messenger-button {
     background: white;
     color: #0084FF;
-    border: 2px solid #E5E7EB;
-    box-shadow: none;
+    border-color: #E0E0E0;
   }
 
   .messenger-button:hover {
-    border-color: #0084FF;
+    border-color: #CCCCCC;
     background: #F0F9FF;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 132, 255, 0.15);
   }
 
   .messenger-button:active {
