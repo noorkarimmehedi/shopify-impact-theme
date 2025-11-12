@@ -9890,8 +9890,16 @@ split-lines {
 .price-list sale-price {
   position: relative;
   display: inline-block;
-  padding: 0;
-  user-select: none;
+  padding: 2px 6px;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  color: #fff;
+  background: hsl(0deg 100% 42%); /* #D50000 equivalent */
+  border-radius: 4px;
+  line-height: 1.1;
+  transform: translateY(-4px);
+  z-index: 1;
 }
 
 /* Shadow layer for sale-price */
@@ -9904,7 +9912,8 @@ split-lines {
   height: 100%;
   border-radius: 4px;
   background: hsl(0deg 0% 0% / 0.25);
-  transform: translateY(2px);
+  transform: translateY(6px);
+  z-index: -2;
 }
 
 /* Edge/depth layer for sale-price */
@@ -9923,21 +9932,8 @@ split-lines {
     hsl(0deg 100% 40%) 92%,
     hsl(0deg 100% 25%) 100%
   );
-}
-
-/* Front face of sale-price */
-.price-list sale-price {
-  padding: 2px 6px;
-  font-size: 14px;
-  font-weight: bold;
-  text-align: center;
-  color: #fff;
-  background: hsl(0deg 100% 42%); /* #D50000 equivalent */
-  border-radius: 4px;
-  line-height: 1.1;
-  position: relative;
-  z-index: 1;
-  transform: translateY(-4px);
+  transform: translateY(4px);
+  z-index: -1;
 }
 
 /* On Sale Price variant */
@@ -9950,8 +9946,17 @@ split-lines {
 .price-list compare-at-price {
   position: relative;
   display: inline-block;
-  padding: 0;
-  user-select: none;
+  padding: 1px 4px;
+  font-size: 10px;
+  font-weight: bold;
+  text-align: center;
+  color: #fff;
+  background-color: #888;
+  border-radius: 3px;
+  text-decoration: line-through;
+  line-height: 1;
+  transform: translateY(-2px);
+  z-index: 1;
 }
 
 .price-list compare-at-price::before {
@@ -9963,7 +9968,8 @@ split-lines {
   height: 100%;
   border-radius: 3px;
   background: hsl(0deg 0% 0% / 0.15);
-  transform: translateY(1px);
+  transform: translateY(3px);
+  z-index: -2;
 }
 
 .price-list compare-at-price::after {
@@ -9981,29 +9987,22 @@ split-lines {
     hsl(0deg 0% 70%) 92%,
     hsl(0deg 0% 60%) 100%
   );
-}
-
-.price-list compare-at-price {
-  padding: 1px 4px;
-  font-size: 10px;
-  font-weight: bold;
-  text-align: center;
-  color: #fff;
-  background-color: #888;
-  border-radius: 3px;
-  text-decoration: line-through;
-  line-height: 1;
-  position: relative;
-  z-index: 1;
-  transform: translateY(-2px);
+  transform: translateY(2px);
+  z-index: -1;
 }
 
 /* Unit Price - Pushable Style */
 .price-list unit-price {
   position: relative;
   display: inline-block;
-  padding: 0;
-  user-select: none;
+  padding: 1px 4px;
+  font-size: 10px;
+  font-weight: bold;
+  color: #fff;
+  background-color: hsl(0deg 100% 42%);
+  border-radius: 3px;
+  transform: translateY(-2px);
+  z-index: 1;
 }
 
 .price-list unit-price::before {
@@ -10015,7 +10014,8 @@ split-lines {
   height: 100%;
   border-radius: 3px;
   background: hsl(0deg 0% 0% / 0.25);
-  transform: translateY(1px);
+  transform: translateY(3px);
+  z-index: -2;
 }
 
 .price-list unit-price::after {
@@ -10033,18 +10033,8 @@ split-lines {
     hsl(0deg 100% 40%) 92%,
     hsl(0deg 100% 25%) 100%
   );
-}
-
-.price-list unit-price {
-  padding: 1px 4px;
-  font-size: 10px;
-  font-weight: bold;
-  color: #fff;
-  background-color: hsl(0deg 100% 42%);
-  border-radius: 3px;
-  position: relative;
-  z-index: 1;
-  transform: translateY(-2px);
+  transform: translateY(2px);
+  z-index: -1;
 }
 
 /* Large price variant */
@@ -10055,7 +10045,11 @@ split-lines {
 }
 
 .price-list--lg sale-price::before {
-  transform: translateY(2.5px);
+  transform: translateY(7px);
+}
+
+.price-list--lg sale-price::after {
+  transform: translateY(5px);
 }
 
 .price-list--lg compare-at-price {
