@@ -9895,7 +9895,7 @@ split-lines {
   font-weight: bold;
   text-align: center;
   color: #fff;
-  background: hsl(0deg 100% 42%); /* #D50000 equivalent */
+  background: #D50000;
   border-radius: 4px;
   line-height: 1.1;
   transform: translateY(-4px);
@@ -9916,7 +9916,7 @@ split-lines {
   z-index: -2;
 }
 
-/* Edge/depth layer for sale-price */
+/* Edge/depth layer for sale-price - PURE #D50000 */
 .price-list sale-price::after {
   content: '';
   position: absolute;
@@ -9925,20 +9925,14 @@ split-lines {
   width: 100%;
   height: 100%;
   border-radius: 4px;
-  background: linear-gradient(
-    to left,
-    hsl(0deg 100% 25%) 0%,
-    hsl(0deg 100% 40%) 8%,
-    hsl(0deg 100% 40%) 92%,
-    hsl(0deg 100% 25%) 100%
-  );
+  background: #D50000;
   transform: translateY(4px);
   z-index: -1;
 }
 
 /* On Sale Price variant */
 .price-list sale-price.text-on-sale {
-  background: hsl(0deg 100% 42%);
+  background: #D50000;
   color: #fff;
 }
 
@@ -9980,13 +9974,7 @@ split-lines {
   width: 100%;
   height: 100%;
   border-radius: 3px;
-  background: linear-gradient(
-    to left,
-    hsl(0deg 0% 25%) 0%,
-    hsl(0deg 0% 35%) 8%,
-    hsl(0deg 0% 35%) 92%,
-    hsl(0deg 0% 25%) 100%
-  );
+  background: #555;
   transform: translateY(2px);
   z-index: -1;
 }
@@ -9999,7 +9987,7 @@ split-lines {
   font-size: 10px;
   font-weight: bold;
   color: #fff;
-  background-color: hsl(0deg 100% 42%);
+  background-color: #D50000;
   border-radius: 3px;
   transform: translateY(-2px);
   z-index: 1;
@@ -10026,13 +10014,7 @@ split-lines {
   width: 100%;
   height: 100%;
   border-radius: 3px;
-  background: linear-gradient(
-    to left,
-    hsl(0deg 100% 25%) 0%,
-    hsl(0deg 100% 40%) 8%,
-    hsl(0deg 100% 40%) 92%,
-    hsl(0deg 100% 25%) 100%
-  );
+  background: #D50000;
   transform: translateY(2px);
   z-index: -1;
 }
