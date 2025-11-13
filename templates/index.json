@@ -83,7 +83,7 @@
             "image_mobile": "shopify://shop_images/ango_mobile_11zon.webp",
             "show_overlay": true,
             "overlay_color": "#000000",
-            "overlay_opacity": 30,
+            "overlay_opacity": 20,
             "heading": "<p>আপনার আঙ্গন থেকে রান্নাঘর পর্যন্ত - Angonaloy-আঙ্গনালয় </p>",
             "heading_color": "#f5f5f5",
             "subheading": "",
