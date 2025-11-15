@@ -220,7 +220,18 @@
       "type": "related-products",
       "settings": {
         "recommendations_count": 10,
-        "products": [],
+        "products": [
+          "dish-washing-brush-with-soap-dispenser",
+          "glass-cups-with-bamboo-lid-and-straw",
+          "glass-oil-dispenser-jar",
+          "fruit-drain-and-storage-basket-with-lid",
+          "1000ml-glass-water-bottle-with-time-scale",
+          "2-in-1-oil-dispenser-bottle",
+          "glass-food-container-square-glass-jars-with-bamboo-lids",
+          "multi-compartment-container",
+          "oil-storage-jar",
+          "stainless-steel-kitchen-sink-holder"
+        ],
         "full_width": true,
         "stack_products": true,
         "show_progress_bar": false,
