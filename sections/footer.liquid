@@ -23,8 +23,8 @@
       ------------------------------------------------------------------------------------------------------------------
       {%- endcomment -%}
 
-      {%- if section.blocks.size > 0 -%}
-        <div class="footer__block-list empty:hidden">
+      <div class="footer__block-list empty:hidden">
+        {%- if section.blocks.size > 0 -%}
           {%- for block in section.blocks -%}
             {%- case block.type -%}
               {%- when 'text' -%}
@@ -105,8 +105,27 @@
                 </div>
             {%- endcase -%}
           {%- endfor -%}
-        </div>
-      {%- endif -%}
+        {%- endif -%}
+
+        {%- comment -%}
+        ----------------------------------------------------------------------------------------------------------------
+        LOGO IN DESKTOP (fills the gap on the right side)
+        ----------------------------------------------------------------------------------------------------------------
+        {%- endcomment -%}
+
+        {%- if section.settings.logo != blank -%}
+          <div class="footer__block footer__block--logo">
+            {%- assign logo_width = section.settings.logo_width -%}
+            {%- capture sizes -%}{{ logo_width }}px{%- endcapture -%}
+            {%- capture widths -%}{{ logo_width }}, {{ logo_width | times: 2 | at_most: section.settings.logo.width }}{%- endcapture -%}
+            {%- capture style -%}max-width: {{ logo_width }}px{%- endcapture -%}
+            
+            <a href="{{ routes.root_url }}" class="footer__logo-link">
+              {{- section.settings.logo | image_url: width: section.settings.logo.width | image_tag: loading: 'lazy', style: style, sizes: sizes, widths: widths, alt: shop.name -}}
+            </a>
+          </div>
+        {%- endif -%}
+      </div>
 
       {%- comment -%}
       ------------------------------------------------------------------------------------------------------------------
