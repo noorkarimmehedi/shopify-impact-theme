@@ -1,0 +1,504 @@
+{% comment %}
+  Video Showcase Snippet - 3 Videos with Lazy Loading
+  Usage: {% render 'video-showcase' %}
+  
+  INSTRUCTIONS: Edit the settings below to customize your videos
+{% endcomment %}
+
+{% comment %} ========== EDIT YOUR VIDEO SETTINGS HERE ========== {% endcomment %}
+{% assign video_1_url = 'https://cdn.shopify.com/videos/c/o/v/48f5c4be707045bc8b8144f4341881e2.mp4' %}
+
+{% assign video_2_url = 'https://cdn.shopify.com/videos/c/o/v/b7381a088b4e4b37898900e0cd523ab9.mp4' %}
+
+{% assign video_3_url = 'https://cdn.shopify.com/videos/c/o/v/6d61d3debbc84b768fdd7a9820a393cf.mov' %}
+{% comment %} ==================================================== {% endcomment %}
+
+<style>
+  .video-showcase-section {
+    width: 100%;
+    padding: 0;
+    background: #F5F5F5;
+  }
+  
+  .video-showcase-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    justify-items: center;
+  }
+  
+  .video-showcase-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 380px;
+    aspect-ratio: 9 / 16;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid #E0E0E0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0);
+    background: #000;
+    transition: border-color 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .video-showcase-wrapper:hover {
+    border-color: #CCCCCC;
+  }
+  
+  .video-showcase-player {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  
+  .video-showcase-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+    color: white;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .video-showcase-wrapper:hover .video-showcase-overlay {
+    opacity: 1;
+  }
+  
+  .video-showcase-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 8px 0;
+  }
+  
+  .video-showcase-description {
+    font-size: 14px;
+    margin: 0;
+    opacity: 0.9;
+  }
+  
+  .video-expand-btn {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.6);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 10;
+    opacity: 0;
+  }
+  
+  .video-showcase-wrapper:hover .video-expand-btn {
+    opacity: 1;
+  }
+  
+  .video-expand-btn:hover {
+    background: rgba(0, 0, 0, 0.8);
+    transform: scale(1.1);
+  }
+  
+  .video-expand-btn svg {
+    width: 20px;
+    height: 20px;
+    fill: white;
+  }
+  
+  /* Video placeholder/poster */
+  .video-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #1a1a1a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .video-placeholder.hidden {
+    display: none;
+  }
+  
+  .video-loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  
+  /* Modal Styles */
+  .video-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .video-modal.active {
+    display: flex;
+  }
+  
+  .video-modal-content {
+    position: relative;
+    width: 90%;
+    max-width: 600px;
+    aspect-ratio: 9 / 16;
+  }
+  
+  .video-modal-player {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  
+  .video-modal-close {
+    position: absolute;
+    top: 50px;
+    right: 50px;
+    width: 44px;
+    height: 44px;
+    background: rgba(0, 0, 0, 0.8);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 10;
+    border-radius: 50%;
+  }
+  
+  .video-modal-close:hover {
+    transform: scale(1.15);
+    background: rgba(0, 0, 0, 0.95);
+    border-color: rgba(255, 255, 255, 0.6);
+  }
+  
+  .video-modal-close svg {
+    width: 24px;
+    height: 24px;
+    fill: white;
+  }
+  
+  @media (max-width: 1024px) {
+    .video-showcase-container {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .video-showcase-wrapper:last-child {
+      grid-column: 1 / -1;
+      max-width: 380px;
+      margin: 0 auto;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .video-showcase-section {
+      padding: 0;
+    }
+    
+    .video-showcase-container {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    
+    .video-showcase-wrapper {
+      max-width: 100%;
+    }
+    
+    .video-showcase-wrapper:last-child {
+      grid-column: auto;
+    }
+    
+    .video-showcase-title {
+      font-size: 14px;
+    }
+    
+    .video-showcase-description {
+      font-size: 12px;
+    }
+    
+    .video-expand-btn {
+      width: 35px;
+      height: 35px;
+      bottom: 15px;
+      right: 15px;
+    }
+    
+    .video-expand-btn svg {
+      width: 16px;
+      height: 16px;
+    }
+    
+    .video-modal-content {
+      width: 95%;
+    }
+    
+    .video-modal-close {
+      top: 35px;
+      right: 35px;
+      width: 40px;
+      height: 40px;
+    }
+    
+    .video-modal-close svg {
+      width: 22px;
+      height: 22px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .video-showcase-section {
+      padding: 0;
+    }
+    
+    .video-showcase-container {
+      gap: 8px;
+    }
+    
+    .video-showcase-title {
+      font-size: 12px;
+      margin: 0 0 4px 0;
+    }
+    
+    .video-showcase-description {
+      font-size: 11px;
+    }
+    
+    .video-showcase-overlay {
+      padding: 15px;
+    }
+    
+    .video-modal-close {
+      top: 25px;
+      right: 25px;
+      width: 38px;
+      height: 38px;
+    }
+  }
+</style>
+
+<div class="video-showcase-section">
+  <div class="video-showcase-container">
+    
+    <!-- Video 1 -->
+    <div class="video-showcase-wrapper" data-video-wrapper="1">
+      <div class="video-placeholder" id="placeholder1">
+        <div class="video-loading-spinner"></div>
+      </div>
+      <video 
+        class="video-showcase-player" 
+        id="videoShowcase1"
+        muted 
+        loop 
+        playsinline
+        preload="none"
+        data-src="{{ video_1_url }}"
+      >
+        Your browser does not support the video tag.
+      </video>
+      
+      <button class="video-expand-btn" onclick="expandVideo('videoShowcase1')">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Video 2 -->
+    <div class="video-showcase-wrapper" data-video-wrapper="2">
+      <div class="video-placeholder" id="placeholder2">
+        <div class="video-loading-spinner"></div>
+      </div>
+      <video 
+        class="video-showcase-player" 
+        id="videoShowcase2"
+        muted 
+        loop 
+        playsinline
+        preload="none"
+        data-src="{{ video_2_url }}"
+      >
+        Your browser does not support the video tag.
+      </video>
+      
+      <button class="video-expand-btn" onclick="expandVideo('videoShowcase2')">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Video 3 -->
+    <div class="video-showcase-wrapper" data-video-wrapper="3">
+      <div class="video-placeholder" id="placeholder3">
+        <div class="video-loading-spinner"></div>
+      </div>
+      <video 
+        class="video-showcase-player" 
+        id="videoShowcase3"
+        muted 
+        loop 
+        playsinline
+        preload="none"
+        data-src="{{ video_3_url }}"
+      >
+        Your browser does not support the video tag.
+      </video>
+      
+      <button class="video-expand-btn" onclick="expandVideo('videoShowcase3')">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
+        </svg>
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- Modal for expanded video -->
+<div class="video-modal" id="videoModal">
+  <div class="video-modal-content">
+    <button class="video-modal-close" onclick="closeModal()">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+      </svg>
+    </button>
+    <video 
+      class="video-modal-player" 
+      id="modalVideo"
+      controls
+      loop
+      playsinline
+    >
+      Your browser does not support the video tag.
+    </video>
+  </div>
+</div>
+
+<script>
+  // Lazy load videos when they come into viewport
+  const lazyLoadVideos = () => {
+    const videoElements = document.querySelectorAll('.video-showcase-player[data-src]');
+    
+    const videoObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const video = entry.target;
+          const videoSrc = video.getAttribute('data-src');
+          const videoId = video.id;
+          const placeholderId = 'placeholder' + videoId.replace('videoShowcase', '');
+          const placeholder = document.getElementById(placeholderId);
+          
+          if (videoSrc) {
+            video.src = videoSrc;
+            video.removeAttribute('data-src');
+            
+            // Hide placeholder and play video once loaded
+            video.addEventListener('loadeddata', function() {
+              if (placeholder) {
+                placeholder.classList.add('hidden');
+              }
+              video.play().catch(err => console.log('Autoplay prevented:', err));
+            }, { once: true });
+            
+            video.load();
+          }
+          
+          observer.unobserve(video);
+        }
+      });
+    }, {
+      rootMargin: '50px' // Start loading 50px before video enters viewport
+    });
+    
+    videoElements.forEach(video => {
+      videoObserver.observe(video);
+    });
+  };
+  
+  // Initialize lazy loading when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', lazyLoadVideos);
+  } else {
+    lazyLoadVideos();
+  }
+  
+  function expandVideo(videoId) {
+    event.stopPropagation();
+    const sourceVideo = document.getElementById(videoId);
+    const modal = document.getElementById('videoModal');
+    const modalVideo = document.getElementById('modalVideo');
+    
+    // Copy the video source to modal
+    modalVideo.src = sourceVideo.src;
+    modalVideo.muted = false;
+    
+    // Show modal
+    modal.classList.add('active');
+    
+    // Pause original video
+    sourceVideo.pause();
+    
+    // Play modal video
+    modalVideo.play();
+  }
+  
+  function closeModal() {
+    const modal = document.getElementById('videoModal');
+    const modalVideo = document.getElementById('modalVideo');
+    
+    // Pause and reset modal video
+    modalVideo.pause();
+    modalVideo.currentTime = 0;
+    
+    // Hide modal
+    modal.classList.remove('active');
+    
+    // Resume all loaded original videos
+    document.querySelectorAll('.video-showcase-player').forEach(video => {
+      if (video.src) {
+        video.play().catch(err => console.log('Play prevented:', err));
+      }
+    });
+  }
+  
+  // Close modal when clicking outside the video
+  document.getElementById('videoModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+      closeModal();
+    }
+  });
+  
+  // Close modal with Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      closeModal();
+    }
+  });
+</script>
