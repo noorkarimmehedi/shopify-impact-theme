@@ -43,7 +43,6 @@ LIQUID
     <div class="{% if section.settings.show_progress_bar %}scrollable-with-controls{% else %}floating-controls-container{% endif %}">
       {%- assign scroll_area_id = 'scroll-area-' | append: section.id -%}
 
-      {%- comment -%} First check if manual products are selected {%- endcomment -%}
       {%- if section.settings.products.count > 0 -%}
         <scroll-carousel selector="product-card" id="{{ scroll_area_id }}" class="scroll-area bleed {% if section.settings.products.count > section.settings.products_per_row_desktop %}is-scrollable{% endif %}">
           <reveal-items selector=".product-list > *">
@@ -71,55 +70,37 @@ LIQUID
             </button>
           {%- endif -%}
         {%- endif -%}
-      
-      {%- comment -%} If no manual products, use dynamic recommendations {%- endcomment -%}
       {%- else -%}
-        {%- comment -%} Make sure we're on a product page {%- endcomment -%}
-        {%- if product -%}
-          <product-recommendations product="{{ product.id }}" limit="{{ section.settings.recommendations_count }}" intent="related" class="contents">
-            {%- comment -%} This content will be replaced by JavaScript with actual recommendations {%- endcomment -%}
-            {%- if recommendations.performed -%}
-              {%- if recommendations.products_count > 0 -%}
-                <scroll-carousel selector="product-card" id="{{ scroll_area_id }}" class="scroll-area bleed {% if recommendations.products_count > section.settings.products_per_row_desktop %}is-scrollable{% endif %}">
-                  <reveal-items selector=".product-list > *">
-                    <product-list class="product-list">
-                      {%- for recommended_product in recommendations.products -%}
-                        {%- render 'product-card', product: recommended_product, stacked: section.settings.stack_products, background: section.settings.product_card_background, text_color: section.settings.product_card_text_color, show_badges: true -%}
-                      {%- endfor -%}
-                    </product-list>
-                  </reveal-items>
-                </scroll-carousel>
+        <product-recommendations product="{{ product.id }}" limit="{{ section.settings.recommendations_count }}" intent="related" class="contents">
+          {%- if recommendations.performed and recommendations.products_count > 0 -%}
+            <scroll-carousel selector="product-card" id="{{ scroll_area_id }}" class="scroll-area bleed {% if section.settings.recommendations_count > section.settings.products_per_row_desktop %}is-scrollable{% endif %}">
+              <reveal-items selector=".product-list > *">
+                <product-list class="product-list">
+                  {%- for product in recommendations.products -%}
+                    {%- render 'product-card', product: product, stacked: section.settings.stack_products, background: section.settings.product_card_background, text_color: section.settings.product_card_text_color, show_badges: true -%}
+                  {%- endfor -%}
+                </product-list>
+              </reveal-items>
+            </scroll-carousel>
 
-                {%- if section.settings.stack_products == false -%}
-                  {%- if section.settings.show_progress_bar -%}
-                    {%- assign default_progress = section.settings.products_per_row_desktop | times: 1.0 | divided_by: recommendations.products_count -%}
-                    {%- render 'scrollbar', observes: scroll_area_id, default_progress: default_progress, show_buttons: true -%}
-                  {%- else -%}
-                    <button is="prev-button" class="circle-button circle-button--lg circle-button--fill border group" aria-controls="{{ scroll_area_id }}" disabled>
-                      <span class="sr-only">{{ 'general.accessibility.previous' | t }}</span>
-                      <span class="animated-arrow animated-arrow--reverse"></span>
-                    </button>
-
-                    <button is="next-button" class="circle-button circle-button--lg circle-button--fill border group" aria-controls="{{ scroll_area_id }}">
-                      <span class="sr-only">{{ 'general.accessibility.next' | t }}</span>
-                      <span class="animated-arrow"></span>
-                    </button>
-                  {%- endif -%}
-                {%- endif -%}
+            {%- if section.settings.stack_products == false -%}
+              {%- if section.settings.show_progress_bar -%}
+                {%- assign default_progress = section.settings.products_per_row_desktop | times: 1.0 | divided_by: section.settings.recommendations_count -%}
+                {%- render 'scrollbar', observes: scroll_area_id, default_progress: default_progress, show_buttons: true -%}
               {%- else -%}
-                {%- comment -%} No recommendations available {%- endcomment -%}
-                <div class="empty-state">
-                  <p class="text-subdued">{{ 'products.product.no_recommendations' | t }}</p>
-                </div>
+                <button is="prev-button" class="circle-button circle-button--lg circle-button--fill border group" aria-controls="{{ scroll_area_id }}" disabled>
+                  <span class="sr-only">{{ 'general.accessibility.previous' | t }}</span>
+                  <span class="animated-arrow animated-arrow--reverse"></span>
+                </button>
+
+                <button is="next-button" class="circle-button circle-button--lg circle-button--fill border group" aria-controls="{{ scroll_area_id }}">
+                  <span class="sr-only">{{ 'general.accessibility.next' | t }}</span>
+                  <span class="animated-arrow"></span>
+                </button>
               {%- endif -%}
             {%- endif -%}
-          </product-recommendations>
-        {%- else -%}
-          {%- comment -%} Not on a product page {%- endcomment -%}
-          <div class="empty-state">
-            <p class="text-subdued">This section only appears on product pages.</p>
-          </div>
-        {%- endif -%}
+          {%- endif -%}
+        </product-recommendations>
       {%- endif -%}
     </div>
   </div>
