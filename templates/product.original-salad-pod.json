@@ -39,10 +39,6 @@
             "show_empty": false
           }
         },
-        "payment_terms": {
-          "type": "payment_terms",
-          "settings": {}
-        },
         "separator": {
           "type": "separator",
           "settings": {}
@@ -77,6 +73,10 @@
             "payment_button_background": "",
             "payment_button_text_color": ""
           }
+        },
+        "payment_terms": {
+          "type": "payment_terms",
+          "settings": {}
         }
       },
       "block_order": [
@@ -85,12 +85,12 @@
         "badges",
         "price",
         "rating",
-        "payment_terms",
         "separator",
         "description",
         "variant_picker",
         "quantity_selector",
-        "buy_buttons"
+        "buy_buttons",
+        "payment_terms"
       ],
       "settings": {
         "full_width": true,
