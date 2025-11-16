@@ -40,9 +40,9 @@
       "settings": {
         "enable_sticky": true,
         "hide_on_scroll": false,
-        "logo": "shopify://shop_images/Image_9-20-25_at_20.05.png",
-        "logo_max_width": 165,
-        "logo_mobile_max_width": 120,
+        "logo": "shopify://shop_images/logo_06.png",
+        "logo_max_width": 120,
+        "logo_mobile_max_width": 95,
         "menu": "main-menu",
         "sidebar_menu": "",
         "secondary_menu": "",
