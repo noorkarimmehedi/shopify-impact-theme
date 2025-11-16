@@ -407,13 +407,24 @@
           {% liquid
             assign collection_key = 'collection_' | append: i
             assign collection = block.settings[collection_key]
+            assign custom_image_key = 'custom_image_' | append: i
+            assign custom_image = block.settings[custom_image_key]
           %}
 
           {% if collection != blank %}
             <div class="ai-category-slider-item-{{ ai_gen_id }}">
               <a href="{{ collection.url }}" class="ai-category-slider-link-{{ ai_gen_id }}">
                 <div class="ai-category-slider-image-wrapper-{{ ai_gen_id }}">
-                  {% if collection.image %}
+                  {% if custom_image != blank %}
+                    <img
+                      src="{{ custom_image | image_url: width: 400 }}"
+                      alt="{{ custom_image.alt | escape }}"
+                      class="ai-category-slider-image-{{ ai_gen_id }}"
+                      loading="lazy"
+                      width="400"
+                      height="400"
+                    >
+                  {% elsif collection.image %}
                     <img
                       src="{{ collection.image | image_url: width: 400 }}"
                       alt="{{ collection.image.alt | escape }}"
@@ -773,9 +784,21 @@
       "label": "Collection 1"
     },
     {
+      "type": "image_picker",
+      "id": "custom_image_1",
+      "label": "Custom image 1",
+      "info": "Optional: Override collection image"
+    },
+    {
       "type": "collection",
       "id": "collection_2",
       "label": "Collection 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "custom_image_2",
+      "label": "Custom image 2",
+      "info": "Optional: Override collection image"
     },
     {
       "type": "collection",
@@ -783,9 +806,21 @@
       "label": "Collection 3"
     },
     {
+      "type": "image_picker",
+      "id": "custom_image_3",
+      "label": "Custom image 3",
+      "info": "Optional: Override collection image"
+    },
+    {
       "type": "collection",
       "id": "collection_4",
       "label": "Collection 4"
+    },
+    {
+      "type": "image_picker",
+      "id": "custom_image_4",
+      "label": "Custom image 4",
+      "info": "Optional: Override collection image"
     },
     {
       "type": "collection",
@@ -793,9 +828,21 @@
       "label": "Collection 5"
     },
     {
+      "type": "image_picker",
+      "id": "custom_image_5",
+      "label": "Custom image 5",
+      "info": "Optional: Override collection image"
+    },
+    {
       "type": "collection",
       "id": "collection_6",
       "label": "Collection 6"
+    },
+    {
+      "type": "image_picker",
+      "id": "custom_image_6",
+      "label": "Custom image 6",
+      "info": "Optional: Override collection image"
     },
     {
       "type": "collection",
@@ -803,9 +850,21 @@
       "label": "Collection 7"
     },
     {
+      "type": "image_picker",
+      "id": "custom_image_7",
+      "label": "Custom image 7",
+      "info": "Optional: Override collection image"
+    },
+    {
       "type": "collection",
       "id": "collection_8",
       "label": "Collection 8"
+    },
+    {
+      "type": "image_picker",
+      "id": "custom_image_8",
+      "label": "Custom image 8",
+      "info": "Optional: Override collection image"
     }
   ],
   "presets": [
