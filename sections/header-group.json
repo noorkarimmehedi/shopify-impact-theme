@@ -30,9 +30,9 @@
         "text_size": "text-base",
         "navigation_mode": "arrows",
         "scrolling_speed": 10,
-        "background": "#deb207",
+        "background": "#d50000",
         "background_gradient": "",
-        "text_color": "#1a1a1a"
+        "text_color": "#ffffff"
       }
     },
     "header": {
