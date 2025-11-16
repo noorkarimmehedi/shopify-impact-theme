@@ -1,242 +1,437 @@
-{%- render 'section-spacing-collapsing' -%}
-
 {%- comment -%}
-------------------------------------------------------------------------------------------------------------------------
-CSS
-------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+PRODUCT CARD COMPONENT
+----------------------------------------------------------------------------------------------------------------------
+
+This component is used in collection and featured collection to render a single product as a card
+
+********************************************
+Supported variables
+********************************************
+
+* product: the product to render
+* show_rating: show or not the rating. If nothing is set, the theme uses the default product card setting
+* show_vendor: show or not the vendor. If nothing is set, the theme uses the default product card setting
+* show_quick_buy: show or not the quick buy. If nothing is set, the theme uses the default product card setting
+* show_secondary_image: show or not the secondary image. If nothing is set, the theme uses the default product card setting
+* show_swatches: allow to force hiding swatches. If nothing is set, it will default to the default card strategy
+* stacked: indicate if the product is in stack mode
+* reveal: if set to true the item will be revealed in a stacked mode
+* background: the background to use for the product card (if none is passed then the one from the global setting is used)
+* text_color: the text color to use for the product card (if none is passed then the one from the global setting is used)
+* text_alignment: can be "center". If nothing is set, the theme uses the default product card setting
 {%- endcomment -%}
 
 <style>
-  #shopify-section-{{ section.id }} .product-list {
-    --product-list-gap: {% if section.settings.stack_products %}{% if section.settings.products_per_row_mobile == '1' %}var(--grid-gutter){% else %}var(--product-list-row-gap){% endif %} var(--spacing-2){% else %}var(--product-list-row-gap) var(--product-list-column-gap){% endif %};
-    --product-list-items-per-row: {{ section.settings.products_per_row_mobile | times: 1 }};
-    --product-list-carousel-item-width: 74vw;
-    --product-list-grid: {% if section.settings.stack_products %}auto / repeat(var(--product-list-items-per-row), minmax(0, 1fr)){% else %}auto / auto-flow var(--product-list-carousel-item-width){% endif %};
-  }
+  .product-card__aside {
+  display: none !important;
+}
 
-  @media screen and (min-width: 700px) {
-    #shopify-section-{{ section.id }} .product-list {
-      --product-list-gap: var(--product-list-row-gap) var(--product-list-column-gap);
-      --product-list-items-per-row: 2;
-      --product-list-carousel-item-width: 36vw;
+  /* Product Card Border & Shadow Styling */
+  .product-card {
+    border: 1px solid #E0E0E0 !important;
+    border-radius: 4px !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0) !important;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease !important;
+    overflow: hidden !important;
+  }
+  
+  .product-card:hover {
+    border-color: #CCCCCC !important;
+  }
+  
+  .product-card__figure {
+    border-radius: 4px 4px 0 0 !important;
+  }
+  
+  .product-card__figure img {
+    border-radius: 4px 4px 0 0 !important;
+  }
+  
+  .product-card__info {
+    padding: 12px !important;
+  }
+  
+  /* Price alignment fix for consistent layout */
+  .product-card__info .price-list {
+    min-height: 24px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+  }
+  
+  .product-card__info--center .price-list {
+    justify-content: center !important;
+  }
+  
+  /* Ensure consistent spacing for product title */
+  .product-card__title {
+    min-height: 40px !important;
+    display: block !important;
+  }
+  
+  .product-card__title a {
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    line-height: 1.4 !important;
+    max-height: calc(1.4em * 2) !important;
+  }
+  
+  /* Mobile specific adjustments */
+  @media (max-width: 699px) {
+    .product-card__info .price-list {
+      flex-wrap: wrap !important;
+      gap: 4px !important;
+    }
+    
+    .product-card__title {
+      min-height: 44px !important;
+      font-size: 14px !important;
     }
   }
 
-  @media screen and (min-width: 1000px) {
-    #shopify-section-{{ section.id }} .product-list {
-      --product-list-items-per-row: {{ section.settings.products_per_row_desktop }};
-      --product-list-carousel-item-width: calc(var(--container-inner-width) / {{ section.settings.products_per_row_desktop }} - (var(--product-list-column-gap) / {{ section.settings.products_per_row_desktop }} * {{ section.settings.products_per_row_desktop | minus: 1 }}));
+  /* Add to Cart Button Styling */
+  .product-card__add-to-cart {
+    display: flex;
+    justify-content: center;
+    margin-top: 12px;
+    width: 100%;
+  }
+
+  .product-card__cart-button {
+    background-color: #D50000 !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 4px !important;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: none !important;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    width: 100%;
+    max-width: 200px;
+    text-align: center;
+  }
+
+  .product-card__cart-button:hover {
+    background-color: #B71C1C !important;
+  }
+
+  .product-card__cart-button:active {
+    background-color: #8B0000 !important;
+  }
+
+  .product-card__cart-button:disabled {
+    background-color: #cccccc !important;
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  .product-card__cart-button--loading {
+    position: relative;
+    pointer-events: none;
+  }
+
+  .product-card__cart-button--loading::after {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: 50%;
+    left: 50%;
+    margin-left: -8px;
+    margin-top: -8px;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: spinner 0.6s linear infinite;
+  }
+
+  @keyframes spinner {
+    to {
+      transform: rotate(360deg);
     }
   }
 </style>
 
-{%- comment -%}
-------------------------------------------------------------------------------------------------------------------------
-LIQUID
-------------------------------------------------------------------------------------------------------------------------
-{%- endcomment -%}
+{%- assign show_rating = show_rating | default: settings.show_product_rating, allow_false: true -%}
+{%- assign show_vendor = show_vendor | default: settings.show_vendor, allow_false: true -%}
+{%- assign show_quick_buy = show_quick_buy | default: settings.show_quick_buy, allow_false: true -%}
+{%- assign show_secondary_image = show_secondary_image | default: settings.show_secondary_image, allow_false: true -%}
+{%- assign text_alignment = text_alignment | default: settings.product_info_alignment -%}
 
-<div {% render 'section-properties' %}>
-  <div class="section-stack">
-    {%- render 'section-header', subheading: section.settings.subheading, heading: section.settings.title, heading_color: section.settings.heading_color, heading_gradient: section.settings.heading_gradient, content: section.settings.content -%}
+{%- if stacked and section.settings.products_per_row_mobile == '2' -%}
+  {%- assign mobile_reduced = true -%}
+{%- endif -%}
 
-    <div class="{% if section.settings.show_progress_bar %}scrollable-with-controls{% else %}floating-controls-container{% endif %}">
-      {%- assign scroll_area_id = 'scroll-area-' | append: section.id -%}
+{%- assign section_background = section.settings.background_gradient | default: section.settings.background | default: settings.background -%}
+{%- assign card_background = background | default: settings.product_card_background -%}
+{%- assign card_text_color = text_color | default: settings.product_card_text_color -%}
 
-      {%- if section.settings.products.count > 0 -%}
-        <scroll-carousel selector="product-card" id="{{ scroll_area_id }}" class="scroll-area bleed {% if section.settings.products.count > section.settings.products_per_row_desktop %}is-scrollable{% endif %}">
-          <reveal-items selector=".product-list > *">
-            <product-list class="product-list">
-              {%- for product in section.settings.products -%}
-                {%- render 'product-card', product: product, stacked: section.settings.stack_products, background: section.settings.product_card_background, text_color: section.settings.product_card_text_color, show_badges: true -%}
-              {%- endfor -%}
-            </product-list>
-          </reveal-items>
-        </scroll-carousel>
+{%- if section_background != 'rgba(0,0,0,0)' and card_background != 'rgba(0,0,0,0)' and section_background != card_background -%}
+  {%- assign card_class = 'product-card ' -%}
+{%- else -%}
+  {%- assign card_class = 'product-card product-card--blends ' -%}
+{%- endif -%}
 
-        {%- if section.settings.stack_products == false -%}
-          {%- if section.settings.show_progress_bar -%}
-            {%- assign default_progress = section.settings.products_per_row_desktop | times: 1.0 | divided_by: section.settings.products.count -%}
-            {%- render 'scrollbar', observes: scroll_area_id, default_progress: default_progress, show_buttons: true -%}
+{%- if show_secondary_image and product.media.size > 1 -%}
+  {%- assign card_class = card_class | append: 'product-card--show-secondary-media' -%}
+{%- endif -%}
+
+<product-card handle="{{ product.handle | escape }}" {% if reveal %}reveal-js{% endif %} {% render 'surface', class: card_class, background: card_background, text_color: card_text_color %}>
+  {%- comment -%}
+  --------------------------------------------------------------------------------------------------------------------
+  PRODUCT BADGES
+  --------------------------------------------------------------------------------------------------------------------
+  {%- endcomment -%}
+
+  {%- if show_badges and product.media.size > 0 -%}
+    {%- render 'product-badges', product: product, class: 'product-card__badge-list' -%}
+  {%- endif -%}
+
+  {%- comment -%}
+  --------------------------------------------------------------------------------------------------------------------
+  PRODUCT MEDIA
+  --------------------------------------------------------------------------------------------------------------------
+  {%- endcomment -%}
+
+  {%- if product.media.size > 0 -%}
+    <div class="product-card__figure">
+      <a href="{{ product.url }}" data-instant>
+        {%- capture sizes -%}
+          {%- if stacked -%}
+            (max-width: 699px) calc(100vw / {{ section.settings.products_per_row_mobile }} - 40px), (max-width: 1200px) calc(100vw / {{ 3 | at_most: section.settings.products_per_row_desktop }} - 64px), calc(min(100vw - 96px, {{ settings.page_width }}px) / {{ section.settings.products_per_row_desktop }} - (24px / {{ section.settings.products_per_row_desktop }} * {{ section.settings.products_per_row_desktop | minus: 1 }}))
           {%- else -%}
-            <button is="prev-button" class="circle-button circle-button--lg circle-button--fill border group" aria-controls="{{ scroll_area_id }}" disabled>
-              <span class="sr-only">{{ 'general.accessibility.previous' | t }}</span>
-              <span class="animated-arrow animated-arrow--reverse"></span>
-            </button>
-
-            <button is="next-button" class="circle-button circle-button--lg circle-button--fill border group" aria-controls="{{ scroll_area_id }}">
-              <span class="sr-only">{{ 'general.accessibility.next' | t }}</span>
-              <span class="animated-arrow"></span>
-            </button>
+            (max-width: 699px) 74vw, (max-width: 999px) 38vw, calc(min(100vw - 96px, {{ settings.page_width }}px) / {{ section.settings.products_per_row_desktop }} - (24px / {{ section.settings.products_per_row_desktop }} * {{ section.settings.products_per_row_desktop | minus: 1 }}))
           {%- endif -%}
+        {%- endcapture -%}
+
+        {%- capture main_image_classes -%}product-card__image product-card__image--primary {% if settings.product_image_aspect_ratio contains 'crop' %}object-fill-safe{% endif %} aspect-{{ settings.product_image_aspect_ratio | split: '_' | first }}{%- endcapture -%}
+        {{- product.featured_media | image_url: width: product.featured_media.width | image_tag: loading: 'lazy', sizes: sizes, widths: '200,300,400,500,600,700,800,1000,1200,1400,1600,1800', class: main_image_classes -}}
+
+        {%- if show_secondary_image and product.media.size > 1 -%}
+          {%- assign next_media = product.media[product.featured_media.position] | default: product.media[1] -%}
+          {{- next_media | image_url: width: next_media.width | image_tag: class: 'product-card__image product-card__image--secondary object-fill', loading: 'lazy', fetchpriority: 'low', sizes: sizes, widths: '200,300,400,500,600,700,800,1000,1200,1400,1600,1800' -}}
         {%- endif -%}
-      {%- else -%}
-        <product-recommendations product="{{ product.id }}" limit="{{ section.settings.recommendations_count }}" intent="related" class="contents">
-          {%- if recommendations.performed and recommendations.products_count > 0 -%}
-            <scroll-carousel selector="product-card" id="{{ scroll_area_id }}" class="scroll-area bleed {% if section.settings.recommendations_count > section.settings.products_per_row_desktop %}is-scrollable{% endif %}">
-              <reveal-items selector=".product-list > *">
-                <product-list class="product-list">
-                  {%- for product in recommendations.products -%}
-                    {%- render 'product-card', product: product, stacked: section.settings.stack_products, background: section.settings.product_card_background, text_color: section.settings.product_card_text_color, show_badges: true -%}
-                  {%- endfor -%}
-                </product-list>
-              </reveal-items>
-            </scroll-carousel>
+      </a>
 
-            {%- if section.settings.stack_products == false -%}
-              {%- if section.settings.show_progress_bar -%}
-                {%- assign default_progress = section.settings.products_per_row_desktop | times: 1.0 | divided_by: section.settings.recommendations_count -%}
-                {%- render 'scrollbar', observes: scroll_area_id, default_progress: default_progress, show_buttons: true -%}
-              {%- else -%}
-                <button is="prev-button" class="circle-button circle-button--lg circle-button--fill border group" aria-controls="{{ scroll_area_id }}" disabled>
-                  <span class="sr-only">{{ 'general.accessibility.previous' | t }}</span>
-                  <span class="animated-arrow animated-arrow--reverse"></span>
-                </button>
+      {%- if show_quick_buy and product.available -%}
+        <div class="product-card__quick-buy">
+          {%- assign quick_add_label = 'product.general.quick_add' | t -%}
 
-                <button is="next-button" class="circle-button circle-button--lg circle-button--fill border group" aria-controls="{{ scroll_area_id }}">
-                  <span class="sr-only">{{ 'general.accessibility.next' | t }}</span>
-                  <span class="animated-arrow"></span>
+          {%- if product.variants.size == 1 and product.selling_plan_groups.size == 0 -%}
+            {%- form 'product', product, is: 'product-form' -%}
+              <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+
+              <div class="pointer-fine:hidden">
+                <button type="submit" is="custom-button" class="product-card__mobile-quick-buy-button" aria-label="{{ quick_add_label | escape }}">
+                  {%- render 'icon' with 'quick-buy-cart' -%}
                 </button>
-              {%- endif -%}
-            {%- endif -%}
+              </div>
+
+              <div class="pointer-coarse:hidden">
+                {%- render 'button', type: 'submit', content: quick_add_label -%}
+              </div>
+            {%- endform -%}
+          {%- else -%}
+            {%- capture quick_buy_id -%}quick-buy-{{ section.id }}-{{ product.id }}{%- endcapture -%}
+
+            <div class="pointer-fine:hidden">
+              <button type="button" aria-controls="{{ quick_buy_id }}" aria-expanded="false" aria-label="{{ quick_add_label | escape }}" is="custom-button" class="product-card__mobile-quick-buy-button">
+                {%- render 'icon' with 'quick-buy-cart' -%}
+              </button>
+            </div>
+
+            <div class="pointer-coarse:hidden">
+              {%- render 'button', content: quick_add_label, aria_controls: quick_buy_id -%}
+            </div>
+
+            <quick-buy-drawer id="{{ quick_buy_id }}" header-bordered open-from="bottom" handle="{{ product.handle }}" role="region" aria-live="polite" class="quick-buy-drawer drawer">
+              {%- comment -%}Quick buy content is filled on demand for performance reasons {%- endcomment -%}
+            </quick-buy-drawer>
           {%- endif -%}
-        </product-recommendations>
+        </div>
       {%- endif -%}
     </div>
-  </div>
-</div>
+  {%- endif -%}
 
-{% schema %}
-{
-  "name": "Related products",
-  "class": "shopify-section--product-recommendations",
-  "tag": "section",
-  "enabled_on": {
-    "templates": ["product"]
-  },
-  "settings": [
-    {
-      "type": "paragraph",
-      "content": "Dynamic recommendations change and improve with time. Create manual product recommendations using the Shopify Search & Discovery app. [Learn more](https://help.shopify.com/en/manual/online-store/search-and-discovery/product-recommendations)."
+  {%- comment -%}
+  --------------------------------------------------------------------------------------------------------------------
+  PRODUCT INFO
+  --------------------------------------------------------------------------------------------------------------------
+  {%- endcomment -%}
+
+  <div class="product-card__info {% if text_alignment == 'center' %}product-card__info--center{% endif %}">
+    {%- if show_vendor and product.vendor != blank -%}
+      {%- if show_rating and text_alignment != 'center' -%}
+        <div class="rating-with-text w-full">
+          {%- render 'vendor' with product.vendor, class: 'text-xs' -%}
+
+          {%- capture rating_class -%}{% if mobile_reduced %}hidden sm:flex{% endif %}{%- endcapture -%}
+          {%- render 'product-rating', product: product, class: rating_class, display_mode: settings.product_rating_mode -%}
+        </div>
+      {%- else -%}
+        {%- render 'vendor' with product.vendor, class: 'text-xs' -%}
+      {%- endif -%}
+    {%- endif -%}
+
+    <div class="v-stack gap-0.5 w-full {% if text_alignment == 'center' %}justify-items-center{% endif %}">
+      {%- if show_rating and show_vendor == false or product.vendor == blank -%}
+        <div class="rating-with-text">
+          <span class="product-card__title"><a href="{{ product.url }}" class="bold" data-instant>{{ product.title }}</a></span>
+
+          {%- if text_alignment != 'center' -%}
+            {%- capture rating_class -%}{% if mobile_reduced %}hidden sm:flex{% endif %}{%- endcapture -%}
+            {%- render 'product-rating', product: product, class: rating_class, display_mode: settings.product_rating_mode -%}
+          {%- endif -%}
+        </div>
+      {%- else -%}
+        <span class="product-card__title"><a href="{{ product.url }}" class="bold" data-instant>{{ product.title }}</a></span>
+      {%- endif -%}
+
+      {%- render 'price-list', product: product, text_alignment: text_alignment -%}
+    </div>
+
+    {%- if show_rating and mobile_reduced or text_alignment == 'center' -%}
+      {%- capture rating_class -%}{% unless text_alignment == 'center' %}sm:hidden{% endunless %}{%- endcapture -%}
+      {%- render 'product-rating', product: product, class: rating_class, display_mode: settings.product_rating_mode -%}
+    {%- endif -%}
+
+    {%- if settings.product_color_display != 'hide' and show_swatches != false -%}
+      {%- assign color_label_list = 'general.label.color' | t | replace: ', ', ',' | downcase | split: ',' -%}
+
+      {%- for color_label in color_label_list -%}
+        {%- if product.options_by_name[color_label] != blank -%}
+          {%- assign product_option = product.options_by_name[color_label] -%}
+          {%- capture name -%}swatch-{{ section.id }}-{{ product.id }}-{{ product_option.position }}{%- endcapture -%}
+
+          <div class="product-card__aside">
+            {%- case settings.product_color_display -%}
+              {%- when 'count' -%}
+                <p class="product-card__color-count text-sm text-subdued">{{- 'product.general.available_colors_count' | t: count: product_option.values.size -}}</p>
+
+              {%- when 'swatch' -%}
+                <fieldset class="product-card__swatch-list h-stack {% if settings.color_swatch_style == 'rectangle' %}gap-2.5{% else %}gap-0.5{% endif %}" data-option-position="{{ product_option.position }}">
+                  {%- for option_value in product_option.values limit: 4 -%}
+                    {%- if forloop.first or product.selected_or_first_available_variant.matched and option_value == product_option.selected_value -%}
+                      {%- assign selected = true -%}
+                    {%- else -%}
+                      {% assign selected = false %}
+                    {%- endif -%}
+
+                    {%- render 'swatch' with 'color', value: option_value, name: name, size: 'sm', selected: selected -%}
+                  {%- endfor -%}
+
+                  {% if product_option.values.size > 4 %}
+                    <a href="{{ product.url }}" data-instant class="color-swatch__view-more {% if settings.color_swatch_style == 'round' %}rounded-full{% endif %} text-xxs text-subdued">+{{ product_option.values.size | minus: 4 }}</a>
+                  {% endif %}
+                </fieldset>
+
+              {%- when 'variant' -%}
+                <fieldset class="product-card__variant-list" data-option-position="{{ product_option.position }}">
+                  {%- for option_value in product_option.values limit: 4 -%}
+                    {%- assign variant_option = 'option' | append: product_option.position -%}
+                    {%- assign variant_for_value = product.variants | where: variant_option, option_value | first -%}
+
+                    {%- if forloop.first or variant_for_value.matched and option_value == product_option.selected_value -%}
+                      {%- assign selected = true -%}
+                    {%- else -%}
+                      {% assign selected = false %}
+                    {%- endif -%}
+
+                    {%- render 'swatch' with 'media', media: variant_for_value.featured_media, value: option_value, name: name, size: 'sm', selected: selected -%}
+                  {%- endfor -%}
+
+                  {%- if product_option.values.size > 4 -%}
+                    <a href="{{ product.url }}" data-instant class="media-swatch__view-more text-xs text-subdued">+{{ product_option.values.size | minus: 4 }}</a>
+                  {%- endif -%}
+                </fieldset>
+              {%- endcase -%}
+          </div>
+
+          {%- break -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endif -%}
+
+    {%- comment -%}
+    --------------------------------------------------------------------------------------------------------------------
+    ADD TO CART BUTTON
+    --------------------------------------------------------------------------------------------------------------------
+    {%- endcomment -%}
+    <div class="product-card__add-to-cart">
+      {%- if product.available -%}
+        <button 
+          type="button" 
+          class="product-card__cart-button"
+          data-product-id="{{ product.id }}"
+          data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+          onclick="handleAddToCart(this)"
+        >
+          Add to Cart
+        </button>
+      {%- else -%}
+        <button type="button" class="product-card__cart-button" disabled>
+          Sold Out
+        </button>
+      {%- endif -%}
+    </div>
+
+  </div>
+</product-card>
+
+<script>
+function handleAddToCart(button) {
+  const variantId = button.getAttribute('data-variant-id');
+  
+  // Add loading state
+  button.classList.add('product-card__cart-button--loading');
+  const originalText = button.textContent;
+  button.textContent = '';
+  button.disabled = true;
+  
+  fetch('/cart/add.js', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
     },
-    {
-      "type": "range",
-      "id": "recommendations_count",
-      "min": 2,
-      "max": 10,
-      "label": "Dynamic recommendations count",
-      "default": 6
-    },
-    {
-      "type": "product_list",
-      "id": "products",
-      "limit": 20,
-      "label": "Manual recommendations",
-      "info": "Replaces automatic recommendations when selected."
-    },
-    {
-      "type": "checkbox",
-      "id": "full_width",
-      "label": "Full width",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "stack_products",
-      "label": "Stack products",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_progress_bar",
-      "label": "Show carousel progress bar",
-      "default": false
-    },
-    {
-      "type": "select",
-      "id": "products_per_row_mobile",
-      "label": "Products per row (mobile)",
-      "options": [
-        {
-          "value": "1",
-          "label": "1"
-        },
-        {
-          "value": "2",
-          "label": "2"
-        }
-      ],
-      "default": "1"
-    },
-    {
-      "type": "range",
-      "id": "products_per_row_desktop",
-      "min": 2,
-      "max": 5,
-      "label": "Products per row (desktop)",
-      "default": 3
-    },
-    {
-      "type": "text",
-      "id": "subheading",
-      "label": "Subheading"
-    },
-    {
-      "type": "text",
-      "id": "title",
-      "label": "Heading",
-      "default": "You may also like"
-    },
-    {
-      "type": "richtext",
-      "id": "content",
-      "label": "Content"
-    },
-    {
-      "type": "header",
-      "content": "Colors",
-      "info": "Gradient replaces solid colors when set."
-    },
-    {
-      "type": "color",
-      "id": "background",
-      "label": "Background"
-    },
-    {
-      "type": "color_background",
-      "id": "background_gradient",
-      "label": "Background gradient"
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Text"
-    },
-    {
-      "type": "color",
-      "id": "heading_color",
-      "label": "Heading color"
-    },
-    {
-      "type": "color_background",
-      "id": "heading_gradient",
-      "label": "Heading gradient"
-    },
-    {
-      "type": "color",
-      "id": "product_card_background",
-      "label": "Product card background"
-    },
-    {
-      "type": "color",
-      "id": "product_card_text_color",
-      "label": "Product card text"
-    }
-  ],
-  "presets": [
-    {
-      "name": "Related products"
-    }
-  ]
+    body: JSON.stringify({
+      id: variantId,
+      quantity: 1
+    })
+  })
+  .then(response => response.json())
+  .then(data => {
+    // Remove loading state
+    button.classList.remove('product-card__cart-button--loading');
+    button.textContent = 'Added!';
+    
+    // Trigger cart update event if your theme has cart drawer
+    document.documentElement.dispatchEvent(new CustomEvent('cart:refresh', {
+      bubbles: true
+    }));
+    
+    // Reset button text after 2 seconds
+    setTimeout(() => {
+      button.textContent = originalText;
+      button.disabled = false;
+    }, 2000);
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    button.classList.remove('product-card__cart-button--loading');
+    button.textContent = 'Error - Try Again';
+    button.disabled = false;
+    
+    setTimeout(() => {
+      button.textContent = originalText;
+    }, 2000);
+  });
 }
-{% endschema %}
+</script>
