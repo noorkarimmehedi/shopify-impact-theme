@@ -19,6 +19,25 @@
     <div class="footer__wrapper">
       {%- comment -%}
       ------------------------------------------------------------------------------------------------------------------
+      LOGO AREA
+      ------------------------------------------------------------------------------------------------------------------
+      {%- endcomment -%}
+
+      {%- if section.settings.logo != blank -%}
+        <div class="footer__logo">
+          {%- assign logo_width = section.settings.logo_width -%}
+          {%- capture sizes -%}{{ logo_width }}px{%- endcapture -%}
+          {%- capture widths -%}{{ logo_width }}, {{ logo_width | times: 2 | at_most: section.settings.logo.width }}{%- endcapture -%}
+          {%- capture style -%}max-width: {{ logo_width }}px{%- endcapture -%}
+          
+          <a href="{{ routes.root_url }}" class="footer__logo-link">
+            {{- section.settings.logo | image_url: width: section.settings.logo.width | image_tag: loading: 'lazy', style: style, sizes: sizes, widths: widths, alt: shop.name -}}
+          </a>
+        </div>
+      {%- endif -%}
+
+      {%- comment -%}
+      ------------------------------------------------------------------------------------------------------------------
       BLOCK AREA
       ------------------------------------------------------------------------------------------------------------------
       {%- endcomment -%}
@@ -186,6 +205,26 @@
   "tag": "footer",
   "max_blocks": 5,
   "settings": [
+    {
+      "type": "header",
+      "content": "Logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo image",
+      "info": "400 x 200px .png recommended"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 50,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "label": "Logo width",
+      "default": 150
+    },
     {
       "type": "checkbox",
       "id": "show_social_media",
