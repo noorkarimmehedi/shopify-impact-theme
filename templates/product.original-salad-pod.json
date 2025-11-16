@@ -78,6 +78,12 @@
         "payment_terms": {
           "type": "payment_terms",
           "settings": {}
+        },
+        "liquid_NRqdVH": {
+          "type": "liquid",
+          "settings": {
+            "liquid": "{% render 'video-Angonaloy-Original-Salad-Pod' %}"
+          }
         }
       },
       "block_order": [
@@ -91,7 +97,8 @@
         "variant_picker",
         "quantity_selector",
         "buy_buttons",
-        "payment_terms"
+        "payment_terms",
+        "liquid_NRqdVH"
       ],
       "settings": {
         "full_width": true,
