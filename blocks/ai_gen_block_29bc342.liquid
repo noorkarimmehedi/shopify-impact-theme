@@ -25,18 +25,18 @@
     text-align: center;
     transition: 0.3s ease-in-out;
     cursor: pointer;
-    background-color: transparent;
+    background-color: #FFF3E0;
     filter: url(#handDrawnNoise);
     user-select: none;
     font-family: "Courier New", monospace;
     font-size: {{ block.settings.heading_size }}px;
-    color: {{ block.settings.heading_color }};
+    color: #D50000;
     font-weight: bold;
     padding: 0.5em 1.5em;
     margin: 0 0 12px;
     border-width: 0px;
     border-radius: 4px;
-    box-shadow: #33333366 4px 4px 0 1px;
+    box-shadow: #D5000066 4px 4px 0 1px;
     animation: idle-{{ ai_gen_id }} 1s infinite ease-in-out;
   }
 
@@ -50,7 +50,7 @@
   }
 
   .ai-category-slider-title-{{ ai_gen_id }}:active {
-    box-shadow: inset #333333f1 4px 4px 0 1px;
+    box-shadow: inset #D50000f1 4px 4px 0 1px;
     rotate: -2.5deg;
     animation: active-{{ ai_gen_id }} 1s infinite ease-in-out;
   }
@@ -67,8 +67,8 @@
     left: 0;
     width: 100%;
     height: 100%;
-    fill: rgba(255, 225, 0, 0.5);
-    stroke: rgba(255, 225, 0, 0.5);
+    fill: rgba(213, 0, 0, 0.2);
+    stroke: rgba(213, 0, 0, 0.5);
     stroke-width: 10;
     stroke-linecap: round;
     pointer-events: none;
@@ -78,7 +78,7 @@
   }
 
   .ai-button-cosm-{{ ai_gen_id }} {
-    fill: #33333366;
+    fill: #D5000066;
     transition: 0.3s ease-out;
     scale: 0.5;
     position: absolute;
@@ -91,7 +91,7 @@
   }
 
   .ai-category-slider-title-{{ ai_gen_id }}:active .ai-button-cosm-{{ ai_gen_id }} {
-    fill: #333333f1;
+    fill: #D50000f1;
     rotate: -135deg;
     translate: calc(-100% + 55px) 1.6rem;
     animation: none;
@@ -161,10 +161,10 @@
 
   @keyframes col-{{ ai_gen_id }} {
     0% {
-      stroke: rgba(255, 225, 0, 0.5);
+      stroke: rgba(213, 0, 0, 0.5);
     }
     100% {
-      stroke: #1c98eb66;
+      stroke: rgba(213, 0, 0, 0.8);
     }
   }
 
