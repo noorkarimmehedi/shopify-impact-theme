@@ -101,7 +101,7 @@
             "button_secondary_bg": "#d50000",
             "button_secondary_color": "#ffffff",
             "button_secondary_border": "#ffffff",
-            "button_secondary_hover_bg": "#ffffff",
+            "button_secondary_hover_bg": "#d50000",
             "button_secondary_hover_border": "#d50000",
             "button_font_size": 16,
             "button_padding_vertical": 14,
