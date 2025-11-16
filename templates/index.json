@@ -252,7 +252,7 @@
             "subheading_color": "#666666",
             "image_shape": "circle",
             "item_size": 120,
-            "gap": 20,
+            "gap": 25,
             "text_spacing": 16,
             "category_name_size": 14,
             "category_name_color": "#1a1a1a",
