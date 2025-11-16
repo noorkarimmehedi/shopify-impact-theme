@@ -36,7 +36,7 @@
     "show_page_transition": true,
     "reduce_drawer_animation": true,
     "heading_apparition": "split_fade",
-    "show_quick_buy": true,
+    "show_quick_buy": false,
     "product_color_display": "swatch",
     "product_info_alignment": "start",
     "cart_icon": "tote_bag",
