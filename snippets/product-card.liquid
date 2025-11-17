@@ -24,50 +24,54 @@ Supported variables
 
 <style>
   .product-card__aside {
-  display: none !important;
-}
+    display: none !important;
+  }
 
-  /* Product Card Border & Shadow Styling */
+  /* Product Card Layout - Flexbox for consistent heights */
   .product-card {
     border: 1px solid #E0E0E0 !important;
     border-radius: 4px !important;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0) !important;
     transition: border-color 0.3s ease, box-shadow 0.3s ease !important;
     overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
   }
   
   .product-card:hover {
     border-color: #CCCCCC !important;
   }
   
+  /* Image container - fixed aspect ratio */
   .product-card__figure {
     border-radius: 4px 4px 0 0 !important;
+    flex-shrink: 0 !important;
   }
   
   .product-card__figure img {
     border-radius: 4px 4px 0 0 !important;
   }
   
+  /* Info section - grows to fill space and uses flexbox */
   .product-card__info {
     padding: 12px !important;
-  }
-  
-  /* Price alignment fix for consistent layout */
-  .product-card__info .price-list {
-    min-height: 24px !important;
     display: flex !important;
-    align-items: center !important;
-    justify-content: flex-start !important;
+    flex-direction: column !important;
+    flex-grow: 1 !important;
   }
   
-  .product-card__info--center .price-list {
-    justify-content: center !important;
+  /* Vendor section */
+  .product-card__vendor-section {
+    margin-bottom: 8px !important;
   }
   
-  /* Ensure consistent spacing for product title */
+  /* Title - fixed height with ellipsis */
   .product-card__title {
-    min-height: 40px !important;
+    min-height: 44px !important;
+    max-height: 44px !important;
     display: block !important;
+    margin-bottom: 8px !important;
   }
   
   .product-card__title a {
@@ -79,16 +83,45 @@ Supported variables
     line-height: 1.4 !important;
     max-height: calc(1.4em * 2) !important;
   }
+  
+  /* Price section - fixed height */
+  .product-card__price-section {
+    min-height: 28px !important;
+    margin-bottom: 12px !important;
+  }
+  
+  .product-card__info .price-list {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    flex-wrap: wrap !important;
+    gap: 4px !important;
+  }
+  
+  .product-card__info--center .price-list {
+    justify-content: center !important;
+  }
+  
+  /* Spacer to push button to bottom */
+  .product-card__spacer {
+    flex-grow: 1 !important;
+  }
+  
+  /* Rating section */
+  .product-card__rating-section {
+    margin-bottom: 8px !important;
+  }
 
-  /* Add to Cart Button Styling */
+  /* Add to Cart Button - Always at bottom */
   .product-card__add-to-cart {
-    margin-top: 12px !important;
+    margin-top: auto !important;
     width: 100% !important;
+    padding-top: 12px !important;
   }
 
   .product-card__add-to-cart-btn {
     width: 100% !important;
-    padding: 10px 16px !important;
+    padding: 12px 16px !important;
     background-color: #D50000 !important;
     color: #ffffff !important;
     border: none !important;
@@ -96,20 +129,27 @@ Supported variables
     font-size: 14px !important;
     font-weight: 600 !important;
     cursor: pointer !important;
-    transition: background-color 0.3s ease !important;
+    transition: background-color 0.3s ease, transform 0.2s ease !important;
     text-transform: uppercase !important;
     letter-spacing: 0.5px !important;
     text-align: center !important;
+    display: block !important;
   }
 
   .product-card__add-to-cart-btn:hover {
     background-color: #B00000 !important;
+    transform: translateY(-1px) !important;
+  }
+
+  .product-card__add-to-cart-btn:active {
+    transform: translateY(0) !important;
   }
 
   .product-card__add-to-cart-btn:disabled {
     background-color: #cccccc !important;
     cursor: not-allowed !important;
     opacity: 0.6 !important;
+    transform: none !important;
   }
 
   .product-card__add-to-cart-btn--unavailable {
@@ -119,20 +159,26 @@ Supported variables
   
   /* Mobile specific adjustments */
   @media (max-width: 699px) {
-    .product-card__info .price-list {
-      flex-wrap: wrap !important;
-      gap: 4px !important;
-    }
-    
     .product-card__title {
-      min-height: 44px !important;
+      min-height: 40px !important;
+      max-height: 40px !important;
       font-size: 14px !important;
     }
 
     .product-card__add-to-cart-btn {
-      padding: 8px 12px !important;
+      padding: 10px 12px !important;
       font-size: 13px !important;
     }
+    
+    .product-card__info {
+      padding: 10px !important;
+    }
+  }
+  
+  /* Ensure grid items stretch to full height */
+  .product-list .product-card,
+  .collection-list .product-card {
+    height: 100% !important;
   }
 </style>
 
@@ -196,8 +242,6 @@ Supported variables
           {{- next_media | image_url: width: next_media.width | image_tag: class: 'product-card__image product-card__image--secondary object-fill', loading: 'lazy', fetchpriority: 'low', sizes: sizes, widths: '200,300,400,500,600,700,800,1000,1200,1400,1600,1800' -}}
         {%- endif -%}
       </a>
-
-      {%- comment -%} Quick Buy Feature Disabled {%- endcomment -%}
     </div>
   {%- endif -%}
 
@@ -208,44 +252,50 @@ Supported variables
   {%- endcomment -%}
 
   <div class="product-card__info {% if text_alignment == 'center' %}product-card__info--center{% endif %}">
+    {%- comment -%} VENDOR SECTION {%- endcomment -%}
     {%- if show_vendor and product.vendor != blank -%}
-      {%- if show_rating and text_alignment != 'center' -%}
-        <div class="rating-with-text w-full">
-          {%- render 'vendor' with product.vendor, class: 'text-xs' -%}
-
-          {%- capture rating_class -%}{% if mobile_reduced %}hidden sm:flex{% endif %}{%- endcapture -%}
-          {%- render 'product-rating', product: product, class: rating_class, display_mode: settings.product_rating_mode -%}
-        </div>
-      {%- else -%}
-        {%- render 'vendor' with product.vendor, class: 'text-xs' -%}
-      {%- endif -%}
-    {%- endif -%}
-
-    <div class="v-stack gap-0.5 w-full {% if text_alignment == 'center' %}justify-items-center{% endif %}">
-      {%- if show_rating and show_vendor == false or product.vendor == blank -%}
-        <div class="rating-with-text">
-          <span class="product-card__title"><a href="{{ product.url }}" class="bold" data-instant>{{ product.title }}</a></span>
-
-          {%- if text_alignment != 'center' -%}
+      <div class="product-card__vendor-section">
+        {%- if show_rating and text_alignment != 'center' -%}
+          <div class="rating-with-text w-full">
+            {%- render 'vendor' with product.vendor, class: 'text-xs' -%}
             {%- capture rating_class -%}{% if mobile_reduced %}hidden sm:flex{% endif %}{%- endcapture -%}
             {%- render 'product-rating', product: product, class: rating_class, display_mode: settings.product_rating_mode -%}
-          {%- endif -%}
-        </div>
-      {%- else -%}
-        <span class="product-card__title"><a href="{{ product.url }}" class="bold" data-instant>{{ product.title }}</a></span>
-      {%- endif -%}
+          </div>
+        {%- else -%}
+          {%- render 'vendor' with product.vendor, class: 'text-xs' -%}
+        {%- endif -%}
+      </div>
+    {%- endif -%}
 
+    {%- comment -%} TITLE SECTION {%- endcomment -%}
+    <div class="product-card__title">
+      <a href="{{ product.url }}" class="bold" data-instant>{{ product.title }}</a>
+    </div>
+
+    {%- comment -%} RATING SECTION (for products without vendor) {%- endcomment -%}
+    {%- if show_rating and text_alignment != 'center' and (show_vendor == false or product.vendor == blank) -%}
+      <div class="product-card__rating-section">
+        {%- capture rating_class -%}{% if mobile_reduced %}hidden sm:flex{% endif %}{%- endcapture -%}
+        {%- render 'product-rating', product: product, class: rating_class, display_mode: settings.product_rating_mode -%}
+      </div>
+    {%- endif -%}
+
+    {%- comment -%} PRICE SECTION {%- endcomment -%}
+    <div class="product-card__price-section">
       {%- render 'price-list', product: product, text_alignment: text_alignment -%}
     </div>
 
+    {%- comment -%} MOBILE RATING (if needed) {%- endcomment -%}
     {%- if show_rating and mobile_reduced or text_alignment == 'center' -%}
-      {%- capture rating_class -%}{% unless text_alignment == 'center' %}sm:hidden{% endunless %}{%- endcapture -%}
-      {%- render 'product-rating', product: product, class: rating_class, display_mode: settings.product_rating_mode -%}
+      <div class="product-card__rating-section">
+        {%- capture rating_class -%}{% unless text_alignment == 'center' %}sm:hidden{% endunless %}{%- endcapture -%}
+        {%- render 'product-rating', product: product, class: rating_class, display_mode: settings.product_rating_mode -%}
+      </div>
     {%- endif -%}
 
     {%- comment -%}
     --------------------------------------------------------------------------------------------------------------------
-    ADD TO CART BUTTON
+    ADD TO CART BUTTON - Always at bottom due to margin-top: auto
     --------------------------------------------------------------------------------------------------------------------
     {%- endcomment -%}
     
