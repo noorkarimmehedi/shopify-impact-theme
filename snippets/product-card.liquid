@@ -79,42 +79,6 @@ Supported variables
     line-height: 1.4 !important;
     max-height: calc(1.4em * 2) !important;
   }
-
-  /* Add to Cart Button Styling */
-  .product-card__add-to-cart {
-    margin-top: 12px !important;
-    width: 100% !important;
-  }
-
-  .product-card__add-to-cart-btn {
-    width: 100% !important;
-    padding: 10px 16px !important;
-    background-color: #000000 !important;
-    color: #ffffff !important;
-    border: none !important;
-    border-radius: 4px !important;
-    font-size: 14px !important;
-    font-weight: 600 !important;
-    cursor: pointer !important;
-    transition: background-color 0.3s ease !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.5px !important;
-  }
-
-  .product-card__add-to-cart-btn:hover {
-    background-color: #333333 !important;
-  }
-
-  .product-card__add-to-cart-btn:disabled {
-    background-color: #cccccc !important;
-    cursor: not-allowed !important;
-    opacity: 0.6 !important;
-  }
-
-  .product-card__add-to-cart-btn--unavailable {
-    background-color: #999999 !important;
-    cursor: not-allowed !important;
-  }
   
   /* Mobile specific adjustments */
   @media (max-width: 699px) {
@@ -126,11 +90,6 @@ Supported variables
     .product-card__title {
       min-height: 44px !important;
       font-size: 14px !important;
-    }
-
-    .product-card__add-to-cart-btn {
-      padding: 8px 12px !important;
-      font-size: 13px !important;
     }
   }
 </style>
@@ -277,35 +236,6 @@ Supported variables
       {%- capture rating_class -%}{% unless text_alignment == 'center' %}sm:hidden{% endunless %}{%- endcapture -%}
       {%- render 'product-rating', product: product, class: rating_class, display_mode: settings.product_rating_mode -%}
     {%- endif -%}
-
-    {%- comment -%}
-    --------------------------------------------------------------------------------------------------------------------
-    ADD TO CART BUTTON
-    --------------------------------------------------------------------------------------------------------------------
-    {%- endcomment -%}
-    
-    <div class="product-card__add-to-cart">
-      {%- if product.available -%}
-        {%- if product.variants.size == 1 -%}
-          {%- comment -%} Single variant - direct add to cart {%- endcomment -%}
-          {%- form 'product', product, is: 'product-form' -%}
-            <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-            <button type="submit" class="product-card__add-to-cart-btn">
-              Add to Cart
-            </button>
-          {%- endform -%}
-        {%- else -%}
-          {%- comment -%} Multiple variants - link to product page {%- endcomment -%}
-          <a href="{{ product.url }}" class="product-card__add-to-cart-btn" style="display: block; text-align: center; text-decoration: none;">
-            Select Options
-          </a>
-        {%- endif -%}
-      {%- else -%}
-        <button type="button" class="product-card__add-to-cart-btn product-card__add-to-cart-btn--unavailable" disabled>
-          Sold Out
-        </button>
-      {%- endif -%}
-    </div>
 
     {%- if settings.product_color_display != 'hide' and show_swatches != false -%}
       {%- assign color_label_list = 'general.label.color' | t | replace: ', ', ',' | downcase | split: ',' -%}
