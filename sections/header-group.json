@@ -11,6 +11,26 @@
   "type": "header",
   "name": "Header group",
   "sections": {
+    "announce_rGdPiY": {
+      "type": "announce",
+      "name": "Announcement Bar - V2",
+      "settings": {
+        "announcement": true,
+        "speed": 5000,
+        "design": "design3",
+        "design1_message": "<strong>New Year Special</strong> Up to 20% off",
+        "countdown_day": 31,
+        "countdown_month": 12,
+        "countdown_year": 2024,
+        "countdown_hour": 23,
+        "countdown_minute": 59,
+        "design2_message": "Join 15,000+ Happy Customers",
+        "design3_message": "৳৩০০০+ অর্ডারে ফ্রি ডেলিভারি।কুপন কোড:",
+        "design3_buttontext": "\"NEW25\"",
+        "design4_message": "Our 2025 Collection Launched",
+        "link": ""
+      }
+    },
     "announcement-bar": {
       "type": "announcement-bar",
       "blocks": {
@@ -25,6 +45,7 @@
       "block_order": [
         "message"
       ],
+      "disabled": true,
       "settings": {
         "enable_sticky": false,
         "text_size": "text-base",
@@ -62,6 +83,7 @@
     }
   },
   "order": [
+    "announce_rGdPiY",
     "announcement-bar",
     "header"
   ]
