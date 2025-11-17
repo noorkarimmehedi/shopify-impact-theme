@@ -24,8 +24,8 @@ Supported variables
 
 <style>
   .product-card__aside {
-  display: none !important;
-}
+    display: none !important;
+  }
 
   /* Product Card Border & Shadow Styling */
   .product-card {
@@ -34,6 +34,9 @@ Supported variables
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0) !important;
     transition: border-color 0.3s ease, box-shadow 0.3s ease !important;
     overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
   }
   
   .product-card:hover {
@@ -42,6 +45,7 @@ Supported variables
   
   .product-card__figure {
     border-radius: 4px 4px 0 0 !important;
+    flex-shrink: 0 !important;
   }
   
   .product-card__figure img {
@@ -50,6 +54,9 @@ Supported variables
   
   .product-card__info {
     padding: 12px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    flex-grow: 1 !important;
   }
   
   /* Price alignment fix for consistent layout */
@@ -80,9 +87,17 @@ Supported variables
     max-height: calc(1.4em * 2) !important;
   }
 
-  /* Add to Cart Button Styling */
+  /* Content wrapper to push button to bottom */
+  .product-card__content {
+    flex-grow: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  /* Add to Cart Button Container - always at bottom */
   .product-card__add-to-cart {
-    margin-top: 12px !important;
+    margin-top: auto !important;
+    padding-top: 12px !important;
     width: 100% !important;
   }
 
@@ -196,8 +211,6 @@ Supported variables
           {{- next_media | image_url: width: next_media.width | image_tag: class: 'product-card__image product-card__image--secondary object-fill', loading: 'lazy', fetchpriority: 'low', sizes: sizes, widths: '200,300,400,500,600,700,800,1000,1200,1400,1600,1800' -}}
         {%- endif -%}
       </a>
-
-      {%- comment -%} Quick Buy Feature Disabled {%- endcomment -%}
     </div>
   {%- endif -%}
 
@@ -208,44 +221,46 @@ Supported variables
   {%- endcomment -%}
 
   <div class="product-card__info {% if text_alignment == 'center' %}product-card__info--center{% endif %}">
-    {%- if show_vendor and product.vendor != blank -%}
-      {%- if show_rating and text_alignment != 'center' -%}
-        <div class="rating-with-text w-full">
-          {%- render 'vendor' with product.vendor, class: 'text-xs' -%}
+    <div class="product-card__content">
+      {%- if show_vendor and product.vendor != blank -%}
+        {%- if show_rating and text_alignment != 'center' -%}
+          <div class="rating-with-text w-full">
+            {%- render 'vendor' with product.vendor, class: 'text-xs' -%}
 
-          {%- capture rating_class -%}{% if mobile_reduced %}hidden sm:flex{% endif %}{%- endcapture -%}
-          {%- render 'product-rating', product: product, class: rating_class, display_mode: settings.product_rating_mode -%}
-        </div>
-      {%- else -%}
-        {%- render 'vendor' with product.vendor, class: 'text-xs' -%}
-      {%- endif -%}
-    {%- endif -%}
-
-    <div class="v-stack gap-0.5 w-full {% if text_alignment == 'center' %}justify-items-center{% endif %}">
-      {%- if show_rating and show_vendor == false or product.vendor == blank -%}
-        <div class="rating-with-text">
-          <span class="product-card__title"><a href="{{ product.url }}" class="bold" data-instant>{{ product.title }}</a></span>
-
-          {%- if text_alignment != 'center' -%}
             {%- capture rating_class -%}{% if mobile_reduced %}hidden sm:flex{% endif %}{%- endcapture -%}
             {%- render 'product-rating', product: product, class: rating_class, display_mode: settings.product_rating_mode -%}
-          {%- endif -%}
-        </div>
-      {%- else -%}
-        <span class="product-card__title"><a href="{{ product.url }}" class="bold" data-instant>{{ product.title }}</a></span>
+          </div>
+        {%- else -%}
+          {%- render 'vendor' with product.vendor, class: 'text-xs' -%}
+        {%- endif -%}
       {%- endif -%}
 
-      {%- render 'price-list', product: product, text_alignment: text_alignment -%}
-    </div>
+      <div class="v-stack gap-0.5 w-full {% if text_alignment == 'center' %}justify-items-center{% endif %}">
+        {%- if show_rating and show_vendor == false or product.vendor == blank -%}
+          <div class="rating-with-text">
+            <span class="product-card__title"><a href="{{ product.url }}" class="bold" data-instant>{{ product.title }}</a></span>
 
-    {%- if show_rating and mobile_reduced or text_alignment == 'center' -%}
-      {%- capture rating_class -%}{% unless text_alignment == 'center' %}sm:hidden{% endunless %}{%- endcapture -%}
-      {%- render 'product-rating', product: product, class: rating_class, display_mode: settings.product_rating_mode -%}
-    {%- endif -%}
+            {%- if text_alignment != 'center' -%}
+              {%- capture rating_class -%}{% if mobile_reduced %}hidden sm:flex{% endif %}{%- endcapture -%}
+              {%- render 'product-rating', product: product, class: rating_class, display_mode: settings.product_rating_mode -%}
+            {%- endif -%}
+          </div>
+        {%- else -%}
+          <span class="product-card__title"><a href="{{ product.url }}" class="bold" data-instant>{{ product.title }}</a></span>
+        {%- endif -%}
+
+        {%- render 'price-list', product: product, text_alignment: text_alignment -%}
+      </div>
+
+      {%- if show_rating and mobile_reduced or text_alignment == 'center' -%}
+        {%- capture rating_class -%}{% unless text_alignment == 'center' %}sm:hidden{% endunless %}{%- endcapture -%}
+        {%- render 'product-rating', product: product, class: rating_class, display_mode: settings.product_rating_mode -%}
+      {%- endif -%}
+    </div>
 
     {%- comment -%}
     --------------------------------------------------------------------------------------------------------------------
-    ADD TO CART BUTTON
+    ADD TO CART BUTTON - ALWAYS AT BOTTOM
     --------------------------------------------------------------------------------------------------------------------
     {%- endcomment -%}
     
