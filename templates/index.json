@@ -466,10 +466,10 @@
         "item-1": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/71sG4hiNrkL._AC_SL1500.jpg",
+            "image": "shopify://shop_images/1_3944757c-8d0e-45b3-bcfa-50064af69aa4.webp",
             "title": "",
             "heading_tag": "h4",
-            "link_url": "shopify://products/glass-cups-with-bamboo-lid-and-straw",
+            "link_url": "shopify://products/angonaloys-original-salad-pod",
             "link_text": "",
             "mobile_text_position": "place-self-center text-center",
             "desktop_column_span": 2,
@@ -510,10 +510,10 @@
         "item-3": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/1_3944757c-8d0e-45b3-bcfa-50064af69aa4.webp",
+            "image": "shopify://shop_images/1615CC7D-B81B-466C-A426-3FFD22B5A2B8.png",
             "title": "",
             "heading_tag": "h4",
-            "link_url": "shopify://products/angonaloys-original-salad-pod",
+            "link_url": "shopify://products/glass-cups-with-bamboo-lid-and-straw",
             "link_text": "",
             "mobile_text_position": "place-self-center text-center",
             "desktop_column_span": 1,
