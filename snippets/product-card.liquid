@@ -102,23 +102,94 @@ Supported variables
   }
 
   .product-card__add-to-cart-btn {
+    position: relative !important;
     width: 100% !important;
     padding: 10px 16px !important;
-    background-color: #D50000 !important;
-    color: #ffffff !important;
-    border: none !important;
-    border-radius: 4px !important;
-    font-size: 14px !important;
-    font-weight: 600 !important;
+    outline: none !important;
+    text-decoration: none !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
     cursor: pointer !important;
-    transition: background-color 0.3s ease !important;
     text-transform: uppercase !important;
-    letter-spacing: 0.5px !important;
+    background-color: #fff !important;
+    border: 1px solid rgba(22, 76, 167, 0.6) !important;
+    border-radius: 10px !important;
+    color: #1d89ff !important;
+    font-weight: 500 !important;
+    font-size: 14px !important;
+    letter-spacing: 0.7px !important;
     text-align: center !important;
+    font-family: inherit !important;
+    z-index: 0 !important;
+    overflow: hidden !important;
+    transition: all 0.3s cubic-bezier(0.02, 0.01, 0.47, 1) !important;
   }
 
   .product-card__add-to-cart-btn:hover {
-    background-color: #B00000 !important;
+    animation: rotate624 0.7s ease-in-out both !important;
+  }
+
+  @keyframes rotate624 {
+    0% {
+      transform: rotate(0deg) translate3d(0, 0, 0);
+    }
+    25% {
+      transform: rotate(3deg) translate3d(0, 0, 0);
+    }
+    50% {
+      transform: rotate(-3deg) translate3d(0, 0, 0);
+    }
+    75% {
+      transform: rotate(1deg) translate3d(0, 0, 0);
+    }
+    100% {
+      transform: rotate(0deg) translate3d(0, 0, 0);
+    }
+  }
+
+  @keyframes storm1261 {
+    0% {
+      transform: translate3d(0, 0, 0) translateZ(0);
+    }
+    25% {
+      transform: translate3d(4px, 0, 0) translateZ(0);
+    }
+    50% {
+      transform: translate3d(-3px, 0, 0) translateZ(0);
+    }
+    75% {
+      transform: translate3d(2px, 0, 0) translateZ(0);
+    }
+    100% {
+      transform: translate3d(0, 0, 0) translateZ(0);
+    }
+  }
+
+  .product-card__add-to-cart-btn span {
+    color: #164ca7 !important;
+    z-index: 20 !important;
+    animation: storm1261 0.7s ease-in-out both !important;
+    animation-delay: 0.06s !important;
+  }
+
+  .product-card__add-to-cart-btn:after {
+    background: #38ef7d !important;
+    content: "" !important;
+    height: 155px !important;
+    left: -75px !important;
+    opacity: 0.4 !important;
+    position: absolute !important;
+    top: -50px !important;
+    transform: rotate(35deg) !important;
+    transition: all 550ms cubic-bezier(0.19, 1, 0.22, 1) !important;
+    width: 50px !important;
+    z-index: -10 !important;
+  }
+
+  .product-card__add-to-cart-btn:hover:after {
+    left: 120% !important;
+    transition: all 550ms cubic-bezier(0.19, 1, 0.22, 1) !important;
   }
 
   .product-card__add-to-cart-btn:disabled {
@@ -271,18 +342,18 @@ Supported variables
           {%- form 'product', product, is: 'product-form' -%}
             <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
             <button type="submit" class="product-card__add-to-cart-btn">
-              Add to Cart
+              <span>Add to Cart</span>
             </button>
           {%- endform -%}
         {%- else -%}
           {%- comment -%} Multiple variants - link to product page {%- endcomment -%}
-          <a href="{{ product.url }}" class="product-card__add-to-cart-btn" style="display: block; text-align: center; text-decoration: none;">
-            Select Options
+          <a href="{{ product.url }}" class="product-card__add-to-cart-btn" style="text-decoration: none;">
+            <span>Select Options</span>
           </a>
         {%- endif -%}
       {%- else -%}
         <button type="button" class="product-card__add-to-cart-btn product-card__add-to-cart-btn--unavailable" disabled>
-          Sold Out
+          <span>Sold Out</span>
         </button>
       {%- endif -%}
     </div>
