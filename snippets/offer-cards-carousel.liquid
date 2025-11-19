@@ -1,0 +1,516 @@
+{% comment %}
+  Ticket Style Offer Cards Carousel - Shopify Snippet
+  
+  Usage: {% render 'offer-cards-carousel' %}
+  
+  To customize, edit the variables below or pass them as parameters:
+  {% render 'offer-cards-carousel', 
+    title: "Your Custom Title",
+    title_size: 32,
+    card_1_enabled: true,
+    heading_1: "Special Deal",
+    code_1: "SAVE20"
+  %}
+{% endcomment %}
+
+{% assign unique_id = section.id | default: 'default' | append: '-' | append: block.id | default: 'snippet' %}
+
+{% comment %} Default Settings {% endcomment %}
+{% assign title = title | default: "Exclusive Coupons" %}
+{% assign title_size = title_size | default: 28 %}
+{% assign title_color = title_color | default: "#000000" %}
+{% assign title_spacing = title_spacing | default: 4 %}
+
+{% assign card_background = card_background | default: "#FFE603" %}
+{% assign notch_background = notch_background | default: "#F5F5F5" %}
+{% assign border_color = border_color | default: "#D88117" %}
+{% assign card_border_radius = card_border_radius | default: 4 %}
+{% assign heading_color = heading_color | default: "#000000" %}
+{% assign subheading_color = subheading_color | default: "#333333" %}
+{% assign link_color = link_color | default: "#0066cc" %}
+
+{% assign shadow_opacity = shadow_opacity | default: 0 %}
+{% assign shadow_horizontal = shadow_horizontal | default: 0 %}
+{% assign shadow_vertical = shadow_vertical | default: 2 %}
+{% assign shadow_blur = shadow_blur | default: 8 %}
+
+{% assign code_background = code_background | default: "#FFFFFF" %}
+{% assign code_border_color = code_border_color | default: "#E0E0E0" %}
+{% assign code_color = code_color | default: "#000000" %}
+{% assign description_color = description_color | default: "#000000" %}
+
+{% assign copy_button_text = copy_button_text | default: "Copy" %}
+{% assign copied_text = copied_text | default: "Copied!" %}
+{% assign copy_button_bg = copy_button_bg | default: "#D50000" %}
+{% assign copy_button_color = copy_button_color | default: "#FFFFFF" %}
+{% assign copy_button_hover_bg = copy_button_hover_bg | default: "#D50000" %}
+{% assign success_color = success_color | default: "#D50000" %}
+
+{% assign indicator_color = indicator_color | default: "#FF8C00" %}
+
+{% comment %} Offer 1 {% endcomment %}
+{% assign card_1_enabled = card_1_enabled | default: true %}
+{% assign heading_1 = heading_1 | default: "Get Best Offer and Deals" %}
+{% assign subheading_1 = subheading_1 | default: "" %}
+{% assign code_1 = code_1 | default: "NEW25" %}
+{% assign description_1 = description_1 | default: "প্রথম অর্ডার? ৳২৫০০+ অর্ডারে ৳২০০ ছাড় ও ফ্রি ডেলিভারি।" %}
+
+{% comment %} Offer 2 {% endcomment %}
+{% assign card_2_enabled = card_2_enabled | default: true %}
+{% assign heading_2 = heading_2 | default: "20% OFF Your First Order" %}
+{% assign subheading_2 = subheading_2 | default: "" %}
+{% assign code_2 = code_2 | default: "INSTANT100" %}
+{% assign description_2 = description_2 | default: "৳১৫০০ বা তার বেশি অর্ডারে ৳১০০ ছাড় উপভোগ করুন!" %}
+
+{% comment %} Offer 3 {% endcomment %}
+{% assign card_3_enabled = card_3_enabled | default: true %}
+{% assign heading_3 = heading_3 | default: "Free Shipping Available" %}
+{% assign subheading_3 = subheading_3 | default: "" %}
+{% assign code_3 = code_3 | default: "FREESHIP" %}
+{% assign description_3 = description_3 | default: "৳২৩০০+ অর্ডারে ফ্রি ডেলিভারি।" %}
+
+{% comment %} Offer 4 {% endcomment %}
+{% assign card_4_enabled = card_4_enabled | default: false %}
+{% assign heading_4 = heading_4 | default: "" %}
+{% assign subheading_4 = subheading_4 | default: "" %}
+{% assign code_4 = code_4 | default: "" %}
+{% assign description_4 = description_4 | default: "" %}
+
+{% comment %} Offer 5 {% endcomment %}
+{% assign card_5_enabled = card_5_enabled | default: false %}
+{% assign heading_5 = heading_5 | default: "" %}
+{% assign subheading_5 = subheading_5 | default: "" %}
+{% assign code_5 = code_5 | default: "" %}
+{% assign description_5 = description_5 | default: "" %}
+
+{% style %}
+  .offer-cards-{{ unique_id }} {
+    width: 100%;
+    padding: 0;
+  }
+
+  .offer-cards__title-{{ unique_id }} {
+    text-align: center;
+    font-size: {{ title_size }}px;
+    color: {{ title_color }};
+    font-weight: 700;
+    margin: 0 0 {{ title_spacing }}px 0;
+  }
+
+  .offer-cards__carousel-{{ unique_id }} {
+    position: relative;
+    overflow: hidden;
+    width: calc(100% + 12px);
+    padding: 0;
+    margin-left: -6px;
+    margin-right: -6px;
+  }
+
+  .offer-cards__track-{{ unique_id }} {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: 0;
+    justify-content: flex-start;
+  }
+
+  .offer-cards__track-{{ unique_id }}::-webkit-scrollbar {
+    display: none;
+  }
+
+  .offer-card-{{ unique_id }} {
+    flex: 0 0 260px;
+    scroll-snap-align: center;
+    background: {{ card_background }};
+    border: 2px solid {{ border_color }};
+    border-radius: {{ card_border_radius }}px;
+    padding: 10px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    position: relative;
+    box-shadow: {{ shadow_horizontal }}px {{ shadow_vertical }}px {{ shadow_blur }}px rgba(0, 0, 0, {{ shadow_opacity | divided_by: 100.0 }});
+  }
+
+  /* Ticket notches */
+  .offer-card-{{ unique_id }}::before,
+  .offer-card-{{ unique_id }}::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    background: {{ notch_background }};
+    border-radius: 50%;
+    border: 2px solid {{ border_color }};
+  }
+
+  .offer-card-{{ unique_id }}::before {
+    left: -9px;
+    border-right: none;
+  }
+
+  .offer-card-{{ unique_id }}::after {
+    right: -9px;
+    border-left: none;
+  }
+
+  .offer-card__heading-{{ unique_id }} {
+    font-size: 13px;
+    font-weight: 700;
+    color: {{ heading_color }};
+    margin: 0;
+    line-height: 1.15;
+  }
+
+  .offer-card__subheading-{{ unique_id }} {
+    font-size: 10px;
+    color: {{ subheading_color }};
+    margin: 0;
+    line-height: 1.25;
+  }
+
+  .offer-card__subheading-{{ unique_id }} a {
+    color: {{ link_color }};
+    text-decoration: underline;
+    font-weight: 500;
+  }
+
+  .offer-card__code-wrapper-{{ unique_id }} {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: {{ code_background }};
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px dashed {{ code_border_color }};
+    margin-top: 2px;
+  }
+
+  .offer-card__code-{{ unique_id }} {
+    flex: 1;
+    font-size: 12px;
+    font-weight: 700;
+    color: {{ code_color }};
+    margin: 0;
+    letter-spacing: 0.5px;
+  }
+
+  .offer-card__copy-btn-{{ unique_id }} {
+    background: {{ copy_button_bg }};
+    color: {{ copy_button_color }};
+    border: none;
+    padding: 4px 10px;
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    text-transform: uppercase;
+  }
+
+  .offer-card__copy-btn-{{ unique_id }}:hover {
+    background: {{ copy_button_hover_bg }};
+  }
+
+  .offer-card__copy-btn-{{ unique_id }}.copied {
+    background: {{ success_color }};
+  }
+
+  .offer-card__description-{{ unique_id }} {
+    font-size: 9px;
+    font-weight: 700;
+    color: {{ description_color }};
+    margin: 0;
+    line-height: 1.25;
+  }
+
+  .offer-cards__indicators-{{ unique_id }} {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 8px 0 0 0;
+    padding: 0;
+  }
+
+  .offer-cards__indicator-{{ unique_id }} {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: {{ indicator_color }};
+    opacity: 0.3;
+    transition: opacity 0.3s ease;
+    cursor: pointer;
+    border: none;
+    padding: 0;
+  }
+
+  .offer-cards__indicator-{{ unique_id }}.active {
+    opacity: 1;
+  }
+
+  @media screen and (min-width: 749px) {
+    .offer-cards__carousel-{{ unique_id }} {
+      padding: 0;
+      margin-left: 0;
+      margin-right: 0;
+      width: 100%;
+    }
+
+    .offer-cards__track-{{ unique_id }} {
+      justify-content: flex-start;
+      gap: 20px;
+    }
+
+    .offer-card-{{ unique_id }} {
+      flex: 0 0 300px;
+    }
+  }
+
+  @media screen and (min-width: 990px) {
+    .offer-cards__track-{{ unique_id }} {
+      gap: 24px;
+      justify-content: flex-start;
+    }
+
+    .offer-card-{{ unique_id }} {
+      flex: 0 0 320px;
+    }
+  }
+{% endstyle %}
+
+<div class="offer-cards-{{ unique_id }}">
+  {% if title != blank %}
+    <h2 class="offer-cards__title-{{ unique_id }}">{{ title }}</h2>
+  {% endif %}
+
+  <div class="offer-cards__carousel-{{ unique_id }}">
+    <div class="offer-cards__track-{{ unique_id }}" data-track>
+      {% for i in (1..5) %}
+        {% liquid
+          case i
+            when 1
+              assign enabled = card_1_enabled
+              assign heading = heading_1
+              assign subheading = subheading_1
+              assign code = code_1
+              assign description = description_1
+            when 2
+              assign enabled = card_2_enabled
+              assign heading = heading_2
+              assign subheading = subheading_2
+              assign code = code_2
+              assign description = description_2
+            when 3
+              assign enabled = card_3_enabled
+              assign heading = heading_3
+              assign subheading = subheading_3
+              assign code = code_3
+              assign description = description_3
+            when 4
+              assign enabled = card_4_enabled
+              assign heading = heading_4
+              assign subheading = subheading_4
+              assign code = code_4
+              assign description = description_4
+            when 5
+              assign enabled = card_5_enabled
+              assign heading = heading_5
+              assign subheading = subheading_5
+              assign code = code_5
+              assign description = description_5
+          endcase
+        %}
+
+        {% if enabled and code != blank %}
+          <div class="offer-card-{{ unique_id }}" data-card>
+            {% if heading != blank %}
+              <h3 class="offer-card__heading-{{ unique_id }}">{{ heading }}</h3>
+            {% endif %}
+
+            {% if subheading != blank %}
+              <div class="offer-card__subheading-{{ unique_id }}">{{ subheading }}</div>
+            {% endif %}
+
+            <div class="offer-card__code-wrapper-{{ unique_id }}">
+              <p class="offer-card__code-{{ unique_id }}">{{ code }}</p>
+              <button
+                class="offer-card__copy-btn-{{ unique_id }}"
+                data-code="{{ code }}"
+                aria-label="Copy coupon code {{ code }}"
+              >
+                {{ copy_button_text }}
+              </button>
+            </div>
+
+            {% if description != blank %}
+              <p class="offer-card__description-{{ unique_id }}">{{ description }}</p>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="offer-cards__indicators-{{ unique_id }}" data-indicators></div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const uniqueId = '{{ unique_id }}';
+    const container = document.querySelector('.offer-cards-' + uniqueId);
+    
+    if (!container) return;
+    
+    const track = container.querySelector('[data-track]');
+    const cards = container.querySelectorAll('[data-card]');
+    const indicatorsContainer = container.querySelector('[data-indicators]');
+    let currentIndex = 0;
+
+    // Center first card
+    function centerFirstCard() {
+      if (cards.length > 0) {
+        const firstCard = cards[0];
+        const trackWidth = track.offsetWidth;
+        const cardWidth = firstCard.offsetWidth;
+        
+        if (window.innerWidth < 750) {
+          const scrollPosition = firstCard.offsetLeft - (trackWidth / 2) + (cardWidth / 2);
+          track.scrollLeft = scrollPosition;
+        } else {
+          track.scrollLeft = 0;
+        }
+      }
+    }
+
+    // Create indicators
+    function createIndicators() {
+      if (cards.length <= 1) return;
+
+      cards.forEach((card, index) => {
+        const indicator = document.createElement('button');
+        indicator.className = 'offer-cards__indicator-' + uniqueId;
+        indicator.setAttribute('aria-label', 'Go to offer ' + (index + 1));
+        if (index === 0) indicator.classList.add('active');
+
+        indicator.addEventListener('click', () => {
+          scrollToCard(index);
+        });
+
+        indicatorsContainer.appendChild(indicator);
+      });
+    }
+
+    // Scroll to card
+    function scrollToCard(index) {
+      const card = cards[index];
+      if (!card) return;
+
+      const trackWidth = track.offsetWidth;
+      const cardWidth = card.offsetWidth;
+      const scrollPosition = card.offsetLeft - (trackWidth / 2) + (cardWidth / 2);
+
+      track.scrollTo({
+        left: scrollPosition,
+        behavior: 'smooth'
+      });
+    }
+
+    // Update active indicator
+    function updateActiveIndicator() {
+      const trackCenter = track.scrollLeft + (track.offsetWidth / 2);
+      let closestIndex = 0;
+      let closestDistance = Infinity;
+
+      cards.forEach((card, index) => {
+        const cardCenter = card.offsetLeft + (card.offsetWidth / 2);
+        const distance = Math.abs(trackCenter - cardCenter);
+
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestIndex = index;
+        }
+      });
+
+      const indicators = indicatorsContainer.querySelectorAll('.offer-cards__indicator-' + uniqueId);
+      indicators.forEach((indicator, index) => {
+        indicator.classList.toggle('active', index === closestIndex);
+      });
+
+      currentIndex = closestIndex;
+    }
+
+    // Setup copy buttons
+    function setupCopyButtons() {
+      const copyButtons = container.querySelectorAll('.offer-card__copy-btn-' + uniqueId);
+
+      copyButtons.forEach(button => {
+        button.addEventListener('click', async function(e) {
+          e.preventDefault();
+          const code = this.getAttribute('data-code');
+          const originalText = this.textContent;
+
+          try {
+            // Try modern clipboard API first
+            await navigator.clipboard.writeText(code);
+            this.textContent = '{{ copied_text }}';
+            this.classList.add('copied');
+
+            setTimeout(() => {
+              this.textContent = originalText;
+              this.classList.remove('copied');
+            }, 2000);
+          } catch (err) {
+            // Fallback for older browsers
+            const textArea = document.createElement('textarea');
+            textArea.value = code;
+            textArea.style.position = 'fixed';
+            textArea.style.top = '0';
+            textArea.style.left = '0';
+            textArea.style.width = '2em';
+            textArea.style.height = '2em';
+            textArea.style.padding = '0';
+            textArea.style.border = 'none';
+            textArea.style.outline = 'none';
+            textArea.style.boxShadow = 'none';
+            textArea.style.background = 'transparent';
+            textArea.style.opacity = '0';
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            try {
+              document.execCommand('copy');
+              this.textContent = '{{ copied_text }}';
+              this.classList.add('copied');
+
+              setTimeout(() => {
+                this.textContent = originalText;
+                this.classList.remove('copied');
+              }, 2000);
+            } catch (fallbackErr) {
+              console.error('Copy failed:', fallbackErr);
+              alert('Failed to copy: ' + code);
+            }
+            
+            document.body.removeChild(textArea);
+          }
+        });
+      });
+    }
+
+    // Setup scroll listener
+    track.addEventListener('scroll', updateActiveIndicator);
+
+    // Initialize
+    createIndicators();
+    setupCopyButtons();
+    centerFirstCard();
+  });
+</script>
