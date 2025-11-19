@@ -77,7 +77,7 @@
         "liquid_YKNTWP": {
           "type": "liquid",
           "settings": {
-            "liquid": ""
+            "liquid": "{% render 'live-fomo-counter' %}"
           }
         },
         "payment_terms": {
