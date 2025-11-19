@@ -1,5 +1,5 @@
 {% comment %}
-  Home & Kitchen Live Counter - Shopify Snippet
+  Home & Kitchen Live Counter - Shopify Snippet (Performance Optimized)
   
   Usage: {% render 'home-kitchen-live-counter' %}
   
@@ -30,9 +30,9 @@
     padding: 12px;
     margin: 12px 0;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0);
-    transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
+    will-change: auto;
   }
 
   .kitchen-counter-{{ unique_id }}::before {
@@ -44,16 +44,12 @@
     height: 3px;
     background: linear-gradient(90deg, #D50000 0%, #FF1744 50%, #D50000 100%);
     background-size: 200% 100%;
-    animation: gradient-shift-{{ unique_id }} 3s ease infinite;
+    animation: gradient-shift-{{ unique_id }} 4s ease infinite;
   }
 
   @keyframes gradient-shift-{{ unique_id }} {
     0%, 100% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
-  }
-
-  .kitchen-counter-{{ unique_id }}:hover {
-    border-color: #CCCCCC;
   }
 
   .kitchen-counter__live-badge-{{ unique_id }} {
@@ -70,12 +66,6 @@
     text-transform: uppercase;
     letter-spacing: 0.4px;
     margin-bottom: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0);
-    transition: border-color 0.3s ease;
-  }
-
-  .kitchen-counter__live-badge-{{ unique_id }}:hover {
-    border-color: #CCCCCC;
   }
 
   .kitchen-counter__live-dot-{{ unique_id }} {
@@ -83,13 +73,12 @@
     height: 5px;
     background: white;
     border-radius: 50%;
-    position: relative;
-    animation: live-pulse-{{ unique_id }} 1.5s ease-in-out infinite;
+    animation: live-pulse-{{ unique_id }} 2s ease-in-out infinite;
   }
 
   @keyframes live-pulse-{{ unique_id }} {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.6; transform: scale(1.2); }
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
   }
 
   .kitchen-counter__viewers-{{ unique_id }} {
@@ -102,7 +91,6 @@
     background: white;
     border-radius: 6px;
     border: 1px solid #FFE0E0;
-    position: relative;
   }
 
   .kitchen-counter__viewer-icons-{{ unique_id }} {
@@ -113,28 +101,12 @@
   .kitchen-counter__eye-icon-{{ unique_id }} {
     width: 16px;
     height: 16px;
-    position: relative;
-    animation: eye-blink-{{ unique_id }} 4s ease-in-out infinite;
-  }
-
-  .kitchen-counter__eye-icon-{{ unique_id }}:nth-child(2) {
-    animation-delay: 0.5s;
-  }
-
-  .kitchen-counter__eye-icon-{{ unique_id }}:nth-child(3) {
-    animation-delay: 1s;
-  }
-
-  @keyframes eye-blink-{{ unique_id }} {
-    0%, 48%, 52%, 100% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(0.8); opacity: 0.7; }
   }
 
   .kitchen-counter__eye-icon-{{ unique_id }} svg {
     width: 100%;
     height: 100%;
     fill: #D50000;
-    filter: drop-shadow(0 2px 4px rgba(213, 0, 0, 0.2));
   }
 
   .kitchen-counter__viewers-text-{{ unique_id }} {
@@ -152,12 +124,6 @@
     display: inline-block;
     min-width: 26px;
     text-align: center;
-    animation: number-glow-{{ unique_id }} 2s ease-in-out infinite;
-  }
-
-  @keyframes number-glow-{{ unique_id }} {
-    0%, 100% { text-shadow: 0 0 8px rgba(213, 0, 0, 0.3); }
-    50% { text-shadow: 0 0 16px rgba(213, 0, 0, 0.5); }
   }
 
   .kitchen-counter__stock-section-{{ unique_id }} {
@@ -191,12 +157,6 @@
   .kitchen-counter__stock-icon-{{ unique_id }} {
     width: 14px;
     height: 14px;
-    animation: rotate-{{ unique_id }} 3s linear infinite;
-  }
-
-  @keyframes rotate-{{ unique_id }} {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
   }
 
   .kitchen-counter__stock-count-{{ unique_id }} {
@@ -210,12 +170,6 @@
     display: inline-flex;
     align-items: center;
     gap: 5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0);
-    transition: border-color 0.3s ease;
-  }
-
-  .kitchen-counter__stock-count-{{ unique_id }}:hover {
-    border-color: #CCCCCC;
   }
 
   .kitchen-counter__stock-number-{{ unique_id }} {
@@ -224,17 +178,12 @@
     text-align: center;
   }
 
-  .kitchen-counter__progress-container-{{ unique_id }} {
-    position: relative;
-  }
-
   .kitchen-counter__progress-bar-{{ unique_id }} {
     height: 8px;
     background: linear-gradient(90deg, #FFE0E0 0%, #FFF5F5 100%);
     border-radius: 5px;
     overflow: hidden;
     position: relative;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.08);
     border: 1px solid #FFD0D0;
   }
 
@@ -242,46 +191,16 @@
     height: 100%;
     background: linear-gradient(90deg, #D50000 0%, #FF1744 100%);
     border-radius: 5px;
-    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 0 8px rgba(213, 0, 0, 0.4);
-  }
-
-  .kitchen-counter__progress-fill-{{ unique_id }}::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.6) 50%, transparent 100%);
-    animation: shimmer-{{ unique_id }} 2s infinite;
-  }
-
-  .kitchen-counter__progress-fill-{{ unique_id }}::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, transparent 100%);
-  }
-
-  @keyframes shimmer-{{ unique_id }} {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
+    transition: width 0.5s ease-out;
   }
 
   .kitchen-counter__updating-{{ unique_id }} {
-    animation: update-pop-{{ unique_id }} 0.5s ease;
+    animation: update-pop-{{ unique_id }} 0.3s ease;
   }
 
   @keyframes update-pop-{{ unique_id }} {
     0%, 100% { transform: scale(1); }
-    30% { transform: scale(1.15); }
-    60% { transform: scale(0.95); }
+    50% { transform: scale(1.1); }
   }
 
   .kitchen-counter__urgency-text-{{ unique_id }} {
@@ -290,12 +209,6 @@
     color: #DC2626;
     font-weight: 600;
     margin-top: 6px;
-    animation: fade-pulse-{{ unique_id }} 2s ease-in-out infinite;
-  }
-
-  @keyframes fade-pulse-{{ unique_id }} {
-    0%, 100% { opacity: 0.8; }
-    50% { opacity: 1; }
   }
 
   /* Responsive Design */
@@ -318,6 +231,15 @@
 
     .kitchen-counter__progress-bar-{{ unique_id }} {
       height: 9px;
+    }
+  }
+
+  /* Reduce animations on mobile devices */
+  @media (prefers-reduced-motion: reduce) {
+    .kitchen-counter-{{ unique_id }}::before,
+    .kitchen-counter__live-dot-{{ unique_id }},
+    .kitchen-counter__updating-{{ unique_id }} {
+      animation: none;
     }
   }
 {% endstyle %}
@@ -399,9 +321,13 @@
       minViewers: {{ min_viewers }},
       maxViewers: {{ max_viewers }},
       minStock: {{ min_stock }},
-      viewerUpdateInterval: 3500, // Update viewers every 3.5 seconds for live feel
-      stockUpdateInterval: 8000  // Update stock every 8 seconds for back-to-back sales
+      viewerUpdateInterval: 8000,  // Reduced frequency: every 8 seconds
+      stockUpdateInterval: 15000   // Reduced frequency: every 15 seconds
     };
+
+    let viewerInterval = null;
+    let stockInterval = null;
+    let isTabActive = true;
 
     function randomBetween(min, max) {
       return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -413,12 +339,12 @@
     }
 
     function updateViewers() {
-      // More dynamic viewer changes for live feel
-      const change = randomBetween(-4, 7);
+      if (!isTabActive) return; // Don't update if tab is not visible
+      
+      const change = randomBetween(-3, 5);
       let newViewers = currentViewers + change;
 
-      if (newViewers > config.maxViewers) newViewers = config.maxViewers;
-      if (newViewers < config.minViewers) newViewers = config.minViewers;
+      newViewers = Math.max(config.minViewers, Math.min(config.maxViewers, newViewers));
 
       if (newViewers !== currentViewers) {
         currentViewers = newViewers;
@@ -427,13 +353,14 @@
 
         setTimeout(() => {
           viewersElement.classList.remove('kitchen-counter__updating-{{ unique_id }}');
-        }, 500);
+        }, 300);
       }
     }
 
     function updateStock() {
+      if (!isTabActive) return; // Don't update if tab is not visible
+      
       if (currentStock > config.minStock) {
-        // Reduce by exactly 1 unit every minute
         currentStock = Math.max(config.minStock, currentStock - 1);
 
         stockElement.classList.add('kitchen-counter__updating-{{ unique_id }}');
@@ -443,33 +370,43 @@
 
         setTimeout(() => {
           stockElement.classList.remove('kitchen-counter__updating-{{ unique_id }}');
-        }, 500);
+        }, 300);
       }
+    }
+
+    function startIntervals() {
+      if (viewerInterval) clearInterval(viewerInterval);
+      if (stockInterval) clearInterval(stockInterval);
+      
+      viewerInterval = setInterval(updateViewers, config.viewerUpdateInterval);
+      stockInterval = setInterval(updateStock, config.stockUpdateInterval);
+    }
+
+    function stopIntervals() {
+      if (viewerInterval) clearInterval(viewerInterval);
+      if (stockInterval) clearInterval(stockInterval);
+      viewerInterval = null;
+      stockInterval = null;
     }
 
     // Initialize
     updateProgressBar();
+    startIntervals();
 
-    // Start intervals
-    const viewerInterval = setInterval(updateViewers, config.viewerUpdateInterval);
-    const stockInterval = setInterval(updateStock, config.stockUpdateInterval);
-
-    // Add more variation to viewers for realistic feel
-    setTimeout(() => {
-      updateViewers();
-    }, randomBetween(1000, 3000));
-
-    // Cleanup
-    window.addEventListener('beforeunload', () => {
-      clearInterval(viewerInterval);
-      clearInterval(stockInterval);
+    // Pause when tab is not visible to save battery
+    document.addEventListener('visibilitychange', () => {
+      isTabActive = !document.hidden;
+      
+      if (isTabActive) {
+        startIntervals();
+      } else {
+        stopIntervals();
+      }
     });
 
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden) {
-        clearInterval(viewerInterval);
-        clearInterval(stockInterval);
-      }
+    // Cleanup on page unload
+    window.addEventListener('beforeunload', () => {
+      stopIntervals();
     });
   })();
 </script>
