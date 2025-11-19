@@ -74,8 +74,15 @@
             "payment_button_text_color": ""
           }
         },
+        "liquid_YKNTWP": {
+          "type": "liquid",
+          "settings": {
+            "liquid": ""
+          }
+        },
         "payment_terms": {
           "type": "payment_terms",
+          "disabled": true,
           "settings": {}
         }
       },
@@ -90,6 +97,7 @@
         "variant_picker",
         "quantity_selector",
         "buy_buttons",
+        "liquid_YKNTWP",
         "payment_terms"
       ],
       "settings": {
