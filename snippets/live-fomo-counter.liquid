@@ -20,7 +20,7 @@
 {% assign initial_stock = initial_stock | default: 39 %}
 {% assign min_viewers = min_viewers | default: 85 %}
 {% assign max_viewers = max_viewers | default: 180 %}
-{% assign min_stock = min_stock | default: 35 %}
+{% assign min_stock = min_stock | default: 0 %}
 
 {% style %}
   .kitchen-counter-{{ unique_id }} {
@@ -322,7 +322,7 @@
       maxViewers: {{ max_viewers }},
       minStock: {{ min_stock }},
       viewerUpdateInterval: 8000,  // Reduced frequency: every 8 seconds
-      stockUpdateInterval: 8000    // Every 8 seconds as requested
+      stockUpdateInterval: 6000    // Every 6 seconds as requested
     };
 
     let viewerInterval = null;
@@ -391,7 +391,32 @@
 
     // Initialize
     updateProgressBar();
-    startIntervals();
+    
+    // Drop from 39 to 35 in first 6 seconds (4 units)
+    const initialDropInterval = 1500; // 6 seconds / 4 drops = 1.5 seconds each
+    let dropCount = 0;
+    const maxInitialDrops = 4; // Drop 4 units (39 -> 35)
+    
+    const initialDropTimer = setInterval(() => {
+      if (dropCount < maxInitialDrops && currentStock > config.minStock) {
+        currentStock--;
+        dropCount++;
+        
+        stockElement.classList.add('kitchen-counter__updating-{{ unique_id }}');
+        stockElement.textContent = currentStock;
+        updateProgressBar();
+        
+        setTimeout(() => {
+          stockElement.classList.remove('kitchen-counter__updating-{{ unique_id }}');
+        }, 300);
+        
+        if (dropCount >= maxInitialDrops) {
+          clearInterval(initialDropTimer);
+          // Start normal intervals after initial drop
+          startIntervals();
+        }
+      }
+    }, initialDropInterval);
 
     // Pause when tab is not visible to save battery
     document.addEventListener('visibilitychange', () => {
