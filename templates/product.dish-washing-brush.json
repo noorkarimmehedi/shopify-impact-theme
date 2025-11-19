@@ -95,6 +95,12 @@
           "settings": {
             "liquid": "{% render 'video-showcase-dish-washing' %}"
           }
+        },
+        "liquid_VK6mV3": {
+          "type": "liquid",
+          "settings": {
+            "liquid": "{% render 'offer-cards-carousel' %}"
+          }
         }
       },
       "block_order": [
@@ -110,7 +116,8 @@
         "buy_buttons",
         "payment_terms",
         "liquid_Bin6Dk",
-        "liquid_amqALk"
+        "liquid_amqALk",
+        "liquid_VK6mV3"
       ],
       "settings": {
         "full_width": true,
