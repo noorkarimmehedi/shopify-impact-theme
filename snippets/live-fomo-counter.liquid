@@ -17,10 +17,10 @@
 
 {% comment %} Default Settings {% endcomment %}
 {% assign initial_viewers = initial_viewers | default: 127 %}
-{% assign initial_stock = initial_stock | default: 24 %}
+{% assign initial_stock = initial_stock | default: 39 %}
 {% assign min_viewers = min_viewers | default: 85 %}
 {% assign max_viewers = max_viewers | default: 180 %}
-{% assign min_stock = min_stock | default: 3 %}
+{% assign min_stock = min_stock | default: 35 %}
 
 {% style %}
   .kitchen-counter-{{ unique_id }} {
@@ -322,7 +322,7 @@
       maxViewers: {{ max_viewers }},
       minStock: {{ min_stock }},
       viewerUpdateInterval: 8000,  // Reduced frequency: every 8 seconds
-      stockUpdateInterval: 15000   // Reduced frequency: every 15 seconds
+      stockUpdateInterval: 8000    // Every 8 seconds as requested
     };
 
     let viewerInterval = null;
