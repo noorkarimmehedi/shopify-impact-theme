@@ -98,6 +98,7 @@
         },
         "liquid_VK6mV3": {
           "type": "liquid",
+          "disabled": true,
           "settings": {
             "liquid": "{% render 'offer-cards-carousel' %}"
           }
