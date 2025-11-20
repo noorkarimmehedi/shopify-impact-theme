@@ -82,7 +82,7 @@
         "liquid_FTYqGn": {
           "type": "liquid",
           "settings": {
-            "liquid": "{% render 'live-fomo-counter' %}"
+            "liquid": "{% render 'live-fomo-counter',  initial_stock: 37 %}"
           }
         }
       },
