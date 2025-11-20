@@ -1,242 +1,252 @@
-{% doc %}
-  @prompt
-    geenrate me a Tab accordion for shipping delivery and return
-{% enddoc %}
 {% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
 
 {% style %}
   .ai-tab-accordion-{{ ai_gen_id }} {
-    background-color: {{ block.settings.background_color }};
-    border-radius: {{ block.settings.border_radius }}px;
-    padding: {{ block.settings.padding }}px;
+    width: 100%;
+    max-width: 100%;
   }
 
-  .ai-tab-accordion__tabs-{{ ai_gen_id }} {
+  .ai-tab-accordion__header-wrapper-{{ ai_gen_id }} {
+    background-color: {{ block.settings.header_background }};
+    padding: {{ block.settings.header_padding }}px;
+    border-radius: {{ block.settings.header_border_radius }}px {{ block.settings.header_border_radius }}px 0 0;
+    border: {{ block.settings.header_border_width }}px solid {{ block.settings.header_border_color }};
+    border-bottom: none;
+  }
+
+  .ai-tab-accordion__header-{{ ai_gen_id }} {
     display: flex;
-    gap: 8px;
-    border-bottom: 1px solid {{ block.settings.border_color }};
-    margin-bottom: 20px;
+    gap: {{ block.settings.tab_spacing }}px;
+    flex-wrap: nowrap;
+    justify-content: space-between;
   }
 
-  .ai-tab-accordion__tab-{{ ai_gen_id }} {
-    padding: 12px 20px;
-    background: none;
+  .ai-tab-accordion__tab-button-{{ ai_gen_id }} {
+    position: relative;
     border: none;
-    border-bottom: 2px solid transparent;
+    background: transparent;
+    padding: 0;
     cursor: pointer;
+    outline-offset: 4px;
+    transition: filter 250ms;
+    user-select: none;
+    touch-action: manipulation;
+    flex: 1;
+  }
+
+  .ai-tab-accordion__tab-button-{{ ai_gen_id }}:hover {
+    filter: brightness(110%);
+  }
+
+  .ai-tab-accordion__tab-shadow-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: {{ block.settings.tab_border_radius }}px;
+    background: {{ block.settings.tab_shadow_color }};
+    will-change: transform;
+    transform: translateY(2px);
+    transition: transform 600ms cubic-bezier(.3, .7, .4, 1);
+  }
+
+  .ai-tab-accordion__tab-edge-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: {{ block.settings.tab_border_radius }}px;
+    background: {{ block.settings.tab_edge_color }};
+  }
+
+  .ai-tab-accordion__tab-front-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    padding: {{ block.settings.tab_padding_vertical }}px {{ block.settings.tab_padding_horizontal }}px;
+    border-radius: {{ block.settings.tab_border_radius }}px;
     font-size: {{ block.settings.tab_font_size }}px;
     color: {{ block.settings.tab_text_color }};
-    transition: all 0.3s ease;
+    background: {{ block.settings.tab_background }};
+    will-change: transform;
+    transform: translateY(-4px);
+    transition: transform 600ms cubic-bezier(.3, .7, .4, 1);
+    font-weight: {{ block.settings.tab_font_weight }};
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
-  .ai-tab-accordion__tab-{{ ai_gen_id }}:hover {
-    color: {{ block.settings.tab_active_color }};
+  .ai-tab-accordion__tab-button-{{ ai_gen_id }}:hover .ai-tab-accordion__tab-front-{{ ai_gen_id }} {
+    transform: translateY(-6px);
+    transition: transform 250ms cubic-bezier(.3, .7, .4, 1.5);
   }
 
-  .ai-tab-accordion__tab-{{ ai_gen_id }}.active {
-    color: {{ block.settings.tab_active_color }};
-    border-bottom-color: {{ block.settings.tab_active_color }};
+  .ai-tab-accordion__tab-button-{{ ai_gen_id }}:active .ai-tab-accordion__tab-front-{{ ai_gen_id }} {
+    transform: translateY(-2px);
+    transition: transform 34ms;
+  }
+
+  .ai-tab-accordion__tab-button-{{ ai_gen_id }}:hover .ai-tab-accordion__tab-shadow-{{ ai_gen_id }} {
+    transform: translateY(4px);
+    transition: transform 250ms cubic-bezier(.3, .7, .4, 1.5);
+  }
+
+  .ai-tab-accordion__tab-button-{{ ai_gen_id }}:active .ai-tab-accordion__tab-shadow-{{ ai_gen_id }} {
+    transform: translateY(1px);
+    transition: transform 34ms;
+  }
+
+  .ai-tab-accordion__tab-button-{{ ai_gen_id }}.active .ai-tab-accordion__tab-front-{{ ai_gen_id }} {
+    background: {{ block.settings.tab_active_background }};
+    color: {{ block.settings.tab_active_text_color }};
   }
 
   .ai-tab-accordion__content-{{ ai_gen_id }} {
     display: none;
+    padding: {{ block.settings.content_padding }}px;
+    background-color: {{ block.settings.content_background }};
+    border: {{ block.settings.border_width }}px solid {{ block.settings.border_color }};
+    border-radius: 0 0 {{ block.settings.border_radius }}px {{ block.settings.border_radius }}px;
+    color: {{ block.settings.content_text_color }};
+    line-height: {{ block.settings.line_height }};
+    box-shadow: {{ block.settings.shadow_horizontal }}px {{ block.settings.shadow_vertical }}px {{ block.settings.shadow_blur }}px rgba(0, 0, 0, {{ block.settings.shadow_opacity }});
+    transition: border-color 0.3s ease;
+    text-align: center;
+  }
+
+  .ai-tab-accordion__content-{{ ai_gen_id }}:hover {
+    border-color: {{ block.settings.hover_border_color }};
   }
 
   .ai-tab-accordion__content-{{ ai_gen_id }}.active {
     display: block;
   }
 
-  .ai-tab-accordion__item-{{ ai_gen_id }} {
-    border-bottom: 1px solid {{ block.settings.border_color }};
+  .ai-tab-accordion__content-{{ ai_gen_id }} p {
+    margin: 0 0 {{ block.settings.paragraph_spacing }}px 0;
   }
 
-  .ai-tab-accordion__item-{{ ai_gen_id }}:last-child {
-    border-bottom: none;
+  .ai-tab-accordion__content-{{ ai_gen_id }} p:last-child {
+    margin-bottom: 0;
   }
 
-  .ai-tab-accordion__header-{{ ai_gen_id }} {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 16px 0;
-    background: none;
-    border: none;
-    cursor: pointer;
-    text-align: left;
-    font-size: {{ block.settings.accordion_font_size }}px;
-    font-weight: 600;
-    color: {{ block.settings.text_color }};
+  .ai-tab-accordion__content-{{ ai_gen_id }} h1,
+  .ai-tab-accordion__content-{{ ai_gen_id }} h2,
+  .ai-tab-accordion__content-{{ ai_gen_id }} h3,
+  .ai-tab-accordion__content-{{ ai_gen_id }} h4,
+  .ai-tab-accordion__content-{{ ai_gen_id }} h5,
+  .ai-tab-accordion__content-{{ ai_gen_id }} h6 {
+    margin: {{ block.settings.heading_spacing }}px 0 {{ block.settings.paragraph_spacing }}px 0;
   }
 
-  .ai-tab-accordion__icon-{{ ai_gen_id }} {
-    width: 20px;
-    height: 20px;
-    transition: transform 0.3s ease;
-    flex-shrink: 0;
-    color: {{ block.settings.icon_color }};
+  .ai-tab-accordion__content-{{ ai_gen_id }} h1:first-child,
+  .ai-tab-accordion__content-{{ ai_gen_id }} h2:first-child,
+  .ai-tab-accordion__content-{{ ai_gen_id }} h3:first-child,
+  .ai-tab-accordion__content-{{ ai_gen_id }} h4:first-child,
+  .ai-tab-accordion__content-{{ ai_gen_id }} h5:first-child,
+  .ai-tab-accordion__content-{{ ai_gen_id }} h6:first-child {
+    margin-top: 0;
   }
 
-  .ai-tab-accordion__header-{{ ai_gen_id }}[aria-expanded="true"] .ai-tab-accordion__icon-{{ ai_gen_id }} {
-    transform: rotate(180deg);
+  .ai-tab-accordion__content-{{ ai_gen_id }} ul,
+  .ai-tab-accordion__content-{{ ai_gen_id }} ol {
+    margin: 0 0 {{ block.settings.paragraph_spacing }}px 0;
+    padding-left: 20px;
   }
 
-  .ai-tab-accordion__body-{{ ai_gen_id }} {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease;
-  }
-
-  .ai-tab-accordion__body-{{ ai_gen_id }}.active {
-    max-height: 500px;
-    padding-bottom: 16px;
-  }
-
-  .ai-tab-accordion__text-{{ ai_gen_id }} {
-    color: {{ block.settings.text_color }};
-    font-size: {{ block.settings.content_font_size }}px;
-    line-height: 1.6;
+  .ai-tab-accordion__content-{{ ai_gen_id }} li {
+    margin-bottom: {{ block.settings.list_item_spacing }}px;
   }
 
   @media screen and (max-width: 749px) {
-    .ai-tab-accordion__tabs-{{ ai_gen_id }} {
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
+    .ai-tab-accordion__tab-front-{{ ai_gen_id }} {
+      font-size: {{ block.settings.tab_font_size | times: 0.85 }}px;
+      padding: {{ block.settings.tab_padding_vertical | times: 0.8 }}px {{ block.settings.tab_padding_horizontal | times: 0.7 }}px;
     }
 
-    .ai-tab-accordion__tab-{{ ai_gen_id }} {
-      padding: 10px 16px;
-      font-size: {{ block.settings.tab_font_size | times: 0.9 }}px;
+    .ai-tab-accordion__header-{{ ai_gen_id }} {
+      gap: {{ block.settings.tab_spacing | times: 0.7 }}px;
     }
   }
 {% endstyle %}
 
 <tab-accordion-{{ ai_gen_id }} class="ai-tab-accordion-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
-  <div class="ai-tab-accordion__tabs-{{ ai_gen_id }}" role="tablist">
-    <button
-      class="ai-tab-accordion__tab-{{ ai_gen_id }} active"
-      role="tab"
-      aria-selected="true"
-      aria-controls="shipping-panel-{{ ai_gen_id }}"
-      data-tab="shipping"
-    >
-      {{ block.settings.shipping_tab_title }}
-    </button>
-    <button
-      class="ai-tab-accordion__tab-{{ ai_gen_id }}"
-      role="tab"
-      aria-selected="false"
-      aria-controls="delivery-panel-{{ ai_gen_id }}"
-      data-tab="delivery"
-    >
-      {{ block.settings.delivery_tab_title }}
-    </button>
-    <button
-      class="ai-tab-accordion__tab-{{ ai_gen_id }}"
-      role="tab"
-      aria-selected="false"
-      aria-controls="return-panel-{{ ai_gen_id }}"
-      data-tab="return"
-    >
-      {{ block.settings.return_tab_title }}
-    </button>
+  <div class="ai-tab-accordion__header-wrapper-{{ ai_gen_id }}">
+    <div class="ai-tab-accordion__header-{{ ai_gen_id }}">
+      <button
+        class="ai-tab-accordion__tab-button-{{ ai_gen_id }} active"
+        data-tab="tab1"
+        aria-expanded="true"
+        aria-controls="content-tab1-{{ ai_gen_id }}"
+      >
+        <span class="ai-tab-accordion__tab-shadow-{{ ai_gen_id }}"></span>
+        <span class="ai-tab-accordion__tab-edge-{{ ai_gen_id }}"></span>
+        <span class="ai-tab-accordion__tab-front-{{ ai_gen_id }}">
+          {{ block.settings.tab_1_title }}
+        </span>
+      </button>
+
+      <button
+        class="ai-tab-accordion__tab-button-{{ ai_gen_id }}"
+        data-tab="tab2"
+        aria-expanded="false"
+        aria-controls="content-tab2-{{ ai_gen_id }}"
+      >
+        <span class="ai-tab-accordion__tab-shadow-{{ ai_gen_id }}"></span>
+        <span class="ai-tab-accordion__tab-edge-{{ ai_gen_id }}"></span>
+        <span class="ai-tab-accordion__tab-front-{{ ai_gen_id }}">
+          {{ block.settings.tab_2_title }}
+        </span>
+      </button>
+
+      <button
+        class="ai-tab-accordion__tab-button-{{ ai_gen_id }}"
+        data-tab="tab3"
+        aria-expanded="false"
+        aria-controls="content-tab3-{{ ai_gen_id }}"
+      >
+        <span class="ai-tab-accordion__tab-shadow-{{ ai_gen_id }}"></span>
+        <span class="ai-tab-accordion__tab-edge-{{ ai_gen_id }}"></span>
+        <span class="ai-tab-accordion__tab-front-{{ ai_gen_id }}">
+          {{ block.settings.tab_3_title }}
+        </span>
+      </button>
+    </div>
   </div>
 
   <div
-    id="shipping-panel-{{ ai_gen_id }}"
+    id="content-tab1-{{ ai_gen_id }}"
     class="ai-tab-accordion__content-{{ ai_gen_id }} active"
-    role="tabpanel"
-    data-panel="shipping"
+    data-content="tab1"
+    role="region"
+    aria-labelledby="tab1"
   >
-    {% for i in (1..3) %}
-      {% liquid
-        assign question_key = 'shipping_question_' | append: i
-        assign answer_key = 'shipping_answer_' | append: i
-        assign question = block.settings[question_key]
-        assign answer = block.settings[answer_key]
-      %}
-      {% if question != blank %}
-        <div class="ai-tab-accordion__item-{{ ai_gen_id }}">
-          <button
-            class="ai-tab-accordion__header-{{ ai_gen_id }}"
-            aria-expanded="false"
-          >
-            <span>{{ question }}</span>
-            <svg class="ai-tab-accordion__icon-{{ ai_gen_id }}" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
-          </button>
-          <div class="ai-tab-accordion__body-{{ ai_gen_id }}">
-            <div class="ai-tab-accordion__text-{{ ai_gen_id }}">{{ answer }}</div>
-          </div>
-        </div>
-      {% endif %}
-    {% endfor %}
+    {{ block.settings.tab_1_content }}
   </div>
 
   <div
-    id="delivery-panel-{{ ai_gen_id }}"
+    id="content-tab2-{{ ai_gen_id }}"
     class="ai-tab-accordion__content-{{ ai_gen_id }}"
-    role="tabpanel"
-    data-panel="delivery"
+    data-content="tab2"
+    role="region"
+    aria-labelledby="tab2"
   >
-    {% for i in (1..3) %}
-      {% liquid
-        assign question_key = 'delivery_question_' | append: i
-        assign answer_key = 'delivery_answer_' | append: i
-        assign question = block.settings[question_key]
-        assign answer = block.settings[answer_key]
-      %}
-      {% if question != blank %}
-        <div class="ai-tab-accordion__item-{{ ai_gen_id }}">
-          <button
-            class="ai-tab-accordion__header-{{ ai_gen_id }}"
-            aria-expanded="false"
-          >
-            <span>{{ question }}</span>
-            <svg class="ai-tab-accordion__icon-{{ ai_gen_id }}" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
-          </button>
-          <div class="ai-tab-accordion__body-{{ ai_gen_id }}">
-            <div class="ai-tab-accordion__text-{{ ai_gen_id }}">{{ answer }}</div>
-          </div>
-        </div>
-      {% endif %}
-    {% endfor %}
+    {{ block.settings.tab_2_content }}
   </div>
 
   <div
-    id="return-panel-{{ ai_gen_id }}"
+    id="content-tab3-{{ ai_gen_id }}"
     class="ai-tab-accordion__content-{{ ai_gen_id }}"
-    role="tabpanel"
-    data-panel="return"
+    data-content="tab3"
+    role="region"
+    aria-labelledby="tab3"
   >
-    {% for i in (1..3) %}
-      {% liquid
-        assign question_key = 'return_question_' | append: i
-        assign answer_key = 'return_answer_' | append: i
-        assign question = block.settings[question_key]
-        assign answer = block.settings[answer_key]
-      %}
-      {% if question != blank %}
-        <div class="ai-tab-accordion__item-{{ ai_gen_id }}">
-          <button
-            class="ai-tab-accordion__header-{{ ai_gen_id }}"
-            aria-expanded="false"
-          >
-            <span>{{ question }}</span>
-            <svg class="ai-tab-accordion__icon-{{ ai_gen_id }}" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
-          </button>
-          <div class="ai-tab-accordion__body-{{ ai_gen_id }}">
-            <div class="ai-tab-accordion__text-{{ ai_gen_id }}">{{ answer }}</div>
-          </div>
-        </div>
-      {% endif %}
-    {% endfor %}
+    {{ block.settings.tab_3_content }}
   </div>
 </tab-accordion-{{ ai_gen_id }}>
 
@@ -248,55 +258,38 @@
       }
 
       connectedCallback() {
-        this.tabs = this.querySelectorAll('.ai-tab-accordion__tab-{{ ai_gen_id }}');
-        this.panels = this.querySelectorAll('.ai-tab-accordion__content-{{ ai_gen_id }}');
-        this.accordionHeaders = this.querySelectorAll('.ai-tab-accordion__header-{{ ai_gen_id }}');
-
-        this.setupTabs();
-        this.setupAccordions();
+        this.tabButtons = this.querySelectorAll('.ai-tab-accordion__tab-button-{{ ai_gen_id }}');
+        this.tabContents = this.querySelectorAll('.ai-tab-accordion__content-{{ ai_gen_id }}');
+        this.setupEventListeners();
       }
 
-      setupTabs() {
-        this.tabs.forEach((tab) => {
-          tab.addEventListener('click', () => {
-            const targetPanel = tab.getAttribute('data-tab');
-
-            this.tabs.forEach((t) => {
-              t.classList.remove('active');
-              t.setAttribute('aria-selected', 'false');
-            });
-
-            this.panels.forEach((p) => {
-              p.classList.remove('active');
-            });
-
-            tab.classList.add('active');
-            tab.setAttribute('aria-selected', 'true');
-
-            const panel = this.querySelector(`[data-panel="${targetPanel}"]`);
-            if (panel) {
-              panel.classList.add('active');
-            }
-
-            const openAccordions = panel.querySelectorAll('.ai-tab-accordion__body-{{ ai_gen_id }}.active');
-            openAccordions.forEach((accordion) => {
-              accordion.classList.remove('active');
-              accordion.previousElementSibling.setAttribute('aria-expanded', 'false');
-            });
+      setupEventListeners() {
+        this.tabButtons.forEach((button) => {
+          button.addEventListener('click', () => {
+            const tabId = button.getAttribute('data-tab');
+            this.switchTab(tabId);
           });
         });
       }
 
-      setupAccordions() {
-        this.accordionHeaders.forEach((header) => {
-          header.addEventListener('click', () => {
-            const body = header.nextElementSibling;
-            const isExpanded = header.getAttribute('aria-expanded') === 'true';
-
-            header.setAttribute('aria-expanded', !isExpanded);
-            body.classList.toggle('active');
-          });
+      switchTab(tabId) {
+        this.tabButtons.forEach((btn) => {
+          btn.classList.remove('active');
+          btn.setAttribute('aria-expanded', 'false');
         });
+
+        this.tabContents.forEach((content) => {
+          content.classList.remove('active');
+        });
+
+        const activeButton = this.querySelector(`[data-tab="${tabId}"]`);
+        const activeContent = this.querySelector(`[data-content="${tabId}"]`);
+
+        if (activeButton && activeContent) {
+          activeButton.classList.add('active');
+          activeButton.setAttribute('aria-expanded', 'true');
+          activeContent.classList.add('active');
+        }
       }
     }
 
@@ -306,245 +299,365 @@
 
 {% schema %}
 {
-  "name": "Shipping delivery return",
+  "name": "Tab accordion",
   "tag": null,
   "settings": [
     {
       "type": "header",
-      "content": "Tab titles"
+      "content": "Tab 1"
     },
     {
       "type": "text",
-      "id": "shipping_tab_title",
-      "label": "Shipping tab",
+      "id": "tab_1_title",
+      "label": "Title",
+      "default": "Description"
+    },
+    {
+      "type": "richtext",
+      "id": "tab_1_content",
+      "label": "Content",
+      "default": "<p>Add your product description here. Include key features, benefits, and specifications.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Tab 2"
+    },
+    {
+      "type": "text",
+      "id": "tab_2_title",
+      "label": "Title",
       "default": "Shipping"
     },
     {
-      "type": "text",
-      "id": "delivery_tab_title",
-      "label": "Delivery tab",
-      "default": "Delivery"
-    },
-    {
-      "type": "text",
-      "id": "return_tab_title",
-      "label": "Return tab",
-      "default": "Return"
+      "type": "richtext",
+      "id": "tab_2_content",
+      "label": "Content",
+      "default": "<p>Add your shipping information here. Include delivery times, costs, and policies.</p>"
     },
     {
       "type": "header",
-      "content": "Shipping"
+      "content": "Tab 3"
     },
     {
       "type": "text",
-      "id": "shipping_question_1",
-      "label": "Question 1",
-      "default": "What are the shipping costs?"
+      "id": "tab_3_title",
+      "label": "Title",
+      "default": "Returns"
     },
     {
       "type": "richtext",
-      "id": "shipping_answer_1",
-      "label": "Answer 1",
-      "default": "<p>Shipping costs vary based on your location and order size. Free shipping is available on orders over a certain amount.</p>"
-    },
-    {
-      "type": "text",
-      "id": "shipping_question_2",
-      "label": "Question 2",
-      "default": "Which countries do you ship to?"
-    },
-    {
-      "type": "richtext",
-      "id": "shipping_answer_2",
-      "label": "Answer 2",
-      "default": "<p>We ship to most countries worldwide. Please check our shipping policy for a complete list of destinations.</p>"
-    },
-    {
-      "type": "text",
-      "id": "shipping_question_3",
-      "label": "Question 3",
-      "default": "Do you offer express shipping?"
-    },
-    {
-      "type": "richtext",
-      "id": "shipping_answer_3",
-      "label": "Answer 3",
-      "default": "<p>Yes, express shipping options are available at checkout for faster delivery.</p>"
+      "id": "tab_3_content",
+      "label": "Content",
+      "default": "<p>Add your return policy here. Include timeframes, conditions, and process details.</p>"
     },
     {
       "type": "header",
-      "content": "Delivery"
-    },
-    {
-      "type": "text",
-      "id": "delivery_question_1",
-      "label": "Question 1",
-      "default": "How long does delivery take?"
-    },
-    {
-      "type": "richtext",
-      "id": "delivery_answer_1",
-      "label": "Answer 1",
-      "default": "<p>Standard delivery typically takes 5-7 business days. Express delivery is available for 2-3 business days.</p>"
-    },
-    {
-      "type": "text",
-      "id": "delivery_question_2",
-      "label": "Question 2",
-      "default": "Can I track my order?"
-    },
-    {
-      "type": "richtext",
-      "id": "delivery_answer_2",
-      "label": "Answer 2",
-      "default": "<p>Yes, you will receive a tracking number via email once your order has been shipped.</p>"
-    },
-    {
-      "type": "text",
-      "id": "delivery_question_3",
-      "label": "Question 3",
-      "default": "What if I'm not home for delivery?"
-    },
-    {
-      "type": "richtext",
-      "id": "delivery_answer_3",
-      "label": "Answer 3",
-      "default": "<p>The courier will leave a notice with instructions for redelivery or pickup at a nearby location.</p>"
-    },
-    {
-      "type": "header",
-      "content": "Return"
-    },
-    {
-      "type": "text",
-      "id": "return_question_1",
-      "label": "Question 1",
-      "default": "What is your return policy?"
-    },
-    {
-      "type": "richtext",
-      "id": "return_answer_1",
-      "label": "Answer 1",
-      "default": "<p>We accept returns within 30 days of delivery. Items must be unused and in original packaging.</p>"
-    },
-    {
-      "type": "text",
-      "id": "return_question_2",
-      "label": "Question 2",
-      "default": "How do I initiate a return?"
-    },
-    {
-      "type": "richtext",
-      "id": "return_answer_2",
-      "label": "Answer 2",
-      "default": "<p>Contact our customer service team with your order number to start the return process.</p>"
-    },
-    {
-      "type": "text",
-      "id": "return_question_3",
-      "label": "Question 3",
-      "default": "Who pays for return shipping?"
-    },
-    {
-      "type": "richtext",
-      "id": "return_answer_3",
-      "label": "Answer 3",
-      "default": "<p>Return shipping costs are the responsibility of the customer unless the item is defective or incorrect.</p>"
-    },
-    {
-      "type": "header",
-      "content": "Style"
+      "content": "Header section"
     },
     {
       "type": "color",
-      "id": "background_color",
+      "id": "header_background",
       "label": "Background",
-      "default": "#ffffff"
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Text",
-      "default": "#1a1a1a"
-    },
-    {
-      "type": "color",
-      "id": "tab_text_color",
-      "label": "Tab text",
-      "default": "#677279"
-    },
-    {
-      "type": "color",
-      "id": "tab_active_color",
-      "label": "Active tab",
-      "default": "#1a1a1a"
-    },
-    {
-      "type": "color",
-      "id": "border_color",
-      "label": "Border",
-      "default": "#e5e5e5"
-    },
-    {
-      "type": "color",
-      "id": "icon_color",
-      "label": "Icon",
-      "default": "#1a1a1a"
+      "default": "#f5f5f5"
     },
     {
       "type": "range",
-      "id": "border_radius",
+      "id": "header_padding",
+      "min": 10,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "header_border_radius",
       "min": 0,
-      "max": 40,
-      "step": 4,
+      "max": 30,
+      "step": 2,
       "unit": "px",
       "label": "Border radius",
       "default": 8
     },
     {
       "type": "range",
-      "id": "padding",
+      "id": "header_border_width",
       "min": 0,
-      "max": 60,
-      "step": 4,
+      "max": 5,
+      "step": 1,
       "unit": "px",
-      "label": "Padding",
-      "default": 24
+      "label": "Border width",
+      "default": 1
+    },
+    {
+      "type": "color",
+      "id": "header_border_color",
+      "label": "Border color",
+      "default": "#E0E0E0"
+    },
+    {
+      "type": "header",
+      "content": "Tab button style"
+    },
+    {
+      "type": "range",
+      "id": "tab_spacing",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Space between tabs",
+      "default": 12
     },
     {
       "type": "range",
       "id": "tab_font_size",
       "min": 12,
-      "max": 20,
+      "max": 24,
       "step": 1,
       "unit": "px",
-      "label": "Tab font size",
+      "label": "Font size",
+      "default": 16
+    },
+    {
+      "type": "select",
+      "id": "tab_font_weight",
+      "label": "Font weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi-bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "range",
+      "id": "tab_padding_vertical",
+      "min": 8,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Vertical padding",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "tab_padding_horizontal",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Horizontal padding",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "tab_border_radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 12
+    },
+    {
+      "type": "color",
+      "id": "tab_background",
+      "label": "Background",
+      "default": "#FF1744"
+    },
+    {
+      "type": "color",
+      "id": "tab_text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "tab_active_background",
+      "label": "Active background",
+      "default": "#D50000"
+    },
+    {
+      "type": "color",
+      "id": "tab_active_text_color",
+      "label": "Active text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "tab_edge_color",
+      "label": "Edge color",
+      "default": "#8B0000"
+    },
+    {
+      "type": "color",
+      "id": "tab_shadow_color",
+      "label": "Shadow color",
+      "default": "rgba(0, 0, 0, 0.25)"
+    },
+    {
+      "type": "header",
+      "content": "Content area"
+    },
+    {
+      "type": "range",
+      "id": "content_padding",
+      "min": 10,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding",
+      "default": 24
+    },
+    {
+      "type": "color",
+      "id": "content_background",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "content_text_color",
+      "label": "Text color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "line_height",
+      "min": 1,
+      "max": 2,
+      "step": 0.1,
+      "label": "Line height",
+      "default": 1.6
+    },
+    {
+      "type": "range",
+      "id": "paragraph_spacing",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Paragraph spacing",
       "default": 16
     },
     {
       "type": "range",
-      "id": "accordion_font_size",
-      "min": 14,
-      "max": 20,
-      "step": 1,
+      "id": "heading_spacing",
+      "min": 0,
+      "max": 40,
+      "step": 2,
       "unit": "px",
-      "label": "Question font size",
-      "default": 16
+      "label": "Heading top spacing",
+      "default": 20
     },
     {
       "type": "range",
-      "id": "content_font_size",
-      "min": 12,
-      "max": 18,
+      "id": "list_item_spacing",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "List item spacing",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Border"
+    },
+    {
+      "type": "range",
+      "id": "border_width",
+      "min": 0,
+      "max": 5,
       "step": 1,
       "unit": "px",
-      "label": "Answer font size",
-      "default": 14
+      "label": "Border width",
+      "default": 1
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border color",
+      "default": "#E0E0E0"
+    },
+    {
+      "type": "color",
+      "id": "hover_border_color",
+      "label": "Hover border color",
+      "default": "#CCCCCC"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Shadow"
+    },
+    {
+      "type": "range",
+      "id": "shadow_horizontal",
+      "min": -20,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Horizontal offset",
+      "default": -5
+    },
+    {
+      "type": "range",
+      "id": "shadow_vertical",
+      "min": -20,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Vertical offset",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "shadow_blur",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Blur radius",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "shadow_opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "label": "Shadow opacity",
+      "default": 0
     }
   ],
   "presets": [
     {
-      "name": "Shipping delivery return"
+      "name": "Tab accordion"
     }
   ]
 }
