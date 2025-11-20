@@ -77,7 +77,7 @@
         "liquid_YKNTWP": {
           "type": "liquid",
           "settings": {
-            "liquid": "{% render 'live-fomo-counter' %}"
+            "liquid": "{% render 'live-fomo-counter', initial_stock: 45 %}"
           }
         },
         "payment_terms": {
