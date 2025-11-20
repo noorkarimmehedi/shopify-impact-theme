@@ -1,5 +1,5 @@
 {% comment %}
-  Home & Kitchen Live Counter - Shopify Snippet (Mobile Optimized)
+  Home & Kitchen Live Counter - Shopify Snippet (Performance Optimized)
   
   Usage: {% render 'home-kitchen-live-counter' %}
   
@@ -42,8 +42,7 @@
     box-shadow: 0 0 20px rgba(213, 0, 0, 0.15);
     position: relative;
     overflow: hidden;
-    contain: layout style paint;
-    transform: translateZ(0);
+    will-change: auto;
   }
 
   .kitchen-counter__live-badge-{{ unique_id }} {
@@ -67,13 +66,7 @@
     height: 5px;
     background: white;
     border-radius: 50%;
-  }
-
-  /* Disable pulse animation on mobile to save battery */
-  @media (min-width: 768px) {
-    .kitchen-counter__live-dot-{{ unique_id }} {
-      animation: live-pulse-{{ unique_id }} 3s ease-in-out infinite;
-    }
+    animation: live-pulse-{{ unique_id }} 2s ease-in-out infinite;
   }
 
   @keyframes live-pulse-{{ unique_id }} {
@@ -96,7 +89,6 @@
   .kitchen-counter__viewer-icons-{{ unique_id }} {
     display: flex;
     gap: 2px;
-    flex-shrink: 0;
   }
 
   .kitchen-counter__eye-icon-{{ unique_id }} {
@@ -116,10 +108,6 @@
     font-weight: 600;
     margin: 0;
     line-height: 1.2;
-    white-space: nowrap;
-    display: flex;
-    align-items: center;
-    gap: 3px;
   }
 
   .kitchen-counter__viewers-number-{{ unique_id }} {
@@ -129,7 +117,6 @@
     display: inline-block;
     min-width: 26px;
     text-align: center;
-    contain: layout;
   }
 
   .kitchen-counter__stock-section-{{ unique_id }} {
@@ -182,7 +169,6 @@
     font-size: 14px;
     min-width: 20px;
     text-align: center;
-    contain: layout;
   }
 
   .kitchen-counter__progress-bar-{{ unique_id }} {
@@ -192,32 +178,30 @@
     overflow: hidden;
     position: relative;
     border: 1px solid #FFD0D0;
-    contain: layout;
   }
 
   .kitchen-counter__progress-fill-{{ unique_id }} {
     height: 100%;
     background: linear-gradient(90deg, #D50000 0%, #FF1744 100%);
     border-radius: 4px;
-    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-    transform-origin: left;
+    transition: width 0.5s ease-out;
   }
 
-  /* Subtle animation for progress bar on all devices */
-  .kitchen-counter__progress-fill-{{ unique_id }}.updating {
-    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  /* Only enable pop animation on desktop */
-  @media (min-width: 768px) {
-    .kitchen-counter__updating-{{ unique_id }} {
-      animation: update-pop-{{ unique_id }} 0.3s ease;
-    }
+  .kitchen-counter__updating-{{ unique_id }} {
+    animation: update-pop-{{ unique_id }} 0.3s ease;
   }
 
   @keyframes update-pop-{{ unique_id }} {
     0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
+    50% { transform: scale(1.1); }
+  }
+
+  .kitchen-counter__urgency-text-{{ unique_id }} {
+    text-align: center;
+    font-size: 10px;
+    color: #DC2626;
+    font-weight: 600;
+    margin-top: 4px;
   }
 
   /* Responsive Design */
@@ -243,11 +227,12 @@
     }
   }
 
-  /* Force GPU acceleration off on mobile for non-animated elements */
-  @media (max-width: 767px) {
-    .kitchen-counter-{{ unique_id }} {
-      transform: none;
-      will-change: auto;
+  /* Reduce animations on mobile devices */
+  @media (prefers-reduced-motion: reduce) {
+    .kitchen-counter-{{ unique_id }}::before,
+    .kitchen-counter__live-dot-{{ unique_id }},
+    .kitchen-counter__updating-{{ unique_id }} {
+      animation: none;
     }
   }
 {% endstyle %}
@@ -269,8 +254,7 @@
       </div>
     </div>
     <p class="kitchen-counter__viewers-text-{{ unique_id }}">
-      <span class="kitchen-counter__viewers-number-{{ unique_id }}" data-viewers="{{ initial_viewers }}">{{ initial_viewers }}</span>
-      <span>people viewing now</span>
+      <span class="kitchen-counter__viewers-number-{{ unique_id }}" data-viewers="{{ initial_viewers }}">{{ initial_viewers }}</span> people viewing now
     </p>
   </div>
 
@@ -291,7 +275,7 @@
     
     <div class="kitchen-counter__progress-container-{{ unique_id }}">
       <div class="kitchen-counter__progress-bar-{{ unique_id }}">
-        <div class="kitchen-counter__progress-fill-{{ unique_id }} updating" data-progress style="transform: scaleX(1);"></div>
+        <div class="kitchen-counter__progress-fill-{{ unique_id }}" data-progress style="width: 100%;"></div>
       </div>
     </div>
   </div>
@@ -312,39 +296,29 @@
     let currentStock = {{ initial_stock }};
     const initialStock = {{ initial_stock }};
 
-    // Detect if mobile device
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
-    
     const config = {
       minViewers: {{ min_viewers }},
       maxViewers: {{ max_viewers }},
       minStock: {{ min_stock }},
-      // Much slower updates on mobile to prevent heating
-      viewerUpdateInterval: isMobile ? 20000 : 10000,  // 20s on mobile, 10s on desktop
-      stockUpdateInterval: isMobile ? 15000 : 8000     // 15s on mobile, 8s on desktop
+      viewerUpdateInterval: 8000,  // Reduced frequency: every 8 seconds
+      stockUpdateInterval: 6000    // Every 6 seconds as requested
     };
 
     let viewerInterval = null;
     let stockInterval = null;
     let isTabActive = true;
-    let isVisible = false;
 
     function randomBetween(min, max) {
       return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
     function updateProgressBar() {
-      const percentage = currentStock / initialStock;
-      // Use transform with requestAnimationFrame for smooth animation
-      requestAnimationFrame(() => {
-        if (progressBar) {
-          progressBar.style.transform = `scaleX(${percentage})`;
-        }
-      });
+      const percentage = (currentStock / initialStock) * 100;
+      progressBar.style.width = percentage + '%';
     }
 
     function updateViewers() {
-      if (!isTabActive || !isVisible) return;
+      if (!isTabActive) return; // Don't update if tab is not visible
       
       const change = randomBetween(-3, 5);
       let newViewers = currentViewers + change;
@@ -353,132 +327,88 @@
 
       if (newViewers !== currentViewers) {
         currentViewers = newViewers;
-        
-        // Skip animation on mobile
-        if (!isMobile) {
-          viewersElement.classList.add('kitchen-counter__updating-{{ unique_id }}');
-          setTimeout(() => {
-            viewersElement.classList.remove('kitchen-counter__updating-{{ unique_id }}');
-          }, 300);
-        }
-        
+        viewersElement.classList.add('kitchen-counter__updating-{{ unique_id }}');
         viewersElement.textContent = currentViewers;
+
+        setTimeout(() => {
+          viewersElement.classList.remove('kitchen-counter__updating-{{ unique_id }}');
+        }, 300);
       }
     }
 
     function updateStock() {
-      if (!isTabActive || !isVisible) return;
+      if (!isTabActive) return; // Don't update if tab is not visible
       
       if (currentStock > config.minStock) {
         currentStock = Math.max(config.minStock, currentStock - 1);
-        
-        // Skip animation on mobile
-        if (!isMobile) {
-          stockElement.classList.add('kitchen-counter__updating-{{ unique_id }}');
-          setTimeout(() => {
-            stockElement.classList.remove('kitchen-counter__updating-{{ unique_id }}');
-          }, 300);
-        }
-        
+
+        stockElement.classList.add('kitchen-counter__updating-{{ unique_id }}');
         stockElement.textContent = currentStock;
+        
         updateProgressBar();
+
+        setTimeout(() => {
+          stockElement.classList.remove('kitchen-counter__updating-{{ unique_id }}');
+        }, 300);
       }
     }
 
     function startIntervals() {
-      stopIntervals();
+      if (viewerInterval) clearInterval(viewerInterval);
+      if (stockInterval) clearInterval(stockInterval);
       
-      if (!isMobile || isVisible) {
-        viewerInterval = setInterval(updateViewers, config.viewerUpdateInterval);
-        stockInterval = setInterval(updateStock, config.stockUpdateInterval);
-      }
+      viewerInterval = setInterval(updateViewers, config.viewerUpdateInterval);
+      stockInterval = setInterval(updateStock, config.stockUpdateInterval);
     }
 
     function stopIntervals() {
-      if (viewerInterval) {
-        clearInterval(viewerInterval);
-        viewerInterval = null;
-      }
-      if (stockInterval) {
-        clearInterval(stockInterval);
-        stockInterval = null;
-      }
-    }
-
-    // Intersection Observer - only run when visible
-    if ('IntersectionObserver' in window) {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach(entry => {
-            isVisible = entry.isIntersecting;
-            
-            if (isVisible && isTabActive) {
-              startIntervals();
-            } else {
-              stopIntervals();
-            }
-          });
-        },
-        { threshold: 0.1 }
-      );
-      
-      observer.observe(container);
-    } else {
-      // Fallback for older browsers
-      isVisible = true;
-      startIntervals();
+      if (viewerInterval) clearInterval(viewerInterval);
+      if (stockInterval) clearInterval(stockInterval);
+      viewerInterval = null;
+      stockInterval = null;
     }
 
     // Initialize
     updateProgressBar();
     
-    // Initial drop animation with progress bar update
-    if (!isMobile) {
-      // Drop from 39 to 35 in first 6 seconds (4 units)
-      const initialDropInterval = 1500;
-      let dropCount = 0;
-      const maxInitialDrops = 4;
-      
-      const initialDropTimer = setInterval(() => {
-        if (dropCount < maxInitialDrops && currentStock > config.minStock) {
-          currentStock--;
-          dropCount++;
-          
-          stockElement.textContent = currentStock;
-          updateProgressBar();
-          
-          if (dropCount >= maxInitialDrops) {
-            clearInterval(initialDropTimer);
-            if (isVisible) {
-              startIntervals();
-            }
-          }
-        }
-      }, initialDropInterval);
-    } else {
-      // On mobile, animate once to target value
-      setTimeout(() => {
-        currentStock = Math.max(35, currentStock - 4);
+    // Drop from 39 to 35 in first 6 seconds (4 units)
+    const initialDropInterval = 1500; // 6 seconds / 4 drops = 1.5 seconds each
+    let dropCount = 0;
+    const maxInitialDrops = 4; // Drop 4 units (39 -> 35)
+    
+    const initialDropTimer = setInterval(() => {
+      if (dropCount < maxInitialDrops && currentStock > config.minStock) {
+        currentStock--;
+        dropCount++;
+        
+        stockElement.classList.add('kitchen-counter__updating-{{ unique_id }}');
         stockElement.textContent = currentStock;
         updateProgressBar();
-        if (isVisible) {
+        
+        setTimeout(() => {
+          stockElement.classList.remove('kitchen-counter__updating-{{ unique_id }}');
+        }, 300);
+        
+        if (dropCount >= maxInitialDrops) {
+          clearInterval(initialDropTimer);
+          // Start normal intervals after initial drop
           startIntervals();
         }
-      }, 1000);
-    }
+      }
+    }, initialDropInterval);
 
-    // Pause when tab is not visible
+    // Pause when tab is not visible to save battery
     document.addEventListener('visibilitychange', () => {
       isTabActive = !document.hidden;
       
-      if (isTabActive && isVisible) {
+      if (isTabActive) {
         startIntervals();
       } else {
         stopIntervals();
       }
     });
 
-    // Cleanup
+    // Cleanup on page unload
     window.addEventListener('beforeunload', () => {
       stopIntervals();
     });
