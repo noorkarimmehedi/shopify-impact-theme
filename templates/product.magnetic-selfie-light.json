@@ -81,10 +81,22 @@
             "liquid": "{% render 'live-fomo-counter', initial_stock: 45 %}"
           }
         },
+        "liquid_T6Xq3q": {
+          "type": "liquid",
+          "settings": {
+            "liquid": ""
+          }
+        },
         "payment_terms": {
           "type": "payment_terms",
           "disabled": true,
           "settings": {}
+        },
+        "liquid_TXGNH6": {
+          "type": "liquid",
+          "settings": {
+            "liquid": "{% render 'video-Magnetic-Selfie-Light' %}"
+          }
         }
       },
       "block_order": [
@@ -99,7 +111,9 @@
         "quantity_selector",
         "buy_buttons",
         "liquid_YKNTWP",
-        "payment_terms"
+        "liquid_T6Xq3q",
+        "payment_terms",
+        "liquid_TXGNH6"
       ],
       "settings": {
         "full_width": true,
