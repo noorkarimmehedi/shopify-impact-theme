@@ -45,6 +45,34 @@
     will-change: auto;
   }
 
+  .kitchen-counter-{{ unique_id }}::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 8px;
+    padding: 2px;
+    background: linear-gradient(90deg, 
+      #D50000 0%, 
+      #FF1744 25%, 
+      #FF5252 50%, 
+      #FF1744 75%, 
+      #D50000 100%);
+    background-size: 200% 100%;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: border-beam-{{ unique_id }} 3s linear infinite;
+    pointer-events: none;
+  }
+
+  @keyframes border-beam-{{ unique_id }} {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+  }
+
   .kitchen-counter__live-badge-{{ unique_id }} {
     display: inline-flex;
     align-items: center;
