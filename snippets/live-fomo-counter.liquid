@@ -42,7 +42,18 @@
     box-shadow: 0 0 20px rgba(213, 0, 0, 0.15);
     position: relative;
     overflow: hidden;
+    /* Performance optimizations */
+    contain: layout style paint;
     will-change: auto;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+
+  /* Reduce shadows on mobile for performance */
+  @media (max-width: 768px) {
+    .kitchen-counter-{{ unique_id }} {
+      box-shadow: 0 2px 8px rgba(213, 0, 0, 0.1);
+    }
   }
 
   .kitchen-counter__live-badge-{{ unique_id }} {
@@ -66,12 +77,21 @@
     height: 5px;
     background: white;
     border-radius: 50%;
-    animation: live-pulse-{{ unique_id }} 2s ease-in-out infinite;
+    /* Optimized animation - slower and uses opacity only */
+    animation: live-pulse-{{ unique_id }} 3s ease-in-out infinite;
   }
 
   @keyframes live-pulse-{{ unique_id }} {
     0%, 100% { opacity: 1; }
-    50% { opacity: 0.6; }
+    50% { opacity: 0.4; }
+  }
+
+  /* Disable pulse animation on mobile to save battery */
+  @media (max-width: 768px) {
+    .kitchen-counter__live-dot-{{ unique_id }} {
+      animation: none;
+      opacity: 1;
+    }
   }
 
   .kitchen-counter__viewers-{{ unique_id }} {
@@ -117,6 +137,8 @@
     display: inline-block;
     min-width: 26px;
     text-align: center;
+    /* Use transform for animation instead of scale */
+    transition: transform 0.2s ease-out;
   }
 
   .kitchen-counter__stock-section-{{ unique_id }} {
@@ -165,10 +187,18 @@
     gap: 4px;
   }
 
+  /* Simplify gradient on mobile */
+  @media (max-width: 768px) {
+    .kitchen-counter__stock-count-{{ unique_id }} {
+      background: #D50000;
+    }
+  }
+
   .kitchen-counter__stock-number-{{ unique_id }} {
     font-size: 14px;
     min-width: 20px;
     text-align: center;
+    transition: transform 0.2s ease-out;
   }
 
   .kitchen-counter__progress-bar-{{ unique_id }} {
@@ -180,20 +210,31 @@
     border: 1px solid #FFD0D0;
   }
 
+  /* Simplify gradient on mobile */
+  @media (max-width: 768px) {
+    .kitchen-counter__progress-bar-{{ unique_id }} {
+      background: #FFE0E0;
+    }
+  }
+
   .kitchen-counter__progress-fill-{{ unique_id }} {
     height: 100%;
     background: linear-gradient(90deg, #D50000 0%, #FF1744 100%);
     border-radius: 4px;
     transition: width 0.5s ease-out;
+    transform: translateZ(0);
   }
 
+  /* Simplify gradient on mobile */
+  @media (max-width: 768px) {
+    .kitchen-counter__progress-fill-{{ unique_id }} {
+      background: #D50000;
+    }
+  }
+
+  /* Use transform instead of scale for better performance */
   .kitchen-counter__updating-{{ unique_id }} {
-    animation: update-pop-{{ unique_id }} 0.3s ease;
-  }
-
-  @keyframes update-pop-{{ unique_id }} {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.1); }
+    transform: scale(1.1);
   }
 
   .kitchen-counter__urgency-text-{{ unique_id }} {
@@ -227,12 +268,14 @@
     }
   }
 
-  /* Reduce animations on mobile devices */
-  @media (prefers-reduced-motion: reduce) {
-    .kitchen-counter-{{ unique_id }}::before,
+  /* Reduce animations on mobile devices and low-power mode */
+  @media (prefers-reduced-motion: reduce), (max-width: 768px) {
     .kitchen-counter__live-dot-{{ unique_id }},
-    .kitchen-counter__updating-{{ unique_id }} {
-      animation: none;
+    .kitchen-counter__viewers-number-{{ unique_id }},
+    .kitchen-counter__stock-number-{{ unique_id }},
+    .kitchen-counter__progress-fill-{{ unique_id }} {
+      animation: none !important;
+      transition: none !important;
     }
   }
 {% endstyle %}
@@ -296,30 +339,55 @@
     let currentStock = {{ initial_stock }};
     const initialStock = {{ initial_stock }};
 
+    // Performance optimized config
     const config = {
       minViewers: {{ min_viewers }},
       maxViewers: {{ max_viewers }},
       minStock: {{ min_stock }},
-      viewerUpdateInterval: 8000,  // Reduced frequency: every 8 seconds
-      stockUpdateInterval: 6000    // Every 6 seconds as requested
+      viewerUpdateInterval: 15000,  // Increased to 15 seconds to reduce battery usage
+      stockUpdateInterval: 12000,   // Increased to 12 seconds
+      pauseOnInactivity: 30000,     // Pause after 30 seconds of inactivity
+      mobileMultiplier: 2           // Double intervals on mobile
     };
 
     let viewerInterval = null;
     let stockInterval = null;
     let isTabActive = true;
+    let isPaused = false;
+    let inactivityTimer = null;
+    let updateCount = 0;
+    const maxUpdatesBeforePause = 20; // Pause after 20 updates to prevent overheating
+
+    // Detect mobile device
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
+    
+    // Adjust intervals for mobile
+    if (isMobile) {
+      config.viewerUpdateInterval *= config.mobileMultiplier;
+      config.stockUpdateInterval *= config.mobileMultiplier;
+    }
 
     function randomBetween(min, max) {
       return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
     function updateProgressBar() {
-      const percentage = (currentStock / initialStock) * 100;
-      progressBar.style.width = percentage + '%';
+      // Use requestAnimationFrame for smooth updates
+      requestAnimationFrame(() => {
+        const percentage = (currentStock / initialStock) * 100;
+        progressBar.style.width = percentage + '%';
+      });
     }
 
     function updateViewers() {
-      if (!isTabActive) return; // Don't update if tab is not visible
+      if (!isTabActive || isPaused) return;
       
+      updateCount++;
+      if (updateCount >= maxUpdatesBeforePause) {
+        pauseUpdates();
+        return;
+      }
+
       const change = randomBetween(-3, 5);
       let newViewers = currentViewers + change;
 
@@ -327,90 +395,151 @@
 
       if (newViewers !== currentViewers) {
         currentViewers = newViewers;
-        viewersElement.classList.add('kitchen-counter__updating-{{ unique_id }}');
-        viewersElement.textContent = currentViewers;
+        
+        // Use requestAnimationFrame for DOM updates
+        requestAnimationFrame(() => {
+          viewersElement.classList.add('kitchen-counter__updating-{{ unique_id }}');
+          viewersElement.textContent = currentViewers;
 
-        setTimeout(() => {
-          viewersElement.classList.remove('kitchen-counter__updating-{{ unique_id }}');
-        }, 300);
+          setTimeout(() => {
+            viewersElement.classList.remove('kitchen-counter__updating-{{ unique_id }}');
+          }, 200);
+        });
       }
     }
 
     function updateStock() {
-      if (!isTabActive) return; // Don't update if tab is not visible
+      if (!isTabActive || isPaused) return;
       
       if (currentStock > config.minStock) {
         currentStock = Math.max(config.minStock, currentStock - 1);
 
-        stockElement.classList.add('kitchen-counter__updating-{{ unique_id }}');
-        stockElement.textContent = currentStock;
-        
-        updateProgressBar();
+        // Use requestAnimationFrame for DOM updates
+        requestAnimationFrame(() => {
+          stockElement.classList.add('kitchen-counter__updating-{{ unique_id }}');
+          stockElement.textContent = currentStock;
+          
+          updateProgressBar();
 
-        setTimeout(() => {
-          stockElement.classList.remove('kitchen-counter__updating-{{ unique_id }}');
-        }, 300);
+          setTimeout(() => {
+            stockElement.classList.remove('kitchen-counter__updating-{{ unique_id }}');
+          }, 200);
+        });
       }
     }
 
     function startIntervals() {
-      if (viewerInterval) clearInterval(viewerInterval);
-      if (stockInterval) clearInterval(stockInterval);
+      if (isPaused) return;
+      
+      stopIntervals(); // Clear any existing intervals
       
       viewerInterval = setInterval(updateViewers, config.viewerUpdateInterval);
       stockInterval = setInterval(updateStock, config.stockUpdateInterval);
+      
+      // Reset inactivity timer
+      resetInactivityTimer();
     }
 
     function stopIntervals() {
       if (viewerInterval) clearInterval(viewerInterval);
       if (stockInterval) clearInterval(stockInterval);
+      if (inactivityTimer) clearTimeout(inactivityTimer);
+      
       viewerInterval = null;
       stockInterval = null;
+      inactivityTimer = null;
     }
 
-    // Initialize
+    function pauseUpdates() {
+      isPaused = true;
+      stopIntervals();
+      
+      // Resume after a longer break
+      setTimeout(() => {
+        isPaused = false;
+        updateCount = 0;
+        if (isTabActive) {
+          startIntervals();
+        }
+      }, 60000); // Resume after 1 minute
+    }
+
+    function resetInactivityTimer() {
+      if (inactivityTimer) clearTimeout(inactivityTimer);
+      
+      inactivityTimer = setTimeout(() => {
+        pauseUpdates();
+      }, config.pauseOnInactivity);
+    }
+
+    // Initialize with optimized initial drop
     updateProgressBar();
     
-    // Drop from 39 to 35 in first 6 seconds (4 units)
-    const initialDropInterval = 1500; // 6 seconds / 4 drops = 1.5 seconds each
+    // Slower initial drop to reduce CPU usage
+    const initialDropInterval = 2000; // Increased from 1500ms
     let dropCount = 0;
-    const maxInitialDrops = 4; // Drop 4 units (39 -> 35)
+    const maxInitialDrops = 4;
     
     const initialDropTimer = setInterval(() => {
       if (dropCount < maxInitialDrops && currentStock > config.minStock) {
         currentStock--;
         dropCount++;
         
-        stockElement.classList.add('kitchen-counter__updating-{{ unique_id }}');
-        stockElement.textContent = currentStock;
-        updateProgressBar();
-        
-        setTimeout(() => {
-          stockElement.classList.remove('kitchen-counter__updating-{{ unique_id }}');
-        }, 300);
+        requestAnimationFrame(() => {
+          stockElement.classList.add('kitchen-counter__updating-{{ unique_id }}');
+          stockElement.textContent = currentStock;
+          updateProgressBar();
+          
+          setTimeout(() => {
+            stockElement.classList.remove('kitchen-counter__updating-{{ unique_id }}');
+          }, 200);
+        });
         
         if (dropCount >= maxInitialDrops) {
           clearInterval(initialDropTimer);
           // Start normal intervals after initial drop
-          startIntervals();
+          setTimeout(() => {
+            startIntervals();
+          }, 2000);
         }
       }
     }, initialDropInterval);
 
-    // Pause when tab is not visible to save battery
+    // Optimized visibility change handler
     document.addEventListener('visibilitychange', () => {
       isTabActive = !document.hidden;
       
-      if (isTabActive) {
+      if (isTabActive && !isPaused) {
         startIntervals();
       } else {
         stopIntervals();
       }
     });
 
+    // Detect user interaction to reset inactivity
+    ['mousedown', 'touchstart', 'scroll'].forEach(event => {
+      document.addEventListener(event, resetInactivityTimer, { passive: true });
+    });
+
     // Cleanup on page unload
     window.addEventListener('beforeunload', () => {
       stopIntervals();
     });
+
+    // Stop updates if device is low on battery (if API is available)
+    if ('getBattery' in navigator) {
+      navigator.getBattery().then((battery) => {
+        if (battery.level < 0.2) { // Less than 20% battery
+          config.viewerUpdateInterval *= 3;
+          config.stockUpdateInterval *= 3;
+        }
+        
+        battery.addEventListener('levelchange', () => {
+          if (battery.level < 0.2 && !isPaused) {
+            pauseUpdates();
+          }
+        });
+      });
+    }
   })();
 </script>
