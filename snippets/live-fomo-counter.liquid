@@ -6,14 +6,24 @@
   Customization:
   {% render 'home-kitchen-live-counter',
     initial_viewers: 127,
-    initial_stock: 24,
+    initial_stock: 39,
     min_viewers: 85,
     max_viewers: 180,
-    min_stock: 3
+    min_stock: 0
   %}
+  
+  NOTE: Each product will automatically get different stock numbers!
+  The snippet uses product ID to randomize initial stock between 35-45 units.
 {% endcomment %}
 
 {% assign unique_id = section.id | default: 'default' | append: '-' | append: block.id | default: 'snippet' %}
+
+{% comment %} Generate random stock based on product ID {% endcomment %}
+{% if initial_stock == blank or initial_stock == null %}
+  {% assign product_id_num = product.id | default: 0 %}
+  {% assign seed = product_id_num | modulo: 11 %}
+  {% assign initial_stock = seed | plus: 35 %}
+{% endif %}
 
 {% comment %} Default Settings {% endcomment %}
 {% assign initial_viewers = initial_viewers | default: 127 %}
