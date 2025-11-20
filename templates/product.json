@@ -105,7 +105,7 @@
         "show_fixed_add_to_cart": true,
         "desktop_media_width": 55,
         "desktop_media_layout": "carousel_thumbnails_left",
-        "mobile_media_size": "expanded",
+        "mobile_media_size": "contained",
         "mobile_carousel_control": "thumbnails",
         "enable_video_autoplay": false,
         "enable_video_looping": true,
@@ -159,6 +159,7 @@
       "block_order": [
         "ai_gen_block_606562f_78CEbK"
       ],
+      "disabled": true,
       "settings": {}
     },
     "related-products": {
