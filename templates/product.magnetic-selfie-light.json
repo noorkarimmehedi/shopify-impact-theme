@@ -97,6 +97,12 @@
           "settings": {
             "liquid": "{% render 'video-Magnetic-Selfie-Light' %}"
           }
+        },
+        "share_buttons_4MAw3V": {
+          "type": "share_buttons",
+          "settings": {
+            "alignment": "start"
+          }
         }
       },
       "block_order": [
@@ -113,7 +119,8 @@
         "liquid_YKNTWP",
         "liquid_T6Xq3q",
         "payment_terms",
-        "liquid_TXGNH6"
+        "liquid_TXGNH6",
+        "share_buttons_4MAw3V"
       ],
       "settings": {
         "full_width": true,
