@@ -97,6 +97,12 @@
           "settings": {
             "liquid": "{% render 'video-Angonaloy-Original-Salad-Pod' %}"
           }
+        },
+        "share_buttons_WkGMGD": {
+          "type": "share_buttons",
+          "settings": {
+            "alignment": "start"
+          }
         }
       },
       "block_order": [
@@ -113,7 +119,8 @@
         "payment_terms",
         "liquid_4knEW9",
         "liquid_j3C6wD",
-        "liquid_NRqdVH"
+        "liquid_NRqdVH",
+        "share_buttons_WkGMGD"
       ],
       "settings": {
         "full_width": true,
