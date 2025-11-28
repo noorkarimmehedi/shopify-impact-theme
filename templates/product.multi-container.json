@@ -77,6 +77,12 @@
             "payment_button_background": "",
             "payment_button_text_color": ""
           }
+        },
+        "share_buttons_ezk6wU": {
+          "type": "share_buttons",
+          "settings": {
+            "alignment": "start"
+          }
         }
       },
       "block_order": [
@@ -90,7 +96,8 @@
         "description",
         "variant_picker",
         "quantity_selector",
-        "buy_buttons"
+        "buy_buttons",
+        "share_buttons_ezk6wU"
       ],
       "settings": {
         "full_width": true,
