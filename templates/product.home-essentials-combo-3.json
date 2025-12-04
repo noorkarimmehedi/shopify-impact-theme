@@ -166,7 +166,18 @@
       "type": "related-products",
       "settings": {
         "recommendations_count": 10,
-        "products": [],
+        "products": [
+          "angonaloys-original-salad-pod",
+          "angonaloys-original-magnetic-selfie-light-with-mirror",
+          "electric-self-stirring-coffee-mug",
+          "glass-cups-with-bamboo-lid-and-straw",
+          "glass-food-container-square-glass-jars-with-bamboo-lids",
+          "glass-oil-dispenser-jar",
+          "multi-compartment-container",
+          "oil-storage-jar",
+          "1000ml-glass-water-bottle-with-time-scale",
+          "2-in-1-cooking-rechargeable-mixer"
+        ],
         "full_width": true,
         "stack_products": true,
         "show_progress_bar": false,
