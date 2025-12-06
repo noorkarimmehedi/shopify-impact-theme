@@ -311,6 +311,67 @@
         "product_card_text_color": ""
       }
     },
+    "17650047431352d44a": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_41f6f05_jGWLKH": {
+          "type": "ai_gen_block_41f6f05",
+          "settings": {
+            "heading": "Featured products",
+            "subheading": "Discover our best sellers",
+            "collection": "best-sellers",
+            "products_limit": 10,
+            "button_text": "View product",
+            "section_background": "#fef9c3",
+            "heading_font": "sans_serif_n7",
+            "heading_size": 36,
+            "heading_color": "#000000",
+            "subheading_font": "sans_serif_n4",
+            "subheading_size": 16,
+            "subheading_color": "#333333",
+            "card_background": "#ffffff",
+            "card_border_width": 4,
+            "card_border_color": "#000000",
+            "card_border_radius": 12,
+            "card_gap": 20,
+            "card_shadow_x": 8,
+            "card_shadow_y": 8,
+            "card_shadow_color": "#000000",
+            "title_font": "sans_serif_n7",
+            "title_size": 14,
+            "title_color": "#000000",
+            "price_font": "sans_serif_n7",
+            "price_size": 16,
+            "price_color": "#000000",
+            "button_font": "sans_serif_n7",
+            "button_font_size": 13,
+            "button_background": "#a3e635",
+            "button_text_color": "#000000",
+            "button_hover_background": "#84cc16",
+            "button_hover_text_color": "#000000",
+            "button_border_width": 3,
+            "button_border_color": "#000000",
+            "button_border_radius": 8,
+            "button_shadow_x": 4,
+            "button_shadow_y": 4,
+            "button_shadow_color": "#000000",
+            "arrow_size": 56,
+            "arrow_background": "#fbbf24",
+            "arrow_color": "#000000",
+            "arrow_border_width": 4,
+            "arrow_border_color": "#000000",
+            "arrow_shadow_x": 6,
+            "arrow_shadow_y": 6,
+            "arrow_shadow_color": "#000000"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_41f6f05_jGWLKH"
+      ],
+      "settings": {}
+    },
     "collection-list": {
       "type": "collection-list",
       "blocks": {
@@ -1014,6 +1075,7 @@
     "scrolling-text",
     "1763296371026b3ee6",
     "featured-collection",
+    "17650047431352d44a",
     "collection-list",
     "impact-text",
     "image-with-text-overlay",
