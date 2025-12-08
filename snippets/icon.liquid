@@ -102,10 +102,7 @@
           </svg>
 
         {%- when 'tote_bag' -%}
-         <svg class="icon icon--bag {{ class | strip }}" width="{{ width | default: 22 }}" height="{{ height | default: 22 }}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path class="icon--bag__inside" d="M4 7H20V19C20 20.1046 19.1046 21 18 21H6C4.89543 21 4 20.1046 4 19V7Z" stroke="currentColor" stroke-width="1.5"></path>
-    <path d="M8 6C8 3.79086 9.79086 2 12 2V2C14.2091 2 16 3.79086 16 6V7H8V6Z" stroke="currentColor" stroke-width="1.5"></path>
-  </svg>
+         <svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" role="presentation" class="icon fill-current icon-cart" viewBox="0 0 24 24" width="24"  height="24" ><path fill-rule="evenodd" d="M3.458 20.504h17.085V8.072H3.457v12.432zm8.6-17.008c1.622 0 2.98 1.093 3.415 2.576H8.64c.436-1.483 1.794-2.576 3.417-2.576zm5.48 2.576c-.473-2.598-2.748-4.576-5.48-4.576-2.735 0-5.01 1.978-5.482 4.576H1.457v16.432h21.085V6.072h-5.004z"></path></svg>
 
         {%- when 'shopping_cart' -%}
           <svg role="presentation" stroke-width="{{ stroke_width | default: settings.icon_stroke_width }}" focusable="false" width="{{ width | default: 22 }}" height="{{ height | default: 22 }}" class="{{ class | strip }}" viewBox="0 0 22 22">
