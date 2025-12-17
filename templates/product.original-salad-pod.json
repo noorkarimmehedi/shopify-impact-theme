@@ -272,8 +272,8 @@
             "feature_image_size": 60,
             "feature_image_radius": 10,
             "border_width": 1,
-            "border_color": "#E0E0E0",
-            "hover_border_color": "#CCCCCC",
+            "border_color": "#e0e0e0",
+            "hover_border_color": "#cccccc",
             "border_radius": 8,
             "shadow_horizontal": 0,
             "shadow_vertical": 4,
@@ -300,7 +300,6 @@
       "block_order": [
         "ai_gen_block_cf15df1_pLR8tY"
       ],
-      "disabled": true,
       "settings": {}
     },
     "related-products": {
