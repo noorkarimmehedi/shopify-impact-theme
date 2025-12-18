@@ -1,6 +1,617 @@
+{% doc %}
+  @prompt
+    Create an eye-catching promotional banner for the Dish Washing Brush with Soap Dispenser. The banner should highlight the product's key features and benefits, include space for a product image, promotional text, and a call-to-action button. Make it visually appealing with modern styling that works well on both desktop and mobile devices.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-promo-banner-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    background: linear-gradient(135deg, {{ block.settings.background_color_1 }} 0%, {{ block.settings.background_color_2 }} 100%);
+    border-radius: {{ block.settings.border_radius }}px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .ai-promo-banner__container-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+    padding: {{ block.settings.padding_desktop }}px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .ai-promo-banner__content-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    z-index: 2;
+  }
+
+  .ai-promo-banner__badge-{{ ai_gen_id }} {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: {{ block.settings.badge_background }};
+    color: {{ block.settings.badge_text_color }};
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    width: fit-content;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .ai-promo-banner__badge-icon-{{ ai_gen_id }} {
+    width: 16px;
+    height: 16px;
+  }
+
+  .ai-promo-banner__heading-{{ ai_gen_id }} {
+    font-size: {{ block.settings.heading_size }}px;
+    font-weight: 700;
+    color: {{ block.settings.heading_color }};
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  .ai-promo-banner__subheading-{{ ai_gen_id }} {
+    font-size: {{ block.settings.subheading_size }}px;
+    color: {{ block.settings.text_color }};
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .ai-promo-banner__features-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .ai-promo-banner__feature-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: {{ block.settings.text_color }};
+    font-size: 16px;
+  }
+
+  .ai-promo-banner__feature-icon-{{ ai_gen_id }} {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    color: {{ block.settings.feature_icon_color }};
+  }
+
+  .ai-promo-banner__cta-wrapper-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 8px;
+  }
+
+  .ai-promo-banner__button-{{ ai_gen_id }} {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 16px 32px;
+    background-color: {{ block.settings.button_background }};
+    color: {{ block.settings.button_text_color }};
+    border: none;
+    border-radius: {{ block.settings.button_border_radius }}px;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .ai-promo-banner__button-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.button_hover_background }};
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .ai-promo-banner__price-{{ ai_gen_id }} {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+
+  .ai-promo-banner__price-current-{{ ai_gen_id }} {
+    font-size: 28px;
+    font-weight: 700;
+    color: {{ block.settings.price_color }};
+  }
+
+  .ai-promo-banner__price-original-{{ ai_gen_id }} {
+    font-size: 20px;
+    color: {{ block.settings.text_color }};
+    text-decoration: line-through;
+    opacity: 0.6;
+  }
+
+  .ai-promo-banner__image-wrapper-{{ ai_gen_id }} {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+  }
+
+  .ai-promo-banner__image-{{ ai_gen_id }} {
+    width: 100%;
+    height: auto;
+    max-height: 500px;
+    object-fit: contain;
+    border-radius: 12px;
+  }
+
+  .ai-promo-banner__image-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    height: 400px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .ai-promo-banner__image-placeholder-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    max-width: 300px;
+    max-height: 300px;
+    opacity: 0.3;
+  }
+
+  .ai-promo-banner__empty-state-{{ ai_gen_id }} {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 20px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #ffffff;
+    border-radius: 8px;
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .ai-promo-banner__decorative-circle-{{ ai_gen_id }} {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    pointer-events: none;
+  }
+
+  .ai-promo-banner__decorative-circle-1-{{ ai_gen_id }} {
+    width: 300px;
+    height: 300px;
+    top: -100px;
+    right: -100px;
+  }
+
+  .ai-promo-banner__decorative-circle-2-{{ ai_gen_id }} {
+    width: 200px;
+    height: 200px;
+    bottom: -50px;
+    left: -50px;
+  }
+
+  @media screen and (max-width: 989px) {
+    .ai-promo-banner__container-{{ ai_gen_id }} {
+      grid-template-columns: 1fr;
+      gap: 30px;
+      padding: {{ block.settings.padding_mobile }}px;
+    }
+
+    .ai-promo-banner__heading-{{ ai_gen_id }} {
+      font-size: {{ block.settings.heading_size | times: 0.7 }}px;
+    }
+
+    .ai-promo-banner__subheading-{{ ai_gen_id }} {
+      font-size: {{ block.settings.subheading_size | times: 0.85 }}px;
+    }
+
+    .ai-promo-banner__image-wrapper-{{ ai_gen_id }} {
+      order: -1;
+    }
+
+    .ai-promo-banner__image-placeholder-{{ ai_gen_id }} {
+      height: 300px;
+    }
+
+    .ai-promo-banner__cta-wrapper-{{ ai_gen_id }} {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .ai-promo-banner__button-{{ ai_gen_id }} {
+      width: 100%;
+    }
+
+    .ai-promo-banner__decorative-circle-1-{{ ai_gen_id }} {
+      width: 200px;
+      height: 200px;
+    }
+
+    .ai-promo-banner__decorative-circle-2-{{ ai_gen_id }} {
+      width: 150px;
+      height: 150px;
+    }
+  }
+{% endstyle %}
+
+<div class="ai-promo-banner-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  {% if block.settings.show_decorative_circles %}
+    <div class="ai-promo-banner__decorative-circle-{{ ai_gen_id }} ai-promo-banner__decorative-circle-1-{{ ai_gen_id }}"></div>
+    <div class="ai-promo-banner__decorative-circle-{{ ai_gen_id }} ai-promo-banner__decorative-circle-2-{{ ai_gen_id }}"></div>
+  {% endif %}
+
+  <div class="ai-promo-banner__container-{{ ai_gen_id }}">
+    <div class="ai-promo-banner__content-{{ ai_gen_id }}">
+      {% if block.settings.show_badge and block.settings.badge_text != blank %}
+        <div class="ai-promo-banner__badge-{{ ai_gen_id }}">
+          <svg class="ai-promo-banner__badge-icon-{{ ai_gen_id }}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+          </svg>
+          {{ block.settings.badge_text }}
+        </div>
+      {% endif %}
+
+      {% if block.settings.heading != blank %}
+        <h2 class="ai-promo-banner__heading-{{ ai_gen_id }}">{{ block.settings.heading }}</h2>
+      {% endif %}
+
+      {% if block.settings.subheading != blank %}
+        <p class="ai-promo-banner__subheading-{{ ai_gen_id }}">{{ block.settings.subheading }}</p>
+      {% endif %}
+
+      {% if block.settings.show_features %}
+        <div class="ai-promo-banner__features-{{ ai_gen_id }}">
+          {% if block.settings.feature_1 != blank %}
+            <div class="ai-promo-banner__feature-{{ ai_gen_id }}">
+              <svg class="ai-promo-banner__feature-icon-{{ ai_gen_id }}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <span>{{ block.settings.feature_1 }}</span>
+            </div>
+          {% endif %}
+
+          {% if block.settings.feature_2 != blank %}
+            <div class="ai-promo-banner__feature-{{ ai_gen_id }}">
+              <svg class="ai-promo-banner__feature-icon-{{ ai_gen_id }}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <span>{{ block.settings.feature_2 }}</span>
+            </div>
+          {% endif %}
+
+          {% if block.settings.feature_3 != blank %}
+            <div class="ai-promo-banner__feature-{{ ai_gen_id }}">
+              <svg class="ai-promo-banner__feature-icon-{{ ai_gen_id }}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <span>{{ block.settings.feature_3 }}</span>
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      <div class="ai-promo-banner__cta-wrapper-{{ ai_gen_id }}">
+        {% if block.settings.button_text != blank %}
+          <a href="{{ block.settings.button_link }}" class="ai-promo-banner__button-{{ ai_gen_id }}">
+            {{ block.settings.button_text }}
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+        {% endif %}
+
+        {% if block.settings.show_price %}
+          <div class="ai-promo-banner__price-{{ ai_gen_id }}">
+            {% if block.settings.current_price != blank %}
+              <span class="ai-promo-banner__price-current-{{ ai_gen_id }}">{{ block.settings.current_price }}</span>
+            {% endif %}
+            {% if block.settings.original_price != blank %}
+              <span class="ai-promo-banner__price-original-{{ ai_gen_id }}">{{ block.settings.original_price }}</span>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="ai-promo-banner__image-wrapper-{{ ai_gen_id }}">
+      {% if block.settings.product_image %}
+        <img
+          src="{{ block.settings.product_image | image_url: width: 1000 }}"
+          alt="{{ block.settings.product_image.alt | escape }}"
+          loading="lazy"
+          width="{{ block.settings.product_image.width }}"
+          height="{{ block.settings.product_image.height }}"
+          class="ai-promo-banner__image-{{ ai_gen_id }}"
+        >
+      {% else %}
+        <div class="ai-promo-banner__image-placeholder-{{ ai_gen_id }}">
+          {{ 'product-1' | placeholder_svg_tag }}
+          <div class="ai-promo-banner__empty-state-{{ ai_gen_id }}">
+            Add product image
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
 {% schema %}
- {
-   "name": "AI_Block",
-   "tag": "shopify-ai-generated-block"
- }
+{
+  "name": "Dish brush promo banner",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Dish Washing Brush with Soap Dispenser"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Make dishwashing easier and more efficient with our innovative soap-dispensing brush"
+    },
+    {
+      "type": "image_picker",
+      "id": "product_image",
+      "label": "Product image"
+    },
+    {
+      "type": "header",
+      "content": "Badge"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_badge",
+      "label": "Show badge",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge text",
+      "default": "New Arrival"
+    },
+    {
+      "type": "color",
+      "id": "badge_background",
+      "label": "Badge background",
+      "default": "#d50000"
+    },
+    {
+      "type": "color",
+      "id": "badge_text_color",
+      "label": "Badge text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Features"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_features",
+      "label": "Show features",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "feature_1",
+      "label": "Feature 1",
+      "default": "Built-in soap dispenser for easy cleaning"
+    },
+    {
+      "type": "text",
+      "id": "feature_2",
+      "label": "Feature 2",
+      "default": "Durable bristles for tough stains"
+    },
+    {
+      "type": "text",
+      "id": "feature_3",
+      "label": "Feature 3",
+      "default": "Ergonomic handle for comfortable grip"
+    },
+    {
+      "type": "color",
+      "id": "feature_icon_color",
+      "label": "Feature icon color",
+      "default": "#00a341"
+    },
+    {
+      "type": "header",
+      "content": "Call to action"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Button background",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_background",
+      "label": "Button hover background",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Button border radius",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Pricing"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_price",
+      "label": "Show price",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "current_price",
+      "label": "Current price",
+      "default": "৳299"
+    },
+    {
+      "type": "text",
+      "id": "original_price",
+      "label": "Original price"
+    },
+    {
+      "type": "color",
+      "id": "price_color",
+      "label": "Price color",
+      "default": "#d50000"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color_1",
+      "label": "Background gradient start",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "background_color_2",
+      "label": "Background gradient end",
+      "default": "#f0f9ff"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#4a5568"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 24,
+      "max": 72,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading size",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "subheading_size",
+      "min": 14,
+      "max": 28,
+      "step": 2,
+      "unit": "px",
+      "label": "Subheading size",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "min": 0,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "label": "Banner border radius",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding_desktop",
+      "min": 20,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "label": "Padding (desktop)",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_mobile",
+      "min": 15,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding (mobile)",
+      "default": 30
+    },
+    {
+      "type": "checkbox",
+      "id": "show_decorative_circles",
+      "label": "Show decorative circles",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    }
+  ],
+  "presets": [
+    {
+      "name": "Dish brush promo banner"
+    }
+  ]
+}
 {% endschema %}
