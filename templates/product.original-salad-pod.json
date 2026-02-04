@@ -29,7 +29,6 @@
         },
         "price": {
           "type": "price",
-          "disabled": true,
           "settings": {
             "show_taxes_notice": false
           }
@@ -240,66 +239,6 @@
     },
     "1765905658dd113f04": {
       "type": "_blocks",
-      "blocks": {
-        "ai_gen_block_cf15df1_pLR8tY": {
-          "type": "ai_gen_block_cf15df1",
-          "settings": {
-            "max_width": 1200,
-            "section_padding_mobile": 40,
-            "section_padding_desktop": 60,
-            "gap_mobile": 30,
-            "gap_desktop": 40,
-            "features_gap_mobile": 20,
-            "features_gap_desktop": 30,
-            "image_width": 35,
-            "feature_1_icon": "",
-            "feature_1_image": "shopify://shop_images/NoW_3.png",
-            "feature_1_title": "Premium Quality",
-            "feature_1_description": "Crafted with the finest materials for lasting durability",
-            "feature_2_icon": "",
-            "feature_2_title": "Easy to Clean",
-            "feature_2_description": "Dishwasher safe and simple to maintain",
-            "feature_3_icon": "",
-            "feature_3_title": "Eco-Friendly",
-            "feature_3_description": "Made from sustainable and recyclable materials",
-            "feature_4_icon": "",
-            "feature_4_title": "Modern Design",
-            "feature_4_description": "Sleek and contemporary style for any kitchen",
-            "feature_background": "#ffffff",
-            "feature_padding_mobile": 20,
-            "feature_padding_desktop": 30,
-            "text_alignment": "left",
-            "feature_image_size": 60,
-            "feature_image_radius": 10,
-            "border_width": 1,
-            "border_color": "#e0e0e0",
-            "hover_border_color": "#cccccc",
-            "border_radius": 8,
-            "shadow_horizontal": 0,
-            "shadow_vertical": 4,
-            "shadow_blur": 8,
-            "shadow_opacity": 0,
-            "icon_size": 40,
-            "icon_color": "#000000",
-            "icon_spacing": 15,
-            "title_font": "barlow_n7",
-            "title_size_mobile": 18,
-            "title_size_desktop": 22,
-            "title_color": "#000000",
-            "title_transform": "none",
-            "title_spacing": 10,
-            "description_font": "barlow_n5",
-            "description_size_mobile": 14,
-            "description_size_desktop": 16,
-            "description_color": "#666666",
-            "background_color": "#ffffff"
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "ai_gen_block_cf15df1_pLR8tY"
-      ],
       "settings": {}
     },
     "related-products": {
