@@ -29,7 +29,6 @@
         },
         "price": {
           "type": "price",
-          "disabled": true,
           "settings": {
             "show_taxes_notice": false
           }
@@ -47,7 +46,6 @@
         },
         "description": {
           "type": "description",
-          "disabled": true,
           "settings": {
             "collapse_content": false
           }
