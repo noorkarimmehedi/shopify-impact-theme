@@ -161,6 +161,53 @@
       "disabled": true,
       "settings": {}
     },
+    "tabs_QqBJQM": {
+      "type": "tabs",
+      "blocks": {
+        "tab_QGkJG9": {
+          "type": "tab",
+          "settings": {
+            "title": "পণ্যের বিবরণ",
+            "content": "<p>Use this text to share information about your brand with your customers.</p>",
+            "page": ""
+          }
+        },
+        "tab_i6j8ry": {
+          "type": "tab",
+          "settings": {
+            "title": "শিপিং",
+            "content": "<p>অর্ডার কনফার্ম হওয়ার পর আমরা যত দ্রুত সম্ভব পণ্য প্রেরণের ব্যবস্থা করি।<br/></p><p>১. ঢাকা সিটিতে ডেলিভারি <strong>সাধারণত ১–২ কার্যদিবসের মধ্যে সম্পন্ন হয়।  </strong></p><p>২. ঢাকার বাইরে ডেলিভারি সাধারণত <strong>২–৩ কার্যদিবসের মধ্যে হয়</strong>, লোকেশন ও কুরিয়ার সার্ভিসের উপর নির্ভর করে।<br/></p><p>অর্ডার শিপ হলে আপনাকে একটি কনফার্মেশন মেসেজ পাঠানো হবে।</p>",
+            "page": ""
+          }
+        },
+        "tab_rytUyx": {
+          "type": "tab",
+          "settings": {
+            "title": "রিটার্নস",
+            "content": "<p><strong>১.</strong> আপনি যদি আপনার কেনা পণ্য নিয়ে সন্তুষ্ট না হন, তবে কেবলমাত্র <strong>ডেলিভারি চার্জ প্রদান করে</strong> <strong>পণ্যটি ফেরত দিতে পারবেন।</strong><br/></p><p><strong>২.</strong> যদি ভুল বা অমিল পণ্য প্রাপ্ত হয়, তবে রিটার্ন বা এক্সচেঞ্জের জন্য কোনো <strong>ডেলিভারি চার্জ প্রযোজ্য হবে না।</strong></p>",
+            "page": ""
+          }
+        }
+      },
+      "block_order": [
+        "tab_QGkJG9",
+        "tab_i6j8ry",
+        "tab_rytUyx"
+      ],
+      "name": "Tabs",
+      "settings": {
+        "full_width": true,
+        "content_size": "medium",
+        "subheading": "",
+        "title": "",
+        "first_tab_open": false,
+        "background": "",
+        "background_gradient": "",
+        "text_color": "",
+        "heading_color": "",
+        "heading_gradient": ""
+      }
+    },
     "related-products": {
       "type": "related-products",
       "settings": {
@@ -217,6 +264,7 @@
   "order": [
     "main",
     "1758906325660f2750",
+    "tabs_QqBJQM",
     "related-products",
     "1762155764e1a48e20"
   ]
