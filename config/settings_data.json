@@ -63,13 +63,13 @@
         "disabled": false,
         "settings": {}
       },
-      "6544682535036668446": {
-        "type": "shopify://apps/pumper-bundles/blocks/app-embed/0856870d-2aca-4b1e-a662-cf1797f61270",
-        "disabled": false,
-        "settings": {}
-      },
       "9696655121035291526": {
         "type": "shopify://apps/rapi/blocks/app-embed/99617c17-a32b-4e70-a883-7a155610d032",
+        "disabled": true,
+        "settings": {}
+      },
+      "6544682535036668446": {
+        "type": "shopify://apps/pumper-bundles/blocks/app-embed/0856870d-2aca-4b1e-a662-cf1797f61270",
         "disabled": true,
         "settings": {}
       }
