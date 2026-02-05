@@ -77,6 +77,12 @@
         "payment_terms": {
           "type": "payment_terms",
           "settings": {}
+        },
+        "liquid_DV7XzR": {
+          "type": "liquid",
+          "settings": {
+            "liquid": "{% render 'live-fomo-counter', initial_stock: 55 %}"
+          }
         }
       },
       "block_order": [
@@ -90,7 +96,8 @@
         "variant_picker",
         "quantity_selector",
         "buy_buttons",
-        "payment_terms"
+        "payment_terms",
+        "liquid_DV7XzR"
       ],
       "settings": {
         "full_width": true,
