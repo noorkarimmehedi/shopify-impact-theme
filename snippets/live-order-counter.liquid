@@ -3,27 +3,19 @@
   Usage: {% render 'live-order-counter' %}
 {% endcomment %}
 
-<div class="live-order-counter-wrapper">
-  <div class="live-order-counter">
-    <span class="live-order-counter__icon">🚚</span>
-    <span class="live-order-counter__text">
-      Order within
-      <strong class="live-order-counter__timer">
-        <span class="live-order-counter__minutes">10</span>min
-        <span class="live-order-counter__seconds">00</span>s
-      </strong>
-      to ship today
-    </span>
-  </div>
+<div class="live-order-counter">
+  <span class="live-order-counter__icon">🚚</span>
+  <span class="live-order-counter__text">
+    Order within
+    <strong class="live-order-counter__timer">
+      <span class="live-order-counter__minutes">10</span>min
+      <span class="live-order-counter__seconds">00</span>s
+    </strong>
+    to ship today
+  </span>
 </div>
 
 <style>
-  .live-order-counter-wrapper {
-    padding: 0 15px;
-    box-sizing: border-box;
-    width: 100%;
-  }
-
   .live-order-counter {
     display: flex;
     align-items: center;
@@ -32,12 +24,13 @@
     border: 1px solid #e5e7eb;
     border-radius: 0;
     padding: 14px 16px;
+    margin: 8px 0;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     font-size: 15px;
     color: #374151;
-    white-space: nowrap;
     width: 100%;
     box-sizing: border-box;
+    overflow: hidden;
   }
 
   .live-order-counter__icon {
@@ -49,17 +42,15 @@
   .live-order-counter__text {
     font-size: 15px;
     color: #374151;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
   }
 
   .live-order-counter__timer {
     color: #2563eb;
     font-weight: 700;
-  }
-
-  @media screen and (min-width: 750px) {
-    .live-order-counter-wrapper {
-      padding: 0;
-    }
   }
 </style>
 
@@ -70,11 +61,10 @@
 
     if (!minutesEl || !secondsEl) return;
 
-    var totalSeconds = 10 * 60; // 10 minutes from page load
+    var totalSeconds = 10 * 60;
 
     function update() {
       if (totalSeconds <= 0) {
-        // Reset back to 10:00 when it hits 0
         totalSeconds = 10 * 60;
       }
 
