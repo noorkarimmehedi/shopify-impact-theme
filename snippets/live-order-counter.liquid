@@ -1,0 +1,83 @@
+{% comment %}
+  Live Order Counter Snippet
+  Usage: {% render 'live-order-counter' %}
+{% endcomment %}
+
+<div class="live-order-counter">
+  <span class="live-order-counter__icon">🚚</span>
+  <span class="live-order-counter__text">
+    Order within
+    <strong class="live-order-counter__timer">
+      <span class="live-order-counter__minutes">09</span>min
+      <span class="live-order-counter__seconds">59</span>s
+    </strong>
+    to ship today
+  </span>
+</div>
+
+<style>
+  .live-order-counter {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    padding: 10px 18px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    color: #374151;
+    white-space: nowrap;
+    border-radius: 0;
+  }
+
+  .live-order-counter__icon {
+    font-size: 18px;
+    line-height: 1;
+  }
+
+  .live-order-counter__text {
+    font-size: 14px;
+    color: #374151;
+  }
+
+  .live-order-counter__timer {
+    color: #2563eb;
+    font-weight: 700;
+  }
+</style>
+
+<script>
+  (function () {
+    var minutesEl = document.querySelector('.live-order-counter__minutes');
+    var secondsEl = document.querySelector('.live-order-counter__seconds');
+
+    if (!minutesEl || !secondsEl) return;
+
+    // Get current Bangladesh Standard Time (UTC+6)
+    function getBDTime() {
+      var now = new Date();
+      var utc = now.getTime() + now.getTimezoneOffset() * 60000;
+      return new Date(utc + 6 * 3600000);
+    }
+
+    // Rolling 10-minute window countdown based on BD clock
+    function getRemainingSeconds() {
+      var bd = getBDTime();
+      var s  = bd.getSeconds();
+      var m  = bd.getMinutes();
+      var secsIntoBlock = (m % 10) * 60 + s;
+      return 600 - secsIntoBlock; // 10 min = 600 seconds
+    }
+
+    function update() {
+      var remaining = getRemainingSeconds();
+      var m = Math.floor(remaining / 60);
+      var s = remaining % 60;
+      minutesEl.textContent = m < 10 ? '0' + m : m;
+      secondsEl.textContent = s < 10 ? '0' + s : s;
+    }
+
+    update();
+    setInterval(update, 1000);
+  })();
+</script>
