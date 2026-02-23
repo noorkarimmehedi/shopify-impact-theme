@@ -78,6 +78,12 @@
             "payment_button_text_color": ""
           }
         },
+        "liquid_3LXbaK": {
+          "type": "liquid",
+          "settings": {
+            "liquid": "{% render 'live-order-counter' %}"
+          }
+        },
         "liquid_8RQ73R": {
           "type": "liquid",
           "settings": {
@@ -103,6 +109,7 @@
         "variant_picker",
         "quantity_selector",
         "buy_buttons",
+        "liquid_3LXbaK",
         "liquid_8RQ73R",
         "liquid_fd3xE6"
       ],
