@@ -80,6 +80,12 @@
             "liquid": "{% render 'live-fomo-counter' %}"
           }
         },
+        "liquid_gmeL86": {
+          "type": "liquid",
+          "settings": {
+            "liquid": "{% render 'video-mini-chopper' %}"
+          }
+        },
         "payment_terms": {
           "type": "payment_terms",
           "disabled": true,
@@ -98,6 +104,7 @@
         "quantity_selector",
         "buy_buttons",
         "liquid_YKNTWP",
+        "liquid_gmeL86",
         "payment_terms"
       ],
       "settings": {
