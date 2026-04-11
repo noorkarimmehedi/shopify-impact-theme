@@ -16,7 +16,6 @@
       "blocks": {
         "free-shipping": {
           "type": "item",
-          "disabled": true,
           "settings": {
             "icon": "picto-box",
             "mobile_icon_width": 24,
@@ -24,8 +23,8 @@
             "icon_background_type": "none",
             "icon_background": "",
             "icon_color": "",
-            "title": "Free shipping",
-            "content": "<p>Tell your customers about your shipping offer.</p>"
+            "title": "Return Policy",
+            "content": "<p>1. আপনি যদি আপনার কেনা পণ্য নিয়ে সন্তুষ্ট না হন, তবে কেবলমাত্র ডেলিভারি চার্জ প্রদান করে পণ্যটি ফেরত দিতে পারবেন। </p><p>2. যদি ভুল বা অমিল পণ্য প্রাপ্ত হয়, তবে রিটার্ন বা এক্সচেঞ্জের জন্য কোনো ডেলিভারি চার্জ প্রযোজ্য হবে না। </p><p>3. আপনি যদি পণ্য রিটার্ন করতে চান, তবে ডেলিভারি চার্জ আপনাকেই প্রদান করতে হবে।</p>"
           }
         },
         "customer-support": {
