@@ -15,9 +15,9 @@
       "type": "newsletter-popup",
       "settings": {
         "apparition_delay": 3,
-        "show_only_on_index": true,
-        "show_only_for_visitors": true,
-        "show_only_once": true,
+        "show_only_on_index": false,
+        "show_only_for_visitors": false,
+        "show_only_once": false,
         "title": "GET 10% DISCOUNT",
         "button_text": "Claim Your Discount",
         "subtext": "You will receive a mail from us with a discount coupon."
