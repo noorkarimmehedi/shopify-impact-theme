@@ -180,7 +180,7 @@ Variables:
         {%- endif -%}
       </div>
 
-      <span class="gcup-picker__price">Tk {{ variant.price | divided_by: 100 | money_without_currency }}</span>
+      <span class="gcup-picker__price">Tk {{ variant.price | money_without_currency }}</span>
     </label>
   {%- endfor -%}
 </div>
