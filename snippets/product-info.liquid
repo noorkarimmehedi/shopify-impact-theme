@@ -103,7 +103,11 @@
 
       {%- when 'variant_picker' -%}
         <div class="product-info__variant-picker" {{ block.shopify_attributes }}>
-          {%- render 'variant-picker', product: product, form_id: product_form_id, update_url: update_url, hide_sold_out_variants: block.settings.hide_sold_out_variants, block: block -%}
+          {%- if product.handle == 'stainless-steel-vacuum-insulated-coffee-cup' -%}
+            {%- render 'variant-picker-coffee-mug', product: product, form_id: product_form_id -%}
+          {%- else -%}
+            {%- render 'variant-picker', product: product, form_id: product_form_id, update_url: update_url, hide_sold_out_variants: block.settings.hide_sold_out_variants, block: block -%}
+          {%- endif -%}
         </div>
 
       {%- when 'product_variations' -%}

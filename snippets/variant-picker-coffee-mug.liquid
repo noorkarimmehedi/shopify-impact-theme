@@ -1,0 +1,324 @@
+{%- comment -%}
+----------------------------------------------------------------------------------------------------------------------
+VARIANT PICKER — Coffee Mug (Steel Vacuum Insulated)
+----------------------------------------------------------------------------------------------------------------------
+Card-style variant picker specifically for the stainless-steel-vacuum-insulated-coffee-cup product.
+
+Variant 1: Single Coffee Mug           → plain card, radio + title + price
+Variant 2: Mug + Oil Spray combo       → highlighted card, "MOST POPULAR" badge, product thumbnails
+
+Variables:
+* product   — the product object (required)
+* form_id   — the product form id (required)
+{%- endcomment -%}
+
+{%- assign coffee_mug_img    = 'https://angonaloy.shop/cdn/shop/files/7113W2NwwIL._AC_SL1500.jpg?v=1778840038&width=300' -%}
+{%- assign oil_spray_img     = 'https://angonaloy.shop/cdn/shop/files/71daWq9PJVL._AC_SL1500.jpg?v=1741366374&width=300' -%}
+
+<style>
+  .cmug-picker {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .cmug-picker__card {
+    position: relative;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 16px;
+    cursor: pointer;
+    background: #ffffff;
+    transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+  }
+
+  .cmug-picker__card:hover {
+    border-color: #b39ddb;
+  }
+
+  .cmug-picker__card.is-selected {
+    border-color: #7c3aed;
+    background: #f5f0ff;
+    box-shadow: 0 0 0 1px #7c3aed22;
+  }
+
+  .cmug-picker__card.is-popular {
+    border-color: #7c3aed;
+  }
+
+  /* Hidden native radio */
+  .cmug-picker__input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+  }
+
+  /* Top row: radio + title + price */
+  .cmug-picker__header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  /* Custom radio circle */
+  .cmug-picker__radio {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 2px solid #9e9e9e;
+    margin-top: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.2s;
+  }
+
+  .cmug-picker__card.is-selected .cmug-picker__radio {
+    border-color: #7c3aed;
+  }
+
+  .cmug-picker__radio::after {
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: transparent;
+    transition: background 0.2s;
+  }
+
+  .cmug-picker__card.is-selected .cmug-picker__radio::after {
+    background: #7c3aed;
+  }
+
+  .cmug-picker__title-group {
+    flex: 1;
+  }
+
+  .cmug-picker__title {
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 1.3;
+    color: #111;
+    margin: 0 0 4px;
+  }
+
+  .cmug-picker__subtitle {
+    font-size: 13px;
+    color: #777;
+    margin: 0;
+  }
+
+  .cmug-picker__price-group {
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .cmug-picker__price {
+    font-weight: 700;
+    font-size: 16px;
+    color: #111;
+    display: block;
+  }
+
+  .cmug-picker__price--original {
+    font-size: 13px;
+    color: #9e9e9e;
+    text-decoration: line-through;
+    display: block;
+    margin-top: 2px;
+  }
+
+  /* MOST POPULAR badge */
+  .cmug-picker__badge {
+    position: absolute;
+    top: -1px;
+    right: 16px;
+    background: #7c3aed;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    padding: 4px 10px;
+    border-radius: 0 0 8px 8px;
+    text-transform: uppercase;
+  }
+
+  /* Product thumbnails inside combo card */
+  .cmug-picker__products {
+    display: flex;
+    gap: 0;
+    margin-top: 14px;
+    border: 1px solid #d8c8f8;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #fff;
+  }
+
+  .cmug-picker__product {
+    flex: 1;
+    padding: 12px 10px;
+    text-align: center;
+    position: relative;
+  }
+
+  .cmug-picker__product + .cmug-picker__product {
+    border-left: 1px solid #d8c8f8;
+  }
+
+  .cmug-picker__product-img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 8px;
+  }
+
+  .cmug-picker__product-name {
+    font-size: 12px;
+    font-weight: 700;
+    color: #111;
+    margin: 0 0 4px;
+    line-height: 1.3;
+  }
+
+  .cmug-picker__product-price {
+    font-size: 13px;
+    font-weight: 700;
+    color: #111;
+    display: block;
+  }
+
+  .cmug-picker__product-price--original {
+    font-size: 12px;
+    color: #9e9e9e;
+    text-decoration: line-through;
+  }
+
+  /* Plus divider between products */
+  .cmug-picker__plus {
+    position: absolute;
+    right: -13px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: #ede9fe;
+    border: 2px solid #7c3aed;
+    color: #7c3aed;
+    font-size: 16px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    line-height: 1;
+  }
+</style>
+
+<div class="cmug-picker" id="cmug-picker-{{ section.id }}">
+  {%- for variant in product.variants -%}
+    {%- assign is_first = forloop.first -%}
+    {%- assign is_combo = false -%}
+    {%- if forloop.index == 2 -%}{%- assign is_combo = true -%}{%- endif -%}
+
+    {%- assign selected = false -%}
+    {%- if variant == product.selected_or_first_available_variant -%}
+      {%- assign selected = true -%}
+    {%- endif -%}
+
+    <label
+      class="cmug-picker__card{% if selected %} is-selected{% endif %}{% if is_combo %} is-popular{% endif %}"
+      for="cmug-variant-{{ variant.id }}"
+      data-cmug-card
+    >
+      {%- if is_combo -%}
+        <span class="cmug-picker__badge">Most Popular</span>
+      {%- endif -%}
+
+      <input
+        class="cmug-picker__input"
+        type="radio"
+        name="id"
+        id="cmug-variant-{{ variant.id }}"
+        form="{{ form_id }}"
+        value="{{ variant.id }}"
+        {% if selected %}checked{% endif %}
+        {% unless variant.available %}disabled{% endunless %}
+        data-cmug-radio
+      >
+
+      <div class="cmug-picker__header">
+        <div class="cmug-picker__radio"></div>
+
+        <div class="cmug-picker__title-group">
+          {%- if is_first -%}
+            <p class="cmug-picker__title">Single Coffee Mug</p>
+            <p class="cmug-picker__subtitle">Standard price</p>
+          {%- else -%}
+            <p class="cmug-picker__title">নিজের জন্য Mug, মায়ের জন্য Oil Spray</p>
+            <p class="cmug-picker__subtitle">Save ৳450</p>
+          {%- endif -%}
+        </div>
+
+        <div class="cmug-picker__price-group">
+          {%- if is_first -%}
+            <span class="cmug-picker__price">{{ variant.price | money }}</span>
+          {%- else -%}
+            <span class="cmug-picker__price">{{ variant.price | money }}</span>
+            {%- if variant.compare_at_price > variant.price -%}
+              <span class="cmug-picker__price--original">{{ variant.compare_at_price | money }}</span>
+            {%- endif -%}
+          {%- endif -%}
+        </div>
+      </div>
+
+      {%- if is_combo -%}
+        <div class="cmug-picker__products">
+          <div class="cmug-picker__product">
+            <img
+              class="cmug-picker__product-img"
+              src="{{ coffee_mug_img }}"
+              alt="Stainless Steel Vacuum Insulated Coffee Cup"
+              loading="lazy"
+            >
+            <p class="cmug-picker__product-name">Stainless Steel Vacuum Insulated Coffee Cup</p>
+            <span class="cmug-picker__product-price">৳550.00</span>
+            <span class="cmug-picker__product-price--original">৳620.00</span>
+            <div class="cmug-picker__plus">+</div>
+          </div>
+          <div class="cmug-picker__product">
+            <img
+              class="cmug-picker__product-img"
+              src="{{ oil_spray_img }}"
+              alt="2 in 1 Oil Dispenser Bottle"
+              loading="lazy"
+            >
+            <p class="cmug-picker__product-name">2 in 1 Oil Dispenser Bottle</p>
+            <span class="cmug-picker__product-price">৳500.00</span>
+            <span class="cmug-picker__product-price--original">৳880.00</span>
+          </div>
+        </div>
+      {%- endif -%}
+    </label>
+  {%- endfor -%}
+</div>
+
+<script>
+  (function() {
+    var picker = document.getElementById('cmug-picker-{{ section.id }}');
+    if (!picker) return;
+
+    picker.addEventListener('change', function(e) {
+      if (!e.target.matches('[data-cmug-radio]')) return;
+      picker.querySelectorAll('[data-cmug-card]').forEach(function(card) {
+        card.classList.remove('is-selected');
+      });
+      e.target.closest('[data-cmug-card]').classList.add('is-selected');
+    });
+  })();
+</script>
