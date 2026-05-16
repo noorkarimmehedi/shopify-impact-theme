@@ -107,6 +107,8 @@
             {%- render 'variant-picker-coffee-mug', product: product, form_id: product_form_id -%}
           {%- elsif product.handle == 'glass-cups-with-bamboo-lid-and-straw' -%}
             {%- render 'variant-picker-glass-cup', product: product, form_id: product_form_id -%}
+          {%- elsif product.handle == '1000ml-glass-water-bottle-with-time-scale' -%}
+            {%- render 'variant-picker-glass-bottle', product: product, form_id: product_form_id -%}
           {%- else -%}
             {%- render 'variant-picker', product: product, form_id: product_form_id, update_url: update_url, hide_sold_out_variants: block.settings.hide_sold_out_variants, block: block -%}
           {%- endif -%}

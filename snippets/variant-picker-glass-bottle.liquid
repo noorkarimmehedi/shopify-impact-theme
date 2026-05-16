@@ -1,0 +1,263 @@
+{%- comment -%}
+----------------------------------------------------------------------------------------------------------------------
+VARIANT PICKER — 1000ml Glass Water Bottle with Time Scale
+----------------------------------------------------------------------------------------------------------------------
+Card-style variant picker for the 1000ml-glass-water-bottle-with-time-scale product.
+
+2 variants:
+  1. ১টি কাঁচের পানির বোতল            — ৳800  (compare ৳1200), "Standard price"
+  2. ২টি কাঁচের পানির বোতল + Free...  — ৳1600 (compare ৳2400), FREE COIL HOLDER banner
+
+Variables:
+* product  — the product object (required)
+* form_id  — the product form id (required)
+{%- endcomment -%}
+
+{%- assign coil_holder_img = 'https://angonaloy.shop/cdn/shop/files/facebook_11zon.webp?v=1763885242&width=200' -%}
+
+<style>
+  .gbottle-picker {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+
+  /* Heading with lines */
+  .gbottle-picker__heading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 4px;
+  }
+
+  .gbottle-picker__heading-line {
+    flex: 1;
+    height: 1px;
+    background: #c4b5fd;
+  }
+
+  .gbottle-picker__heading-text {
+    font-size: 15px;
+    font-weight: 700;
+    color: #111;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  /* Hidden native radio */
+  .gbottle-picker__input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+  }
+
+  /* Card */
+  .gbottle-picker__card {
+    position: relative;
+    border: 2px solid #e2d9f3;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    background: #ffffff;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .gbottle-picker__card:hover {
+    border-color: #7c3aed;
+  }
+
+  .gbottle-picker__card.is-selected {
+    border-color: #7c3aed;
+    background: #f5f0ff;
+  }
+
+  /* Top row inside card */
+  .gbottle-picker__row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px;
+  }
+
+  /* Custom radio */
+  .gbottle-picker__radio {
+    flex-shrink: 0;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 2.5px solid #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.2s;
+  }
+
+  .gbottle-picker__card.is-selected .gbottle-picker__radio {
+    border-color: #7c3aed;
+  }
+
+  .gbottle-picker__radio::after {
+    content: '';
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: transparent;
+    transition: background 0.2s;
+  }
+
+  .gbottle-picker__card.is-selected .gbottle-picker__radio::after {
+    background: #7c3aed;
+  }
+
+  /* Title + subtitle */
+  .gbottle-picker__text {
+    flex: 1;
+  }
+
+  .gbottle-picker__title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #111;
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .gbottle-picker__subtitle {
+    font-size: 13px;
+    color: #888;
+    margin: 3px 0 0;
+  }
+
+  /* Price group */
+  .gbottle-picker__price-group {
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .gbottle-picker__price {
+    display: block;
+    font-size: 17px;
+    font-weight: 700;
+    color: #111;
+    white-space: nowrap;
+  }
+
+  .gbottle-picker__price--compare {
+    display: block;
+    font-size: 13px;
+    color: #9e9e9e;
+    text-decoration: line-through;
+    white-space: nowrap;
+    margin-top: 2px;
+  }
+
+  /* Free gift banner */
+  .gbottle-picker__gift {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: #7c3aed;
+    padding: 10px 16px;
+  }
+
+  .gbottle-picker__gift-img {
+    width: 56px;
+    height: 56px;
+    object-fit: cover;
+    border-radius: 8px;
+    flex-shrink: 0;
+  }
+
+  .gbottle-picker__gift-text {
+    font-size: 16px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+</style>
+
+<div class="gbottle-picker" id="gbottle-picker-{{ section.id }}">
+  <div class="gbottle-picker__heading">
+    <span class="gbottle-picker__heading-line"></span>
+    <span class="gbottle-picker__heading-text">নিচের ২টি অপশন থেকে ১টি সিলেক্ট করুন।</span>
+    <span class="gbottle-picker__heading-line"></span>
+  </div>
+
+  {%- for variant in product.variants -%}
+    {%- assign selected = false -%}
+    {%- if variant == product.selected_or_first_available_variant -%}
+      {%- assign selected = true -%}
+    {%- endif -%}
+    {%- assign is_combo = false -%}
+    {%- if forloop.index == 2 -%}{%- assign is_combo = true -%}{%- endif -%}
+
+    <label
+      class="gbottle-picker__card{% if selected %} is-selected{% endif %}"
+      for="gbottle-variant-{{ variant.id }}"
+      data-gbottle-card
+    >
+      <input
+        class="gbottle-picker__input"
+        type="radio"
+        name="id"
+        id="gbottle-variant-{{ variant.id }}"
+        form="{{ form_id }}"
+        value="{{ variant.id }}"
+        {% if selected %}checked{% endif %}
+        {% unless variant.available %}disabled{% endunless %}
+        data-gbottle-radio
+      >
+
+      <div class="gbottle-picker__row">
+        <div class="gbottle-picker__radio"></div>
+
+        <div class="gbottle-picker__text">
+          {%- if is_combo -%}
+            <p class="gbottle-picker__title">২টি কাঁচের পানির বোতল</p>
+          {%- else -%}
+            <p class="gbottle-picker__title">{{ variant.title }}</p>
+            <p class="gbottle-picker__subtitle">Standard price</p>
+          {%- endif -%}
+        </div>
+
+        <div class="gbottle-picker__price-group">
+          <span class="gbottle-picker__price">{{ variant.price | money }}</span>
+          {%- if variant.compare_at_price > variant.price -%}
+            <span class="gbottle-picker__price--compare">{{ variant.compare_at_price | money }}</span>
+          {%- endif -%}
+        </div>
+      </div>
+
+      {%- if is_combo -%}
+        <div class="gbottle-picker__gift">
+          <img
+            class="gbottle-picker__gift-img"
+            src="{{ coil_holder_img }}"
+            alt="Free Coil Holder"
+            loading="lazy"
+          >
+          <span class="gbottle-picker__gift-text">+ Free Coil Holder</span>
+        </div>
+      {%- endif -%}
+    </label>
+  {%- endfor -%}
+</div>
+
+<script>
+  (function() {
+    var picker = document.getElementById('gbottle-picker-{{ section.id }}');
+    if (!picker) return;
+
+    picker.addEventListener('change', function(e) {
+      if (!e.target.matches('[data-gbottle-radio]')) return;
+      picker.querySelectorAll('[data-gbottle-card]').forEach(function(card) {
+        card.classList.remove('is-selected');
+      });
+      e.target.closest('[data-gbottle-card]').classList.add('is-selected');
+    });
+  })();
+</script>
