@@ -1,0 +1,233 @@
+{%- comment -%}
+----------------------------------------------------------------------------------------------------------------------
+VARIANT PICKER — Glass Cups with Bamboo Lid and Straw
+----------------------------------------------------------------------------------------------------------------------
+Card-style variant picker for the glass-cups-with-bamboo-lid-and-straw product.
+
+3 variants:
+  1. ২টি বাঁশের তৈরি ঢাকনা ও স্ট্রসহ গ্লাস কাপ  — Tk 980
+  2. ৩টি বাঁশের তৈরি ঢাকনা ও স্ট্রসহ গ্লাস কাপ  — Tk 1,440
+  3. ৪টি গ্লাস কাপ কিনলে ১টি ফ্রি!              — Tk 1,920  (countdown timer badge)
+
+Variables:
+* product  — the product object (required)
+* form_id  — the product form id (required)
+{%- endcomment -%}
+
+<style>
+  .gcup-picker {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .gcup-picker__heading {
+    text-align: center;
+    font-size: 15px;
+    font-weight: 700;
+    color: #111;
+    margin: 0 0 4px;
+    line-height: 1.4;
+  }
+
+  /* Hidden native radio */
+  .gcup-picker__input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+  }
+
+  .gcup-picker__card {
+    position: relative;
+    border: 2px solid #f5c6c6;
+    border-radius: 12px;
+    padding: 18px 16px;
+    cursor: pointer;
+    background: #ffffff;
+    transition: border-color 0.2s, background 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .gcup-picker__card:hover {
+    border-color: #e53e3e;
+  }
+
+  .gcup-picker__card.is-selected {
+    border-color: #e53e3e;
+    background: #fff9e0;
+  }
+
+  /* Custom radio circle */
+  .gcup-picker__radio {
+    flex-shrink: 0;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 2.5px solid #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.2s;
+  }
+
+  .gcup-picker__card.is-selected .gcup-picker__radio {
+    border-color: #e53e3e;
+  }
+
+  .gcup-picker__radio::after {
+    content: '';
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: transparent;
+    transition: background 0.2s;
+  }
+
+  .gcup-picker__card.is-selected .gcup-picker__radio::after {
+    background: #e53e3e;
+  }
+
+  /* Title + subtitle group */
+  .gcup-picker__text {
+    flex: 1;
+  }
+
+  .gcup-picker__title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #111;
+    margin: 0;
+    line-height: 1.35;
+  }
+
+  .gcup-picker__subtitle {
+    font-size: 13px;
+    color: #888;
+    margin: 3px 0 0;
+  }
+
+  /* Price */
+  .gcup-picker__price {
+    font-size: 17px;
+    font-weight: 700;
+    color: #111;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  /* Countdown timer badge */
+  .gcup-picker__timer {
+    position: absolute;
+    top: -1px;
+    right: 14px;
+    background: #e53e3e;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 0 0 8px 8px;
+    letter-spacing: 0.05em;
+    font-variant-numeric: tabular-nums;
+  }
+</style>
+
+<div class="gcup-picker" id="gcup-picker-{{ section.id }}">
+  <p class="gcup-picker__heading">—————নিচের ৩টি অপশন থেকে ১টি সিলেক্ট করুন।—————</p>
+
+  {%- assign subtitles = ",,মোট ৫টি ঢাকনা ও স্ট্রসহ কাচের কাপ" | split: "," -%}
+  {%- assign show_timer = "false,false,true" | split: "," -%}
+
+  {%- for variant in product.variants -%}
+    {%- assign selected = false -%}
+    {%- if variant == product.selected_or_first_available_variant -%}
+      {%- assign selected = true -%}
+    {%- endif -%}
+    {%- assign subtitle = subtitles[forloop.index0] -%}
+    {%- assign has_timer = show_timer[forloop.index0] -%}
+
+    <label
+      class="gcup-picker__card{% if selected %} is-selected{% endif %}"
+      for="gcup-variant-{{ variant.id }}"
+      data-gcup-card
+    >
+      <input
+        class="gcup-picker__input"
+        type="radio"
+        name="id"
+        id="gcup-variant-{{ variant.id }}"
+        form="{{ form_id }}"
+        value="{{ variant.id }}"
+        {% if selected %}checked{% endif %}
+        {% unless variant.available %}disabled{% endunless %}
+        data-gcup-radio
+      >
+
+      {%- if has_timer == 'true' -%}
+        <span class="gcup-picker__timer" data-gcup-timer></span>
+      {%- endif -%}
+
+      <div class="gcup-picker__radio"></div>
+
+      <div class="gcup-picker__text">
+        <p class="gcup-picker__title">{{ variant.title }}</p>
+        {%- if subtitle != blank -%}
+          <p class="gcup-picker__subtitle">{{ subtitle }}</p>
+        {%- endif -%}
+      </div>
+
+      <span class="gcup-picker__price">Tk {{ variant.price | divided_by: 100 | money_without_currency }}</span>
+    </label>
+  {%- endfor -%}
+</div>
+
+<script>
+  (function() {
+    var picker = document.getElementById('gcup-picker-{{ section.id }}');
+    if (!picker) return;
+
+    // Toggle selected state on radio change
+    picker.addEventListener('change', function(e) {
+      if (!e.target.matches('[data-gcup-radio]')) return;
+      picker.querySelectorAll('[data-gcup-card]').forEach(function(card) {
+        card.classList.remove('is-selected');
+      });
+      e.target.closest('[data-gcup-card]').classList.add('is-selected');
+    });
+
+    // Countdown timer — counts down from 13:00:00 and loops
+    var timerEl = picker.querySelector('[data-gcup-timer]');
+    if (!timerEl) return;
+
+    var storageKey = 'gcup_timer_end_{{ section.id }}';
+    var durationMs = 13 * 60 * 60 * 1000; // 13 hours
+
+    var endTime = parseInt(sessionStorage.getItem(storageKey), 10);
+    if (!endTime || endTime < Date.now()) {
+      endTime = Date.now() + durationMs;
+      sessionStorage.setItem(storageKey, endTime);
+    }
+
+    function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+    function tick() {
+      var remaining = endTime - Date.now();
+      if (remaining <= 0) {
+        endTime = Date.now() + durationMs;
+        sessionStorage.setItem(storageKey, endTime);
+        remaining = durationMs;
+      }
+      var h = Math.floor(remaining / 3600000);
+      var m = Math.floor((remaining % 3600000) / 60000);
+      var s = Math.floor((remaining % 60000) / 1000);
+      timerEl.textContent = pad(h) + ' : ' + pad(m) + ' : ' + pad(s);
+    }
+
+    tick();
+    setInterval(tick, 1000);
+  })();
+</script>
