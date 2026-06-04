@@ -243,11 +243,21 @@ Variables:
       }
     }
 
-    var checkedRadio = picker.querySelector('[data-gcup-radio]:checked');
+    function syncSelectedBundleQuantity() {
+      var checkedRadio = picker.querySelector('[data-gcup-radio]:checked');
 
-    if (checkedRadio) {
-      syncBundleQuantity(checkedRadio);
+      if (checkedRadio) {
+        syncBundleQuantity(checkedRadio);
+      }
     }
+
+    syncSelectedBundleQuantity();
+
+    window.requestAnimationFrame(syncSelectedBundleQuantity);
+    window.addEventListener('load', syncSelectedBundleQuantity);
+
+    window.setTimeout(syncSelectedBundleQuantity, 100);
+    window.setTimeout(syncSelectedBundleQuantity, 500);
 
     // Toggle selected state on radio change and sync Shopify quantity.
     picker.addEventListener('change', function(e) {
@@ -258,6 +268,12 @@ Variables:
       e.target.closest('[data-gcup-card]').classList.add('is-selected');
       syncBundleQuantity(e.target);
     });
+
+    document.addEventListener('submit', function(e) {
+      if (e.target && e.target.id === '{{ form_id }}') {
+        syncSelectedBundleQuantity();
+      }
+    }, true);
 
     // Countdown timer — counts down from 13:00:00 and loops
     var timerEl = picker.querySelector('[data-gcup-timer]');
