@@ -141,6 +141,7 @@ Variables:
 
   {%- assign subtitles = ",,মোট ৫টি ঢাকনা ও স্ট্রসহ কাচের কাপ" | split: "," -%}
   {%- assign show_timer = "false,false,true" | split: "," -%}
+  {%- assign bundle_quantities = "2,3,5" | split: "," -%}
 
   {%- for variant in product.variants -%}
     {%- assign selected = false -%}
@@ -149,6 +150,7 @@ Variables:
     {%- endif -%}
     {%- assign subtitle = subtitles[forloop.index0] -%}
     {%- assign has_timer = show_timer[forloop.index0] -%}
+    {%- assign bundle_qty = bundle_quantities[forloop.index0] -%}
 
     <label
       class="gcup-picker__card{% if selected %} is-selected{% endif %}"
@@ -165,6 +167,7 @@ Variables:
         {% if selected %}checked{% endif %}
         {% unless variant.available %}disabled{% endunless %}
         data-gcup-radio
+        data-gcup-qty="{{ bundle_qty }}"
       >
 
       {%- if has_timer == 'true' -%}
@@ -190,14 +193,55 @@ Variables:
     var picker = document.getElementById('gcup-picker-{{ section.id }}');
     if (!picker) return;
 
-    // Toggle selected state on radio change
+    // Find the quantity input for this product form
+    function getQuantityInput() {
+      var qtyInput = document.querySelector('#{{ form_id }}-quantity');
+      if (!qtyInput) {
+        // Fallback: find quantity input associated with the form
+        qtyInput = document.querySelector('input[name="quantity"][form="{{ form_id }}"]');
+      }
+      if (!qtyInput) {
+        // No quantity selector block exists — create a hidden input inside the form
+        var form = document.getElementById('{{ form_id }}');
+        if (form) {
+          qtyInput = document.createElement('input');
+          qtyInput.type = 'hidden';
+          qtyInput.name = 'quantity';
+          qtyInput.id = '{{ form_id }}-quantity';
+          form.appendChild(qtyInput);
+        }
+      }
+      return qtyInput;
+    }
+
+    // Set quantity based on bundle variant
+    function updateQuantity(radio) {
+      var qty = radio.getAttribute('data-gcup-qty');
+      if (!qty) return;
+      var qtyInput = getQuantityInput();
+      if (qtyInput) {
+        qtyInput.value = qty;
+        // Dispatch input event so any listeners pick up the change
+        qtyInput.dispatchEvent(new Event('input', { bubbles: true }));
+        qtyInput.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    }
+
+    // Toggle selected state on radio change + update quantity
     picker.addEventListener('change', function(e) {
       if (!e.target.matches('[data-gcup-radio]')) return;
       picker.querySelectorAll('[data-gcup-card]').forEach(function(card) {
         card.classList.remove('is-selected');
       });
       e.target.closest('[data-gcup-card]').classList.add('is-selected');
+      updateQuantity(e.target);
     });
+
+    // Set initial quantity on page load based on pre-selected variant
+    var checkedRadio = picker.querySelector('[data-gcup-radio]:checked');
+    if (checkedRadio) {
+      updateQuantity(checkedRadio);
+    }
 
     // Countdown timer — counts down from 13:00:00 and loops
     var timerEl = picker.querySelector('[data-gcup-timer]');
