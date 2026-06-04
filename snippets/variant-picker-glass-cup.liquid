@@ -149,9 +149,9 @@ Variables:
 <div class="gcup-picker" id="gcup-picker-{{ section.id }}">
   <p class="gcup-picker__heading">—————নিচের ৩টি অপশন থেকে ১টি সিলেক্ট করুন।—————</p>
 
-  {%- assign subtitles = ",,মোট ৫টি ঢাকনা ও স্ট্রসহ কাচের কাপ" | split: "," -%}
+  {%- assign subtitles = ",,মোট ৪টি ঢাকনা ও স্ট্রসহ কাচের কাপ" | split: "," -%}
   {%- assign show_timer = "false,false,true" | split: "," -%}
-  {%- assign bundle_quantities = "2,3,5" | split: "," -%}
+  {%- assign bundle_quantities = "2,3,4" | split: "," -%}
 
   {%- for variant in product.variants -%}
     {%- assign selected = false -%}
@@ -224,7 +224,7 @@ Variables:
       return input;
     }
 
-    function syncBundleMetadata(radio) {
+    function syncBundleQuantity(radio) {
       var bundleQuantity = radio.getAttribute('data-gcup-qty');
       if (!bundleQuantity) return;
 
@@ -232,7 +232,7 @@ Variables:
       var bundleQuantityInput = getOrCreateFormInput('properties[Bundle item count]', '{{ form_id }}-bundle-item-count');
 
       if (quantityInput) {
-        quantityInput.value = '1';
+        quantityInput.value = bundleQuantity;
         quantityInput.dispatchEvent(new Event('input', { bubbles: true }));
         quantityInput.dispatchEvent(new Event('change', { bubbles: true }));
       }
@@ -245,17 +245,17 @@ Variables:
     var checkedRadio = picker.querySelector('[data-gcup-radio]:checked');
 
     if (checkedRadio) {
-      syncBundleMetadata(checkedRadio);
+      syncBundleQuantity(checkedRadio);
     }
 
-    // Toggle selected state on radio change and keep checkout quantity as one bundle.
+    // Toggle selected state on radio change and sync Shopify quantity.
     picker.addEventListener('change', function(e) {
       if (!e.target.matches('[data-gcup-radio]')) return;
       picker.querySelectorAll('[data-gcup-card]').forEach(function(card) {
         card.classList.remove('is-selected');
       });
       e.target.closest('[data-gcup-card]').classList.add('is-selected');
-      syncBundleMetadata(e.target);
+      syncBundleQuantity(e.target);
     });
 
     // Countdown timer — counts down from 13:00:00 and loops
