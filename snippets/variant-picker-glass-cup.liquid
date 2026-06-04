@@ -161,7 +161,6 @@ Variables:
     {%- assign subtitle = subtitles[forloop.index0] -%}
     {%- assign has_timer = show_timer[forloop.index0] -%}
     {%- assign bundle_qty = bundle_quantities[forloop.index0] | default: 1 -%}
-    {%- assign price_text = variant.price | money_without_currency -%}
 
     <label
       class="gcup-picker__card{% if selected %} is-selected{% endif %}"
@@ -179,8 +178,6 @@ Variables:
         {% unless variant.available %}disabled{% endunless %}
         data-gcup-radio
         data-gcup-qty="{{ bundle_qty }}"
-        data-gcup-price="{{ variant.price }}"
-        data-gcup-price-text="{{ price_text | escape }}"
       >
 
       {%- if has_timer == 'true' -%}
@@ -196,7 +193,7 @@ Variables:
         {%- endif -%}
       </div>
 
-      <span class="gcup-picker__price">Tk {{ price_text }}</span>
+      <span class="gcup-picker__price">Tk {{ variant.price | money_without_currency }}</span>
     </label>
   {%- endfor -%}
 </div>
@@ -229,13 +226,10 @@ Variables:
 
     function syncBundleMetadata(radio) {
       var bundleQuantity = radio.getAttribute('data-gcup-qty');
-      var bundlePrice = radio.getAttribute('data-gcup-price');
-      var bundlePriceText = radio.getAttribute('data-gcup-price-text');
       if (!bundleQuantity) return;
 
       var quantityInput = getOrCreateFormInput('quantity', '{{ form_id }}-quantity');
       var bundleQuantityInput = getOrCreateFormInput('properties[Bundle item count]', '{{ form_id }}-bundle-item-count');
-      var bundleDisplayQuantityInput = getOrCreateFormInput('properties[_Display quantity]', '{{ form_id }}-bundle-display-quantity');
 
       if (quantityInput) {
         quantityInput.value = '1';
@@ -246,98 +240,6 @@ Variables:
       if (bundleQuantityInput) {
         bundleQuantityInput.value = bundleQuantity;
       }
-
-      if (bundleDisplayQuantityInput) {
-        bundleDisplayQuantityInput.value = bundleQuantity;
-      }
-
-      window.gcupBundleSelection = {
-        variantId: radio.value,
-        quantity: bundleQuantity,
-        orderQuantity: '1',
-        price: bundlePrice,
-        priceText: bundlePriceText
-      };
-
-      document.dispatchEvent(new CustomEvent('gcup:bundle-change', {
-        detail: window.gcupBundleSelection
-      }));
-
-      syncCodDisplay(window.gcupBundleSelection);
-    }
-
-    function isInsideProductForm(element) {
-      return Boolean(element.closest('#{{ form_id }}'));
-    }
-
-    function syncCodDisplay(selection) {
-      var codContainers = Array.from(document.querySelectorAll([
-        '[class*="cod" i]',
-        '[id*="cod" i]',
-        '[class*="cash" i]',
-        '[id*="cash" i]',
-        '[class*="order" i]',
-        '[id*="order" i]',
-        '[class*="checkout" i]',
-        '[id*="checkout" i]',
-        '[class*="delivery" i]',
-        '[id*="delivery" i]'
-      ].join(','))).filter(function(container) {
-        return !isInsideProductForm(container);
-      });
-
-      if (!codContainers.length) return;
-
-      var quantitySelectors = [
-        'input[name*="quantity" i]',
-        'input[id*="quantity" i]',
-        'input[class*="quantity" i]',
-        'input[name*="qty" i]',
-        'input[id*="qty" i]',
-        'input[class*="qty" i]',
-        'select[name*="quantity" i]',
-        'select[id*="quantity" i]',
-        'select[class*="quantity" i]',
-        'select[name*="qty" i]',
-        'select[id*="qty" i]',
-        'select[class*="qty" i]'
-      ].join(',');
-
-      codContainers.forEach(function(container) {
-        container.querySelectorAll(quantitySelectors).forEach(function(input) {
-          if (isInsideProductForm(input)) return;
-
-          input.value = selection.quantity;
-          input.setAttribute('data-gcup-display-quantity', selection.quantity);
-          input.dispatchEvent(new Event('input', { bubbles: true }));
-          input.dispatchEvent(new Event('change', { bubbles: true }));
-        });
-      });
-
-      var priceSelectors = [
-        '[data-gcup-bundle-price]',
-        '[data-total-price]',
-        '[data-subtotal]',
-        '[class*="total" i]',
-        '[id*="total" i]',
-        '[class*="subtotal" i]',
-        '[id*="subtotal" i]',
-        '[class*="price" i]',
-        '[id*="price" i]'
-      ].join(',');
-
-      codContainers.forEach(function(container) {
-        container.querySelectorAll(priceSelectors).forEach(function(element) {
-          if (isInsideProductForm(element) || element.matches('input, select, textarea')) return;
-
-          var text = element.textContent || '';
-
-          if (/৳|Tk|BDT|টাকা|total|subtotal|price/i.test(text + ' ' + element.className + ' ' + element.id)) {
-            element.textContent = 'Tk ' + selection.priceText;
-            element.setAttribute('data-gcup-bundle-price', selection.priceText);
-          }
-        });
-      });
     }
 
     var checkedRadio = picker.querySelector('[data-gcup-radio]:checked');
@@ -355,29 +257,6 @@ Variables:
       e.target.closest('[data-gcup-card]').classList.add('is-selected');
       syncBundleMetadata(e.target);
     });
-
-    document.addEventListener('click', function() {
-      var selected = window.gcupBundleSelection;
-      if (!selected) return;
-
-      window.setTimeout(function() {
-        syncCodDisplay(selected);
-      }, 50);
-      window.setTimeout(function() {
-        syncCodDisplay(selected);
-      }, 300);
-    });
-
-    if ('MutationObserver' in window) {
-      new MutationObserver(function() {
-        var selected = window.gcupBundleSelection;
-        if (!selected) return;
-
-        window.requestAnimationFrame(function() {
-          syncCodDisplay(selected);
-        });
-      }).observe(document.body, { childList: true, subtree: true });
-    }
 
     // Countdown timer — counts down from 13:00:00 and loops
     var timerEl = picker.querySelector('[data-gcup-timer]');
