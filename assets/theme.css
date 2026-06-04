@@ -11,6 +11,9 @@ html {
   tab-size: 4;
   scroll-padding-block-start: calc(var(--sticky-area-height)  + 20px);
   line-height: 1.5;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
 }
 
 body {
@@ -22,7 +25,9 @@ body {
   letter-spacing: var(--text-letter-spacing);
   margin: 0;
   position: relative;
-  overflow-x: clip;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
 }
 
 hr {
