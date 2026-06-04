@@ -141,7 +141,6 @@ Variables:
 
   {%- assign subtitles = ",,মোট ৫টি ঢাকনা ও স্ট্রসহ কাচের কাপ" | split: "," -%}
   {%- assign show_timer = "false,false,true" | split: "," -%}
-  {%- assign bundle_quantities = "2,3,5" | split: "," -%}
 
   {%- for variant in product.variants -%}
     {%- assign selected = false -%}
@@ -150,7 +149,6 @@ Variables:
     {%- endif -%}
     {%- assign subtitle = subtitles[forloop.index0] -%}
     {%- assign has_timer = show_timer[forloop.index0] -%}
-    {%- assign bundle_qty = bundle_quantities[forloop.index0] -%}
 
     <label
       class="gcup-picker__card{% if selected %} is-selected{% endif %}"
@@ -167,7 +165,6 @@ Variables:
         {% if selected %}checked{% endif %}
         {% unless variant.available %}disabled{% endunless %}
         data-gcup-radio
-        data-gcup-qty="{{ bundle_qty }}"
       >
 
       {%- if has_timer == 'true' -%}
@@ -190,97 +187,47 @@ Variables:
 
 <script>
   (function() {
-    function initGcupPicker() {
-      var picker = document.getElementById('gcup-picker-{{ section.id }}');
-      if (!picker) return;
+    var picker = document.getElementById('gcup-picker-{{ section.id }}');
+    if (!picker) return;
 
-      // Find the quantity input for this product form
-      function getQuantityInput() {
-        var qtyInput = document.querySelector('#{{ form_id }}-quantity');
-        if (!qtyInput) {
-          // Fallback: find quantity input associated with the form
-          qtyInput = document.querySelector('input[name="quantity"][form="{{ form_id }}"]');
-        }
-        if (!qtyInput) {
-          // No quantity selector block exists — create a hidden input inside the form
-          var form = document.getElementById('{{ form_id }}');
-          if (form) {
-            qtyInput = document.createElement('input');
-            qtyInput.type = 'hidden';
-            qtyInput.name = 'quantity';
-            qtyInput.id = '{{ form_id }}-quantity';
-            form.appendChild(qtyInput);
-          }
-        }
-        return qtyInput;
-      }
-
-      // Set quantity based on bundle variant
-      function updateQuantity(radio) {
-        var qty = radio.getAttribute('data-gcup-qty');
-        if (!qty) return;
-        var qtyInput = getQuantityInput();
-        if (qtyInput) {
-          qtyInput.value = qty;
-          // Dispatch input event so any listeners pick up the change
-          qtyInput.dispatchEvent(new Event('input', { bubbles: true }));
-          qtyInput.dispatchEvent(new Event('change', { bubbles: true }));
-        }
-      }
-
-      // Toggle selected state on radio change + update quantity
-      picker.addEventListener('change', function(e) {
-        if (!e.target.matches('[data-gcup-radio]')) return;
-        picker.querySelectorAll('[data-gcup-card]').forEach(function(card) {
-          card.classList.remove('is-selected');
-        });
-        e.target.closest('[data-gcup-card]').classList.add('is-selected');
-        updateQuantity(e.target);
+    // Toggle selected state on radio change
+    picker.addEventListener('change', function(e) {
+      if (!e.target.matches('[data-gcup-radio]')) return;
+      picker.querySelectorAll('[data-gcup-card]').forEach(function(card) {
+        card.classList.remove('is-selected');
       });
+      e.target.closest('[data-gcup-card]').classList.add('is-selected');
+    });
 
-      // Set initial quantity on page load based on pre-selected variant
-      var checkedRadio = picker.querySelector('[data-gcup-radio]:checked');
-      if (checkedRadio) {
-        updateQuantity(checkedRadio);
-      }
+    // Countdown timer — counts down from 13:00:00 and loops
+    var timerEl = picker.querySelector('[data-gcup-timer]');
+    if (!timerEl) return;
 
-      // Countdown timer — counts down from 13:00:00 and loops
-      var timerEl = picker.querySelector('[data-gcup-timer]');
-      if (!timerEl) return;
+    var storageKey = 'gcup_timer_end_{{ section.id }}';
+    var durationMs = 13 * 60 * 60 * 1000; // 13 hours
 
-      var storageKey = 'gcup_timer_end_{{ section.id }}';
-      var durationMs = 13 * 60 * 60 * 1000; // 13 hours
+    var endTime = parseInt(sessionStorage.getItem(storageKey), 10);
+    if (!endTime || endTime < Date.now()) {
+      endTime = Date.now() + durationMs;
+      sessionStorage.setItem(storageKey, endTime);
+    }
 
-      var endTime = parseInt(sessionStorage.getItem(storageKey), 10);
-      if (!endTime || endTime < Date.now()) {
+    function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+    function tick() {
+      var remaining = endTime - Date.now();
+      if (remaining <= 0) {
         endTime = Date.now() + durationMs;
         sessionStorage.setItem(storageKey, endTime);
+        remaining = durationMs;
       }
-
-      function pad(n) { return n < 10 ? '0' + n : '' + n; }
-
-      function tick() {
-        var remaining = endTime - Date.now();
-        if (remaining <= 0) {
-          endTime = Date.now() + durationMs;
-          sessionStorage.setItem(storageKey, endTime);
-          remaining = durationMs;
-        }
-        var h = Math.floor(remaining / 3600000);
-        var m = Math.floor((remaining % 3600000) / 60000);
-        var s = Math.floor((remaining % 60000) / 1000);
-        timerEl.textContent = pad(h) + ' : ' + pad(m) + ' : ' + pad(s);
-      }
-
-      tick();
-      setInterval(tick, 1000);
+      var h = Math.floor(remaining / 3600000);
+      var m = Math.floor((remaining % 3600000) / 60000);
+      var s = Math.floor((remaining % 60000) / 1000);
+      timerEl.textContent = pad(h) + ' : ' + pad(m) + ' : ' + pad(s);
     }
 
-    // Wait for DOM to be fully parsed so the form (in buy_buttons) exists
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initGcupPicker);
-    } else {
-      initGcupPicker();
-    }
+    tick();
+    setInterval(tick, 1000);
   })();
 </script>
