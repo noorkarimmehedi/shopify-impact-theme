@@ -59,18 +59,24 @@ NOTE TO DEVELOPERS: welcome to Impact theme! We hope that you will enjoy editing
     {%- comment -%}Prevent horizontal scrolling site-wide{%- endcomment -%}
     <style>
       html, body {
-        overflow-x: hidden;
+        overflow-x: hidden !important;
+        overscroll-behavior-x: none;
         width: 100%;
         max-width: 100%;
       }
 
+      body {
+        touch-action: pan-y;
+      }
+
       #main {
-        overflow-x: hidden;
+        overflow-x: hidden !important;
         max-width: 100%;
       }
 
       .shopify-section {
         max-width: 100%;
+        overflow-x: clip;
       }
     </style>
   </head>
@@ -106,5 +112,50 @@ NOTE TO DEVELOPERS: welcome to Impact theme! We hope that you will enjoy editing
     </main>
     {%- comment -%} WhatsApp Chat Widget {%- endcomment -%}
     {% render 'whatsapp-widget' %}
+
+    <script>
+      (function() {
+        if (!window.matchMedia('(max-width: 749px)').matches) {
+          return;
+        }
+
+        var allowedScrollers = '.scroll-area, [data-track], [class*="offer-cards__track"], [class*="ai-category-slider-track"]';
+
+        function preventMobileOverflow() {
+          var viewportWidth = document.documentElement.clientWidth;
+
+          document.documentElement.style.overflowX = 'hidden';
+          document.body.style.overflowX = 'hidden';
+
+          document.querySelectorAll('body *').forEach(function(element) {
+            if (element.matches(allowedScrollers) || element.closest(allowedScrollers)) {
+              return;
+            }
+
+            var rect = element.getBoundingClientRect();
+
+            if (rect.width > viewportWidth || rect.left < -1 || rect.right > viewportWidth + 1) {
+              element.style.maxWidth = '100vw';
+              element.style.overflowX = 'hidden';
+            }
+          });
+        }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', preventMobileOverflow);
+        } else {
+          preventMobileOverflow();
+        }
+
+        window.addEventListener('load', preventMobileOverflow);
+        window.addEventListener('resize', preventMobileOverflow);
+
+        if ('MutationObserver' in window) {
+          new MutationObserver(function() {
+            window.requestAnimationFrame(preventMobileOverflow);
+          }).observe(document.body, { childList: true, subtree: true });
+        }
+      })();
+    </script>
   </body>
 </html>
