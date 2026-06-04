@@ -55,6 +55,14 @@ NOTE TO DEVELOPERS: welcome to Impact theme! We hope that you will enjoy editing
     {{ content_for_header }}
 
     {{- 'theme.css' | asset_url | stylesheet_tag: preload: true -}}
+
+    {%- comment -%}Prevent horizontal scrolling site-wide{%- endcomment -%}
+    <style>
+      html, body {
+        overflow-x: clip;
+        max-width: 100vw;
+      }
+    </style>
   </head>
 
   <body class="{% if settings.show_page_transition %}page-transition{% endif %} {% if settings.zoom_image_on_hover %}zoom-image--enabled{% endif %}">
