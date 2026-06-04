@@ -23,66 +23,6 @@ Variables:
     width: 100%;
   }
 
-  .cmug-picker__color-fieldset {
-    border: 1px solid #e0e0e0;
-    border-radius: 12px;
-    padding: 14px 16px;
-    background: #fff;
-  }
-
-  .cmug-picker__color-legend {
-    font-size: 14px;
-    font-weight: 700;
-    color: #111;
-    margin: 0 0 10px;
-    padding: 0;
-  }
-
-  .cmug-picker__color-options {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  .cmug-picker__color-option {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    min-height: 38px;
-    padding: 8px 12px;
-    border: 1.5px solid #d6d6d6;
-    border-radius: 999px;
-    cursor: pointer;
-    background: #fff;
-    font-size: 13px;
-    font-weight: 600;
-    color: #222;
-    transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
-  }
-
-  .cmug-picker__color-input {
-    position: absolute;
-    opacity: 0;
-    width: 0;
-    height: 0;
-    pointer-events: none;
-  }
-
-  .cmug-picker__color-swatch {
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    border: 1px solid #bbb;
-    flex-shrink: 0;
-  }
-
-  .cmug-picker__color-option:has(.cmug-picker__color-input:checked) {
-    border-color: #7c3aed;
-    background: #f5f0ff;
-    box-shadow: 0 0 0 1px #7c3aed22;
-  }
-
   .cmug-picker__card {
     position: relative;
     border: 2px solid #e0e0e0;
@@ -281,32 +221,6 @@ Variables:
 </style>
 
 <div class="cmug-picker" id="cmug-picker-{{ section.id }}">
-  <fieldset class="cmug-picker__color-fieldset">
-    <legend class="cmug-picker__color-legend">Coffee Mug Color</legend>
-
-    <div class="cmug-picker__color-options">
-      {%- assign color_names = 'Off-white,Navy Blue,Black' | split: ',' -%}
-      {%- assign color_values = '#f4efe5,#17233f,#111111' | split: ',' -%}
-
-      {%- for color_name in color_names -%}
-        <label class="cmug-picker__color-option" for="cmug-color-{{ section.id }}-{{ forloop.index }}">
-          <input
-            class="cmug-picker__color-input"
-            type="radio"
-            name="properties[Coffee Mug Color]"
-            id="cmug-color-{{ section.id }}-{{ forloop.index }}"
-            form="{{ form_id }}"
-            value="{{ color_name }}"
-            {% if forloop.first %}checked{% endif %}
-            required
-          >
-          <span class="cmug-picker__color-swatch" style="background: {{ color_values[forloop.index0] }};"></span>
-          <span>{{ color_name }}</span>
-        </label>
-      {%- endfor -%}
-    </div>
-  </fieldset>
-
   {%- for variant in product.variants -%}
     {%- assign is_first = forloop.first -%}
     {%- assign is_combo = false -%}
