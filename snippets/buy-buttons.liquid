@@ -25,6 +25,11 @@ Supported variables
 {%- form 'product', product, is: 'product-form', id: form_id -%}
   <input type="hidden" {% if variant_picker_block != blank %}disabled{% endif %} name="id" value="{{ product.selected_or_first_available_variant.id }}">
 
+  {%- comment -%}Bundle quantity: for glass-cup bundles, set the correct quantity per variant{%- endcomment -%}
+  {%- if product.handle == 'glass-cups-with-bamboo-lid-and-straw' -%}
+    <input type="hidden" name="quantity" id="{{ form_id }}-quantity" value="2">
+  {%- endif -%}
+
   {%- assign button_disabled = false -%}
   {%- assign button_size = button_size | default: 'xl' -%}
 
