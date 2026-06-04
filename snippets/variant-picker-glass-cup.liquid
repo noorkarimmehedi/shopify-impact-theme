@@ -152,6 +152,7 @@ Variables:
   {%- assign subtitles = ",,মোট ৫টি ঢাকনা ও স্ট্রসহ কাচের কাপ" | split: "," -%}
   {%- assign show_timer = "false,false,true" | split: "," -%}
   {%- assign bundle_quantities = "2,3,5" | split: "," -%}
+  {%- assign display_price_quantities = "2,3,4" | split: "," -%}
 
   {%- for variant in product.variants -%}
     {%- assign selected = false -%}
@@ -161,7 +162,8 @@ Variables:
     {%- assign subtitle = subtitles[forloop.index0] -%}
     {%- assign has_timer = show_timer[forloop.index0] -%}
     {%- assign bundle_qty = bundle_quantities[forloop.index0] | default: 1 -%}
-    {%- assign bundle_price = variant.price | times: bundle_qty -%}
+    {%- assign display_price_qty = display_price_quantities[forloop.index0] | default: bundle_qty -%}
+    {%- assign bundle_price = variant.price | times: display_price_qty -%}
 
     <label
       class="gcup-picker__card{% if selected %} is-selected{% endif %}"
