@@ -203,53 +203,59 @@ Variables:
     var picker = document.getElementById('gcup-picker-{{ section.id }}');
     if (!picker) return;
 
-    function getQuantityInput() {
-      var qtyInput = document.querySelector('#{{ form_id }}-quantity');
-
-      if (!qtyInput) {
-        qtyInput = document.querySelector('input[name="quantity"][form="{{ form_id }}"]');
-      }
-
-      if (!qtyInput) {
-        var form = document.getElementById('{{ form_id }}');
-
-        if (form) {
-          qtyInput = document.createElement('input');
-          qtyInput.type = 'hidden';
-          qtyInput.name = 'quantity';
-          qtyInput.id = '{{ form_id }}-quantity';
-          form.appendChild(qtyInput);
-        }
-      }
-
-      return qtyInput;
+    function getProductForm() {
+      return document.getElementById('{{ form_id }}');
     }
 
-    function updateQuantity(radio) {
-      var quantity = radio.getAttribute('data-gcup-qty');
-      var qtyInput = getQuantityInput();
+    function getOrCreateFormInput(name, id) {
+      var form = getProductForm();
+      if (!form) return null;
 
-      if (!quantity || !qtyInput) return;
+      var input = form.querySelector('[name="' + name + '"]');
 
-      qtyInput.value = quantity;
-      qtyInput.dispatchEvent(new Event('input', { bubbles: true }));
-      qtyInput.dispatchEvent(new Event('change', { bubbles: true }));
+      if (!input) {
+        input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = name;
+        input.id = id;
+        form.appendChild(input);
+      }
+
+      return input;
+    }
+
+    function syncBundleMetadata(radio) {
+      var bundleQuantity = radio.getAttribute('data-gcup-qty');
+      if (!bundleQuantity) return;
+
+      var quantityInput = getOrCreateFormInput('quantity', '{{ form_id }}-quantity');
+      var bundleQuantityInput = getOrCreateFormInput('properties[Bundle item count]', '{{ form_id }}-bundle-item-count');
+
+      if (quantityInput) {
+        quantityInput.value = '1';
+        quantityInput.dispatchEvent(new Event('input', { bubbles: true }));
+        quantityInput.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+
+      if (bundleQuantityInput) {
+        bundleQuantityInput.value = bundleQuantity;
+      }
     }
 
     var checkedRadio = picker.querySelector('[data-gcup-radio]:checked');
 
     if (checkedRadio) {
-      updateQuantity(checkedRadio);
+      syncBundleMetadata(checkedRadio);
     }
 
-    // Toggle selected state on radio change and sync bundle quantity.
+    // Toggle selected state on radio change and keep checkout quantity as one bundle.
     picker.addEventListener('change', function(e) {
       if (!e.target.matches('[data-gcup-radio]')) return;
       picker.querySelectorAll('[data-gcup-card]').forEach(function(card) {
         card.classList.remove('is-selected');
       });
       e.target.closest('[data-gcup-card]').classList.add('is-selected');
-      updateQuantity(e.target);
+      syncBundleMetadata(e.target);
     });
 
     // Countdown timer — counts down from 13:00:00 and loops
