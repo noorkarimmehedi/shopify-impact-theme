@@ -161,6 +161,7 @@ Variables:
     {%- assign subtitle = subtitles[forloop.index0] -%}
     {%- assign has_timer = show_timer[forloop.index0] -%}
     {%- assign bundle_qty = bundle_quantities[forloop.index0] | default: 1 -%}
+    {%- assign bundle_price = variant.price | times: bundle_qty -%}
 
     <label
       class="gcup-picker__card{% if selected %} is-selected{% endif %}"
@@ -193,7 +194,7 @@ Variables:
         {%- endif -%}
       </div>
 
-      <span class="gcup-picker__price">Tk {{ variant.price | money_without_currency }}</span>
+      <span class="gcup-picker__price">Tk {{ bundle_price | money_without_currency }}</span>
     </label>
   {%- endfor -%}
 </div>
