@@ -22,6 +22,7 @@ body {
   letter-spacing: var(--text-letter-spacing);
   margin: 0;
   position: relative;
+  overflow-x: clip;
 }
 
 hr {
